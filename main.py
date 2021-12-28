@@ -1,5 +1,3 @@
-import math
-
 import pygame
 
 from config import *
@@ -11,7 +9,7 @@ from map import create_map
 # Павлов Тимур 26.12.2021
 # Вайман Ангелина 28.12.2021. Внесены поправки
 class Game:
-    def __init__(self, caption=GAME_NAME):
+    def __init__(self, caption=WINDOW_NAME):
         self.screen = pygame.display.set_mode(SCREEN_SIZE, pygame.DOUBLEBUF)
         self.clock = pygame.time.Clock()
 
@@ -50,10 +48,10 @@ class Game:
             pygame.display.flip()
 
     def _draw_player(self):
-        create_map(WORLD_MAP, MAP)
+        create_map(MAP)
         x, y = self.player.pos
         pygame.draw.circle(self.screen, BLACK, (int(x), int(y)), 5)
-        points = ray_casting(self.screen, (x, y), self.player.angel)
+        points = ray_casting((x, y), self.player.angel)
         for point in points:
             pygame.draw.line(self.screen, BLACK, self.player.pos, point)
 
