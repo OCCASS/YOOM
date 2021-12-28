@@ -51,6 +51,7 @@ MAP: List[str] = [
 WALL_CHARS = ('1', '2')
 TILE = 25
 WORLD_MAP = set()
+FINAL_WORLD_MAP = set()
 
 # Цвета
 ORANGE = 'Orange'

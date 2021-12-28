@@ -15,7 +15,7 @@ class Game:
         self.screen = pygame.display.set_mode(SCREEN_SIZE, pygame.DOUBLEBUF)
         self.clock = pygame.time.Clock()
 
-        self.player = Player(200, 200, self.screen)
+        self.player = Player(200, 200)
         self.caption = caption
 
     def run(self):
@@ -40,7 +40,7 @@ class Game:
             self.clock.tick(FPS)
 
             for event in pygame.event.get():
-                if event.type == pygame.QUIT:
+                if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
                     running = False
 
             self.player.update()
@@ -50,14 +50,14 @@ class Game:
             pygame.display.flip()
 
     def _draw_player(self):
-        pygame.draw.circle(self.screen, BLACK, (int(self.player.pos[0]), int(self.player.pos[1])), 5)
-
-        view_line_x = self.player.x + math.cos(self.player.angel) * MAX_VIEW_DISTANCE
-        view_line_y = self.player.y + math.sin(self.player.angel) * MAX_VIEW_DISTANCE
-        pygame.draw.line(self.screen, BLACK, self.player.pos, (view_line_x, view_line_y), 2)
+        create_map(WORLD_MAP, MAP)
+        x, y = self.player.pos
+        pygame.draw.circle(self.screen, BLACK, (int(x), int(y)), 5)
+        points = ray_casting(self.screen, (x, y), self.player.angel)
+        for point in points:
+            pygame.draw.line(self.screen, BLACK, self.player.pos, point)
 
     def _draw_map(self):
-        create_map(WORLD_MAP, MAP)
         for row_index, row in enumerate(MAP):
             for char_index, char in enumerate(row):
                 if char in WALL_CHARS:

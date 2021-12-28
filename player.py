@@ -7,10 +7,9 @@ from config import *
 
 # Павлов Тимур 26.12.2021
 class Player:
-    def __init__(self, x, y, screen):
+    def __init__(self, x, y):
         self._x, self._y = x, y
         self.angel = 0
-        self.screen = screen
 
     def update(self):
         self._process_mouse()
@@ -49,7 +48,6 @@ class Player:
             self.angel -= 0.02
         if pressed_keys[pygame.K_RIGHT]:
             self.angel += 0.02
-        ray_casting(self.screen, (self._x, self._y), self.angel)
 
 
     def _process_mouse(self):
