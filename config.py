@@ -1,13 +1,19 @@
 from typing import List
 import math
 
-# Павлов Тимур 26.12.2021
-# Вайман Ангелина 28.12.2021. Внесены поправки
+"""
+Павлов Тимур:
+26.12.2021. Созданы константы
+28.12.2021. Внесены поправки
+
+Вайман Ангелина:
+28.12.2021. Внесены поправки
+"""
 
 # Настройки экрана
 SCREEN_SIZE = SCREEN_WIDTH, SCREEN_HEIGHT = (1200, 600)
 HALF_SCREEN_WIDTH, HALF_SCREEN_HEIGHT = SCREEN_WIDTH >> 1, SCREEN_HEIGHT >> 1
-GAME_NAME = 'Game'
+WINDOW_NAME = 'Game'
 
 # Настройки игрока и луча
 FPS = 60
@@ -17,8 +23,9 @@ MAX_VIEW_DISTANCE = 800
 
 # Настройки ray casting
 FOV = math.pi / 3
+HALF_FOV = FOV / 2
 RAYS_AMOUNT = 120
-MAX_DEPTH = 800
+MAX_RAY_DISTANCE = 800
 DELTA_ANGLE = FOV / RAYS_AMOUNT
 
 # Карта и настройки карты
