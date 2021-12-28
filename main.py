@@ -35,7 +35,7 @@ class Game:
 
         while running:
             self.screen.fill(SKYBLUE)
-            self.clock.tick(FPS)
+            self.clock.tick(99999)
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
@@ -51,9 +51,9 @@ class Game:
         create_map(MAP)
         x, y = self.player.pos
         pygame.draw.circle(self.screen, BLACK, (int(x), int(y)), 5)
-        points = ray_casting((x, y), self.player.angel)
+        points = ray_casting((x, y), self.player.direction)
         for point in points:
-            pygame.draw.line(self.screen, BLACK, self.player.pos, point)
+            pygame.draw.line(self.screen, 'white', self.player.pos, point)
 
     def _draw_map(self):
         for row_index, row in enumerate(MAP):

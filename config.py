@@ -11,13 +11,13 @@ import math
 """
 
 # Настройки экрана
-SCREEN_SIZE = SCREEN_WIDTH, SCREEN_HEIGHT = (1200, 600)
+SCREEN_SIZE = SCREEN_WIDTH, SCREEN_HEIGHT = (800, 600)
 HALF_SCREEN_WIDTH, HALF_SCREEN_HEIGHT = SCREEN_WIDTH >> 1, SCREEN_HEIGHT >> 1
 WINDOW_NAME = 'Game'
 
 # Настройки игрока и луча
 FPS = 60
-PLAYER_SPEED = 4
+PLAYER_SPEED = 0.5
 SENSITIVITY = 0.005
 MAX_VIEW_DISTANCE = 800
 
@@ -65,3 +65,9 @@ ORANGE = 'Orange'
 PURPLE = 'Purple'
 BLACK = 'Black'
 SKYBLUE = 'Skyblue'
+
+# Расстояние до краев клетки
+RIGHT = 0
+LEFT = 1
+BOTTOM = 2
+TOP = 3
