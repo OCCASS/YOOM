@@ -1,14 +1,16 @@
 import pygame
 import math
+from ray_casting import ray_casting
 
 from config import *
 
 
 # Павлов Тимур 26.12.2021
 class Player:
-    def __init__(self, x, y):
+    def __init__(self, x, y, screen):
         self._x, self._y = x, y
         self.angel = 0
+        self.screen = screen
 
     def update(self):
         self._process_mouse()
@@ -43,6 +45,12 @@ class Player:
         if pressed_keys[pygame.K_d]:
             self._x -= sin_a * PLAYER_SPEED
             self._y += cos_a * PLAYER_SPEED
+        if pressed_keys[pygame.K_LEFT]:
+            self.angel -= 0.02
+        if pressed_keys[pygame.K_RIGHT]:
+            self.angel += 0.02
+        ray_casting(self.screen, (self._x, self._y), self.angel)
+
 
     def _process_mouse(self):
         if pygame.mouse.get_focused():

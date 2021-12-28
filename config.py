@@ -1,15 +1,27 @@
 from typing import List
+import math
 
 # Павлов Тимур 26.12.2021
-FPS = 60
+# Вайман Ангелина 28.12.2021. Внесены поправки
+
+# Настройки экрана
 SCREEN_SIZE = SCREEN_WIDTH, SCREEN_HEIGHT = (1200, 600)
 HALF_SCREEN_WIDTH, HALF_SCREEN_HEIGHT = SCREEN_WIDTH >> 1, SCREEN_HEIGHT >> 1
+GAME_NAME = 'Game'
 
+# Настройки игрока и луча
+FPS = 60
 PLAYER_SPEED = 4
 SENSITIVITY = 0.005
-
 MAX_VIEW_DISTANCE = 800
 
+# Настройки ray casting
+FOV = math.pi / 3
+RAYS_AMOUNT = 120
+MAX_DEPTH = 800
+DELTA_ANGLE = FOV / RAYS_AMOUNT
+
+# Карта и настройки карты
 MAP: List[str] = [
     '11111111111111111111111111111111',
     '1..............................1',
@@ -38,3 +50,10 @@ MAP: List[str] = [
 ]
 WALL_CHARS = ('1', '2')
 TILE = 25
+WORLD_MAP = set()
+
+# Цвета
+ORANGE = 'Orange'
+PURPLE = 'Purple'
+BLACK = 'Black'
+SKYBLUE = 'Skyblue'
