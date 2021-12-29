@@ -17,7 +17,7 @@ WINDOW_NAME = 'Game'
 
 # Настройки игрока и луча
 FPS = 60
-PLAYER_SPEED = 0.5
+PLAYER_SPEED = 4
 SENSITIVITY = 0.005
 MAX_VIEW_DISTANCE = 800
 
