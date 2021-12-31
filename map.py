@@ -1,10 +1,15 @@
 from config import *
 
+"""
+Вайман Ангелина 28.12.2021. Создана функция create_map"
 
-# Вайман Ангелина 28.12.2021. Создана функция create_map
-def create_map(map):
-    for i, row in enumerate(map):
-        for j, el in enumerate(row):
-            if el == WALL_CHARS[0] or el == WALL_CHARS[1]:
-                WORLD_MAP.add((j * TILE, i * TILE))
-    return WORLD_MAP
+Павлов Тимур 29.12.2021. Немного переработал функцию create_map
+"""
+
+
+def create_map(map_):
+    for row_index, row in enumerate(map_):
+        for col_index, el in enumerate(row):
+            if el in WALL_CHARS:
+                x, y = col_index * TILE, row_index * TILE
+                WORLD_MAP.add((x, y))

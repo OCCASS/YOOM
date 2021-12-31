@@ -1,9 +1,13 @@
 import pygame
 
 from config import *
+from point import Point
+
+"""
+Павлов Тимур 26.12.2021. Создан класс Player
+"""
 
 
-# Павлов Тимур 26.12.2021
 class Player:
     def __init__(self, x, y):
         self._x, self._y = x, y
@@ -14,8 +18,8 @@ class Player:
         self._process_keyboard()
 
     @property
-    def pos(self):
-        return self._x, self._y
+    def pos(self) -> Point:
+        return Point(self._x, self._y)
 
     @property
     def x(self):
