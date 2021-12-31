@@ -1,4 +1,6 @@
 from config import *
+from ray import Ray, RayCastHit
+from point import Point
 
 """
 Вайман Ангелина 28.12.2021. Создана функция ray_casting.
@@ -8,33 +10,24 @@ from config import *
 Батталов Арслан 29.12.2021 Добавлена функция collide_nearest_wall
 (пока функционирует некорректно)
 
-Батталов Арслан 29.12.2021 Измененена функция collide_nearest_wall
+Батталов Арслан 29.12.2021 Изменена функция collide_nearest_wall
 Доработка эффективного алгоритма
 """
 
 
-def ray_casting(player_pos, player_angle):
+def ray_casting(player_pos: Point, player_angle: float) -> list[RayCastHit]:
     cur_angle = player_angle - HALF_FOV
-    points = []
-    # distance_to_edges = edges_distance(player_pos)
-    for ray in range(RAYS_AMOUNT):
-        collision_pos = collide_nearest_wall(player_pos, cur_angle)
-        points.append(collision_pos)
+
+    ray_cast_hits = []
+    for _ in range(RAYS_AMOUNT):
+        ray = Ray(player_pos, cur_angle, MAX_RAY_DISTANCE)
+
+        ray_cast_hit = ray.ray_cast()
+        ray_cast_hits.append(ray_cast_hit)
+
         cur_angle += DELTA_ANGLE
-    return points
 
-
-def collide_nearest_wall(start_pos: tuple, angel: float) -> tuple[float, float]:
-    start_x, start_y = start_pos
-    cos_a, sin_a = math.cos(angel), math.sin(angel)
-
-    for distance in range(MAX_RAY_DISTANCE):
-        x = start_x + distance * cos_a
-        y = start_y + distance * sin_a
-
-        if (x // TILE * TILE, y // TILE * TILE) in WORLD_MAP:
-            return x, y
-
+    return ray_cast_hits
 
 # def collide_nearest_wall(start_pos: tuple, angle: float, distance_to_edges: tuple) -> tuple[float, float]:
 #     start_x, start_y = start_pos
@@ -73,5 +66,3 @@ def collide_nearest_wall(start_pos: tuple, angel: float) -> tuple[float, float]:
 #     bottom = TILE - (y - y // TILE * TILE)
 #     top = y - y // TILE * TILE
 #     return right, left, bottom, top
-
-
