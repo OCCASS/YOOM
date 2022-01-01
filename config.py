@@ -57,7 +57,7 @@ MAP: List[str] = [
     '11111111111111111111111111111111'
 ]
 WALL_CHARS = ('1', '2')
-TILE = 25
+TILE = 50
 WORLD_MAP = set()
 FINAL_WORLD_MAP = set()
 

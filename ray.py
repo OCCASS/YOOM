@@ -60,3 +60,5 @@ class Ray:
             point = self.get_point(distance)
             if (point.x // TILE * TILE, point.y // TILE * TILE) in WORLD_MAP:
                 return RayCastHit(distance, point, self.direction)
+
+        return RayCastHit(MAX_RAY_DISTANCE, self.get_point(MAX_RAY_DISTANCE), self.direction)
