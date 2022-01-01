@@ -5,18 +5,19 @@ import math
 Павлов Тимур:
 26.12.2021. Созданы константы
 28.12.2021. Внесены поправки
+01.01.2021. Добавлены настройки проекции
 
 Вайман Ангелина:
 28.12.2021. Внесены поправки
 """
 
 # Настройки экрана
-SCREEN_SIZE = SCREEN_WIDTH, SCREEN_HEIGHT = (800, 600)
+SCREEN_SIZE = SCREEN_WIDTH, SCREEN_HEIGHT = (1200, 600)
 HALF_SCREEN_WIDTH, HALF_SCREEN_HEIGHT = SCREEN_WIDTH >> 1, SCREEN_HEIGHT >> 1
 WINDOW_NAME = 'Game'
 
 # Настройки игрока и луча
-FPS = 60
+FPS = 30
 PLAYER_SPEED = 4
 SENSITIVITY = 0.005
 MAX_VIEW_DISTANCE = 800
@@ -65,9 +66,15 @@ ORANGE = 'Orange'
 PURPLE = 'Purple'
 BLACK = 'Black'
 SKYBLUE = 'Skyblue'
+DARKGREY = 'Darkgrey'
 
 # Расстояние до краев клетки
 RIGHT = 0
 LEFT = 1
 BOTTOM = 2
 TOP = 3
+
+# Настройки проекции
+SCALE = SCREEN_WIDTH // RAYS_AMOUNT
+DISTANCE_TO_PROJECTION_PLANE = RAYS_AMOUNT / (2 * math.tan(HALF_FOV))
+PROJECTION_COEFFICIENT = TILE * DISTANCE_TO_PROJECTION_PLANE * 5

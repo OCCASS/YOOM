@@ -4,7 +4,7 @@ from config import *
 from player import Player
 from ray_casting import ray_casting
 from map import create_map
-from point import Point
+from utils import get_color_depend_distance
 
 """
 Павлов Тимур 26.12.2021. Создан класс Game
@@ -28,6 +28,7 @@ class Game:
 
     @staticmethod
     def _init():
+        create_map(MAP)
         pygame.init()
 
     def _config(self):
@@ -39,27 +40,41 @@ class Game:
 
         while running:
             self.screen.fill(SKYBLUE)
-            self.clock.tick(60)
+            self.clock.tick(FPS)
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
                     running = False
 
             self.player.update()
-            self._draw_player()
-            self._draw_map()
+            self._draw_floor()
+            self._draw_walls()
 
             pygame.display.set_caption(str(self.clock.get_fps()))
             pygame.display.flip()
 
     def _draw_player(self):
-        create_map(MAP)
-        x, y = self.player.pos
-        pygame.draw.circle(self.screen, BLACK, (int(x), int(y)), 5)
-        hits = ray_casting(Point(x, y), self.player.direction)
+        player_pos = self.player.pos
+        pygame.draw.circle(self.screen, BLACK, (player_pos.x, player_pos.y), 5)
+        hits = ray_casting(player_pos, self.player.direction)
 
         for hit in hits:
-            pygame.draw.line(self.screen, 'white', self.player.pos, hit.point)
+            hit_point = hit.point
+            pygame.draw.line(self.screen, 'white', player_pos, hit_point)
+
+    def _draw_floor(self):
+        pygame.draw.rect(self.screen, DARKGREY, (0, HALF_SCREEN_HEIGHT, SCREEN_WIDTH, HALF_SCREEN_HEIGHT))
+
+    def _draw_walls(self):
+        hits = ray_casting(self.player.pos, self.player.direction)
+
+        for hit_index, hit in enumerate(hits):
+            distance = hit.distance * math.cos(self.player.direction - hit.angel)
+            projection_height = min(PROJECTION_COEFFICIENT / (distance + 10 ** -10), SCREEN_HEIGHT * 2)
+
+            color = get_color_depend_distance(distance)
+            pygame.draw.rect(self.screen, color,
+                             (hit_index * SCALE, HALF_SCREEN_HEIGHT - projection_height // 2, SCALE, projection_height))
 
     def _draw_map(self):
         for row_index, row in enumerate(MAP):
