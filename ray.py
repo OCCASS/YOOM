@@ -10,9 +10,16 @@ from config import MAX_RAY_DISTANCE, TILE, WORLD_MAP
 
 
 class RayCastHit:
-    def __init__(self, distance: float, point: Point):
+    def __init__(self, distance: float, point: Point, angel: float):
+        """
+        Structure used to get information back from a raycast
+        :param distance: the distance from the ray's origin to the impact point
+        :param point: the impact point in world space where the ray hit the collider
+        :param angel:
+        """
         self.distance = distance
         self.point = point
+        self.angel = angel
 
 
 class Ray:
@@ -45,10 +52,6 @@ class Ray:
                      self.origin.y + math.sin(self.direction) * self.length)
 
     def get_point(self, distance: float) -> Point:
-        """
-        Get a point at distance units along the ray
-        :param distance: distance along ray
-        """
         return Point(self.origin.x + math.cos(self.direction) * distance,
                      self.origin.y + math.sin(self.direction) * distance)
 
@@ -56,4 +59,4 @@ class Ray:
         for distance in range(MAX_RAY_DISTANCE):
             point = self.get_point(distance)
             if (point.x // TILE * TILE, point.y // TILE * TILE) in WORLD_MAP:
-                return RayCastHit(distance, point)
+                return RayCastHit(distance, point, self.direction)

@@ -16,16 +16,16 @@ from point import Point
 
 
 def ray_casting(player_pos: Point, player_angle: float) -> list[RayCastHit]:
-    cur_angle = player_angle - HALF_FOV
+    current_angle: float = player_angle - HALF_FOV
 
-    ray_cast_hits = []
+    ray_cast_hits: list[RayCastHit] = []
     for _ in range(RAYS_AMOUNT):
-        ray = Ray(player_pos, cur_angle, MAX_RAY_DISTANCE)
+        ray = Ray(player_pos, current_angle, MAX_RAY_DISTANCE)
 
         ray_cast_hit = ray.ray_cast()
         ray_cast_hits.append(ray_cast_hit)
 
-        cur_angle += DELTA_ANGLE
+        current_angle += DELTA_ANGLE
 
     return ray_cast_hits
 
