@@ -27,4 +27,3 @@ def ray_casting(player_pos: Point, player_angle: float) -> list[RayCastHit]:
         current_angle += DELTA_ANGLE
 
     return ray_cast_hits
-

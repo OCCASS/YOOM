@@ -1,14 +1,13 @@
 import pygame
 
 from config import *
-from render import Render
 from player import Player
 from map import create_map
+from render import Render
 
 """
 Павлов Тимур 26.12.2021. Создан класс Game
 Вайман Ангелина 28.12.2021. Внесены поправки
-Вайман Ангелина 02.01.2022. Доработка файла main
 """
 
 
@@ -48,10 +47,9 @@ class Game:
                     running = False
 
             self.player.update()
-            self.render._draw_floor()
-            self.render._draw_walls()
+            self.render.render()
 
-            pygame.display.set_caption(str(self.clock.get_fps()))
+            pygame.display.set_caption('FPS: ' + str(int(self.clock.get_fps())))
             pygame.display.flip()
 
     @staticmethod

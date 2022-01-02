@@ -67,7 +67,6 @@ PURPLE = 'Purple'
 BLACK = 'Black'
 SKYBLUE = 'Skyblue'
 DARKGREY = 'Darkgrey'
-WHITE = 'White'
 
 # Расстояние до краев клетки
 RIGHT = 0

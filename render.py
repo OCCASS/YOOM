@@ -15,6 +15,10 @@ class Render:
         self.player = player
         # self.texture = pygame.load('texture/wall_texture1.png').convert()
 
+    def render(self):
+        self._draw_floor()
+        self._draw_walls()
+
     def _draw_player(self):
         player_pos = self.player.pos
         pygame.draw.circle(self.screen, BLACK, (player_pos.x, player_pos.y), 5)
