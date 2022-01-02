@@ -12,4 +12,4 @@ def create_map(map_):
         for col_index, el in enumerate(row):
             if el in WALL_CHARS:
                 x, y = col_index * TILE, row_index * TILE
-                WORLD_MAP.add((x, y))
+                WORLD_MAP.append((x, y))

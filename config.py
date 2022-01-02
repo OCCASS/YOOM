@@ -17,7 +17,7 @@ HALF_SCREEN_WIDTH, HALF_SCREEN_HEIGHT = SCREEN_WIDTH >> 1, SCREEN_HEIGHT >> 1
 WINDOW_NAME = 'Game'
 
 # Настройки игрока и луча
-FPS = 30
+FPS = 1000
 PLAYER_SPEED = 4
 SENSITIVITY = 0.005
 MAX_VIEW_DISTANCE = 800
@@ -58,7 +58,7 @@ MAP: List[str] = [
 ]
 WALL_CHARS = ('1', '2')
 TILE = 25
-WORLD_MAP = set()
+WORLD_MAP = list()
 FINAL_WORLD_MAP = set()
 
 # Цвета

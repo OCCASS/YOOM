@@ -1,11 +1,12 @@
-import math
+from config import *
 from point import Point
-from config import MAX_RAY_DISTANCE, TILE, WORLD_MAP
 
 """
 Павлов Тимур 01.01.2021. Написаны классы Ray и RayCastHit 
 
 Использованы алгоритмы написанные Ангелиной Вайман 28.12.2021 и Арсланом Батталовым 29.12.2021
+
+Батталов Арслан 2.01.2022 написаны функции vertical_collision, horizontal_collision, ray_cast
 """
 
 
@@ -42,21 +43,39 @@ class Ray:
                 'Ray.__init__ method has only 3 required arguments, '
                 'you can`t use length and end parameters at the same time')
 
-    @property
-    def length(self) -> float:
-        return math.sqrt((self.origin.x - self.end.x) ** 2 + (self.origin.y - self.end.y) ** 2)
-
-    @property
-    def end(self) -> Point:
-        return Point(self.origin.x + math.cos(self.direction) * self.length,
-                     self.origin.y + math.sin(self.direction) * self.length)
-
-    def get_point(self, distance: float) -> Point:
-        return Point(self.origin.x + math.cos(self.direction) * distance,
-                     self.origin.y + math.sin(self.direction) * distance)
+    def check_map(self, x, y):
+        return (x // TILE) * TILE, (y // TILE) * TILE
 
     def ray_cast(self) -> RayCastHit:
-        for distance in range(MAX_RAY_DISTANCE):
-            point = self.get_point(distance)
-            if (point.x // TILE * TILE, point.y // TILE * TILE) in WORLD_MAP:
-                return RayCastHit(distance, point, self.direction)
+        player_x, player_y = self.origin
+        cos_a, sin_a = math.cos(self.direction), math.sin(self.direction)
+        square_x, square_y = self.check_map(player_x, player_y)
+
+        x_ver, y_ver, vert_dist = self.vertical_collision(square_x, player_x, player_y, sin_a, cos_a)
+        x_hor, y_hor, hor_dist = self.horizontal_collision(square_y, player_x, player_y, sin_a, cos_a)
+
+        if hor_dist > vert_dist:
+            return RayCastHit(vert_dist, (x_ver, y_ver), self.direction)
+        return RayCastHit(hor_dist, (x_hor, y_hor), self.direction)
+
+    def vertical_collision(self, square_x, player_x, player_y, sin_a, cos_a):
+        y_ver, vert_dist = 0, 0
+        x_ver, sign_x = (square_x + TILE, 1) if cos_a >= 0 else (square_x, -1)
+        for i in range(0, SCREEN_WIDTH, TILE):
+            vert_dist = (x_ver - player_x) / cos_a
+            y_ver = player_y + vert_dist * sin_a
+            if self.check_map(x_ver + sign_x, y_ver) in WORLD_MAP:
+                break
+            x_ver += sign_x * TILE
+        return x_ver, y_ver, vert_dist
+
+    def horizontal_collision(self, square_y, player_x, player_y, sin_a, cos_a):
+        x_hor, hor_dist = 0, 0
+        y_hor, sign_y = (square_y + TILE, 1) if sin_a >= 0 else (square_y, -1)
+        for i in range(0, SCREEN_HEIGHT, TILE):
+            hor_dist = (y_hor - player_y) / sin_a
+            x_hor = player_x + hor_dist * cos_a
+            if self.check_map(x_hor, y_hor + sign_y) in WORLD_MAP:
+                break
+            y_hor += sign_y * TILE
+        return x_hor, y_hor, hor_dist

@@ -47,6 +47,8 @@ class Game:
                     running = False
 
             self.player.update()
+            # self._draw_map()
+            # self._draw_player()
             self._draw_floor()
             self._draw_walls()
 
