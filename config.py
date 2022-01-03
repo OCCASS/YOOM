@@ -10,6 +10,9 @@ import math
 Вайман Ангелина:
 28.12.2021. Внесены поправки
 03.01.2022. Добавлены настройки миникарты и новые цвета
+
+Батталов Арслан:
+03.01.2021. Добавлены константы для коллизии
 """
 
 # Настройки экрана
@@ -19,9 +22,11 @@ WINDOW_NAME = 'Game'
 
 # Настройки игрока и луча
 FPS = 120
-PLAYER_SPEED = 2
+PLAYER_SPEED = 1
 SENSITIVITY = 0.005
 MAX_VIEW_DISTANCE = 800
+PLAYER_SIZE = 20
+MAX_DISTANCE_TO_WALL = 10
 
 # Настройки ray casting
 FOV = math.pi / 3
@@ -58,9 +63,10 @@ MAP: List[str] = [
     '11111111111111111111111111111111'
 ]
 WALL_CHARS = ('1', '2')
-TILE = 64
+TILE = 25
 WORLD_MAP = set()
 MAP_SIZE = (len(MAP[0]), len(MAP))
+COLLISION_MAP = list()
 
 # Цвета
 ORANGE = 'Orange'
@@ -73,16 +79,10 @@ GREEN = 'Green'
 RED = 'Red'
 WHITE = 'White'
 
-# Расстояние до краев клетки
-RIGHT = 0
-LEFT = 1
-BOTTOM = 2
-TOP = 3
-
 # Настройки проекции
 SCALE = SCREEN_WIDTH // RAYS_AMOUNT
 DISTANCE_TO_PROJECTION_PLANE = RAYS_AMOUNT / (2 * math.tan(HALF_FOV))
-PROJECTION_COEFFICIENT = TILE * DISTANCE_TO_PROJECTION_PLANE * 5
+PROJECTION_COEFFICIENT = TILE * DISTANCE_TO_PROJECTION_PLANE * 3
 
 # Настройки миникарты
 MINI_MAP = set()

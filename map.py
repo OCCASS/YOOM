@@ -1,3 +1,5 @@
+import pygame
+
 from config import *
 
 """
@@ -6,6 +8,8 @@ from config import *
 Павлов Тимур 29.12.2021. Немного переработал функцию create_map
 
 Вайман Ангелина 03.01.2022. Создана функция create_minimap
+
+Батталов Арслан 03.01.2022. Добавлена карта коллизии
 """
 
 
@@ -23,3 +27,4 @@ def create_minimap(map_):
             if el in WALL_CHARS:
                 x, y = col_index * MAP_TILE, row_index * MAP_TILE
                 MINI_MAP.add((x, y))
+                COLLISION_MAP.append(pygame.Rect(col_index * TILE, row_index * TILE, TILE, TILE))

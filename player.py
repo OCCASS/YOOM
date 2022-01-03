@@ -5,6 +5,9 @@ from point import Point
 
 """
 Павлов Тимур 26.12.2021. Создан класс Player
+
+Батталов Арслан 03.01.2022. Изменена функция _process_keyboard, добавлены функции find_collison, change_cors
+(пока не отлажено)
 """
 
 
@@ -12,10 +15,13 @@ class Player:
     def __init__(self, x, y):
         self._x, self._y = x, y
         self.direction = 0
+        self.player_collision = pygame.Rect(x, y, PLAYER_SIZE, PLAYER_SPEED)
+        self.collision_map = COLLISION_MAP
 
     def update(self):
         self._process_mouse()
         self._process_keyboard()
+        self.player_collision.center = self._x, self._y
 
     @property
     def pos(self) -> Point:
@@ -35,21 +41,25 @@ class Player:
         cos_a, sin_a = math.cos(self.direction), math.sin(self.direction)
 
         if pressed_keys[pygame.K_w]:
-            self._x += cos_a * PLAYER_SPEED
-            self._y += sin_a * PLAYER_SPEED
+            step_x = cos_a * PLAYER_SPEED
+            step_y = sin_a * PLAYER_SPEED
+            self.change_cors(*self.find_collison(step_x, step_y))
         if pressed_keys[pygame.K_s]:
-            self._x -= cos_a * PLAYER_SPEED
-            self._y -= sin_a * PLAYER_SPEED
+            step_x = -cos_a * PLAYER_SPEED
+            step_y = -sin_a * PLAYER_SPEED
+            self.change_cors(*self.find_collison(step_x, step_y))
         if pressed_keys[pygame.K_a]:
-            self._x += sin_a * PLAYER_SPEED
-            self._y -= cos_a * PLAYER_SPEED
+            step_x = sin_a * PLAYER_SPEED
+            step_y = -cos_a * PLAYER_SPEED
+            self.change_cors(*self.find_collison(step_x, step_y))
         if pressed_keys[pygame.K_d]:
-            self._x -= sin_a * PLAYER_SPEED
-            self._y += cos_a * PLAYER_SPEED
+            step_x = -sin_a * PLAYER_SPEED
+            step_y = cos_a * PLAYER_SPEED
+            self.change_cors(*self.find_collison(step_x, step_y))
         if pressed_keys[pygame.K_LEFT]:
-            self.direction -= 0.02
+            self.direction -= SENSITIVITY
         if pressed_keys[pygame.K_RIGHT]:
-            self.direction += 0.02
+            self.direction += SENSITIVITY
 
     def _process_mouse(self):
         if pygame.mouse.get_focused():
@@ -57,3 +67,10 @@ class Player:
             pygame.mouse.set_pos((HALF_SCREEN_WIDTH, HALF_SCREEN_HEIGHT))
             self.direction += difference * SENSITIVITY
             self.direction %= math.radians(360)
+
+    def find_collison(self, x, y):
+        return x, y
+
+    def change_cors(self, delta_x, delta_y):
+        self._x += delta_x
+        self._y += delta_y
