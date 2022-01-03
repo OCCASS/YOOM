@@ -3,21 +3,25 @@ import pygame
 from ray_casting import ray_casting
 from utils import get_color_depend_distance
 from config import *
+from map import create_minimap
 
 """
-Вайман Ангелина 02.01.2022. Создан класс Render с использованием алгоритма Павлова Тимура
+Вайман Ангелина:
+02.01.2022. Создан класс Render с использованием алгоритма Павлова Тимура
+03.01.2022. Создана функция _draw_minimap для отрисовки миникарты
 """
 
 
 class Render:
-    def __init__(self, screen, player):
+    def __init__(self, screen, player, screen_map):
         self.screen = screen
         self.player = player
-        # self.texture = pygame.load('texture/wall_texture1.png').convert()
+        self.screen_map = screen_map
 
     def render(self):
         self._draw_floor()
         self._draw_walls()
+        self._draw_minimap(self.player)
 
     def _draw_player(self):
         player_pos = self.player.pos
@@ -26,7 +30,7 @@ class Render:
 
         for hit in hits:
             hit_point = hit.point
-            pygame.draw.line(self.screen, 'white', player_pos, hit_point)
+            pygame.draw.line(self.screen, WHITE, player_pos, hit_point)
 
     def _draw_floor(self):
         pygame.draw.rect(self.screen, DARKGREY, (0, HALF_SCREEN_HEIGHT, SCREEN_WIDTH, HALF_SCREEN_HEIGHT))
@@ -56,3 +60,13 @@ class Render:
 
                     x, y = char_index * TILE, row_index * TILE
                     pygame.draw.rect(self.screen, color, (x, y, TILE, TILE))
+
+    def _draw_minimap(self, player):
+        self.screen_map.fill(BLACK)
+        map_x, map_y = player.x // MAP_SCALE, player.y // MAP_SCALE
+        pygame.draw.line(self.screen_map, YELLOW, (map_x, map_y),
+                         (map_x + 10 * math.cos(player.direction), map_y + 10 * math.sin(player.direction)), 2)
+        pygame.draw.circle(self.screen_map, RED, (int(map_x), int(map_y)), 5)
+        for x, y in MINI_MAP:
+            pygame.draw.rect(self.screen_map, GREEN, (x, y, MAP_TILE, MAP_TILE))
+        self.screen.blit(self.screen_map, (0, SCREEN_HEIGHT - SCREEN_HEIGHT // MAP_SCALE))

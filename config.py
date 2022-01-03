@@ -9,6 +9,7 @@ import math
 
 Вайман Ангелина:
 28.12.2021. Внесены поправки
+03.01.2022. Добавлены настройки миникарты и новые цвета
 """
 
 # Настройки экрана
@@ -57,9 +58,8 @@ MAP: List[str] = [
     '11111111111111111111111111111111'
 ]
 WALL_CHARS = ('1', '2')
-TILE = 64
+TILE = 25
 WORLD_MAP = set()
-FINAL_WORLD_MAP = set()
 
 # Цвета
 ORANGE = 'Orange'
@@ -67,6 +67,11 @@ PURPLE = 'Purple'
 BLACK = 'Black'
 SKYBLUE = 'Skyblue'
 DARKGREY = 'Darkgrey'
+YELLOW = 'Yellow'
+GREEN = 'Green'
+RED = 'Red'
+WHITE = 'White'
+
 
 # Расстояние до краев клетки
 RIGHT = 0
@@ -78,3 +83,9 @@ TOP = 3
 SCALE = SCREEN_WIDTH // RAYS_AMOUNT
 DISTANCE_TO_PROJECTION_PLANE = RAYS_AMOUNT / (2 * math.tan(HALF_FOV))
 PROJECTION_COEFFICIENT = TILE * DISTANCE_TO_PROJECTION_PLANE * 5
+
+# Настройки миникарты
+MINI_MAP = set()
+MAP_SCALE = 5
+MAP_TILE = TILE // MAP_SCALE
+

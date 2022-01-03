@@ -2,22 +2,24 @@ import pygame
 
 from config import *
 from player import Player
-from map import create_map
+from map import create_map, create_minimap
 from render import Render
 
 """
 Павлов Тимур 26.12.2021. Создан класс Game
 Вайман Ангелина 28.12.2021. Внесены поправки
+Вайман Ангелина 03.01.2022. Создана новая поверхность screen_map для миникарты
 """
 
 
 class Game:
     def __init__(self, caption=WINDOW_NAME):
         self.screen = pygame.display.set_mode(SCREEN_SIZE, pygame.DOUBLEBUF)
+        self.screen_map = pygame.Surface((SCREEN_WIDTH // MAP_SCALE - 80, SCREEN_HEIGHT // MAP_SCALE))
         self.clock = pygame.time.Clock()
 
         self.player = Player(200, 200)
-        self.render = Render(self.screen, self.player)
+        self.render = Render(self.screen, self.player, self.screen_map)
         self.caption = caption
 
     def run(self):
@@ -29,6 +31,7 @@ class Game:
     @staticmethod
     def _init():
         create_map(MAP)
+        create_minimap(MAP)
         pygame.init()
 
     def _config(self):
