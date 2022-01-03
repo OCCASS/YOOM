@@ -1,9 +1,8 @@
 import pygame
 
+from config import *
 from ray_casting import ray_casting
 from utils import get_color_depend_distance
-from config import *
-from map import create_minimap
 
 """
 Вайман Ангелина:
@@ -21,7 +20,7 @@ class Render:
     def render(self):
         self._draw_floor()
         self._draw_walls()
-        self._draw_minimap(self.player)
+        self._draw_minimap()
 
     def _draw_player(self):
         player_pos = self.player.pos
@@ -61,11 +60,11 @@ class Render:
                     x, y = char_index * TILE, row_index * TILE
                     pygame.draw.rect(self.screen, color, (x, y, TILE, TILE))
 
-    def _draw_minimap(self, player):
+    def _draw_minimap(self):
         self.screen_map.fill(BLACK)
-        map_x, map_y = player.x // MAP_SCALE, player.y // MAP_SCALE
-        pygame.draw.line(self.screen_map, YELLOW, (map_x, map_y),
-                         (map_x + 10 * math.cos(player.direction), map_y + 10 * math.sin(player.direction)), 2)
+        map_x, map_y = self.player.x / MAP_TILE, self.player.y / MAP_TILE
+        cos_a, sin_a = math.cos(self.player.direction), math.sin(self.player.direction)
+        pygame.draw.line(self.screen_map, YELLOW, (map_x, map_y), (map_x + 10 * cos_a, map_y + 10 * sin_a), 2)
         pygame.draw.circle(self.screen_map, RED, (int(map_x), int(map_y)), 3)
         for x, y in MINI_MAP:
             pygame.draw.rect(self.screen_map, GREEN, (x, y, MAP_TILE, MAP_TILE))
