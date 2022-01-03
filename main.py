@@ -15,7 +15,7 @@ from render import Render
 class Game:
     def __init__(self, caption=WINDOW_NAME):
         self.screen = pygame.display.set_mode(SCREEN_SIZE, pygame.DOUBLEBUF)
-        self.screen_map = pygame.Surface((SCREEN_WIDTH // MAP_SCALE - 80, SCREEN_HEIGHT // MAP_SCALE))
+        self.screen_map = pygame.Surface((MAP_SIZE[0] * MAP_TILE, MAP_SIZE[1] * MAP_TILE))
         self.clock = pygame.time.Clock()
 
         self.player = Player(200, 200)

@@ -60,6 +60,7 @@ MAP: List[str] = [
 WALL_CHARS = ('1', '2')
 TILE = 64
 WORLD_MAP = set()
+MAP_SIZE = (len(MAP[0]), len(MAP))
 
 # Цвета
 ORANGE = 'Orange'
@@ -86,4 +87,4 @@ PROJECTION_COEFFICIENT = TILE * DISTANCE_TO_PROJECTION_PLANE * 5
 # Настройки миникарты
 MINI_MAP = set()
 MAP_SCALE = 5
-MAP_TILE = SCREEN_HEIGHT / len(MAP) // MAP_SCALE
+MAP_TILE = SCREEN_HEIGHT / MAP_SIZE[1] // MAP_SCALE
