@@ -58,7 +58,7 @@ MAP: List[str] = [
     '11111111111111111111111111111111'
 ]
 WALL_CHARS = ('1', '2')
-TILE = 25
+TILE = 64
 WORLD_MAP = set()
 
 # Цвета
@@ -71,7 +71,6 @@ YELLOW = 'Yellow'
 GREEN = 'Green'
 RED = 'Red'
 WHITE = 'White'
-
 
 # Расстояние до краев клетки
 RIGHT = 0
@@ -87,5 +86,4 @@ PROJECTION_COEFFICIENT = TILE * DISTANCE_TO_PROJECTION_PLANE * 5
 # Настройки миникарты
 MINI_MAP = set()
 MAP_SCALE = 5
-MAP_TILE = TILE // MAP_SCALE
-
+MAP_TILE = SCREEN_HEIGHT / len(MAP) // MAP_SCALE
