@@ -66,7 +66,7 @@ class Render:
         map_x, map_y = player.x // MAP_SCALE, player.y // MAP_SCALE
         pygame.draw.line(self.screen_map, YELLOW, (map_x, map_y),
                          (map_x + 10 * math.cos(player.direction), map_y + 10 * math.sin(player.direction)), 2)
-        pygame.draw.circle(self.screen_map, RED, (int(map_x), int(map_y)), 5)
+        pygame.draw.circle(self.screen_map, RED, (int(map_x), int(map_y)), 3)
         for x, y in MINI_MAP:
             pygame.draw.rect(self.screen_map, GREEN, (x, y, MAP_TILE, MAP_TILE))
         self.screen.blit(self.screen_map, (0, SCREEN_HEIGHT - SCREEN_HEIGHT // MAP_SCALE))
