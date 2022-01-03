@@ -1,5 +1,6 @@
 from typing import List
 import math
+from load_image import load_image
 
 """
 Павлов Тимур:
@@ -78,6 +79,7 @@ YELLOW = 'Yellow'
 GREEN = 'Green'
 RED = 'Red'
 WHITE = 'White'
+BRICK = (139, 79, 57)
 
 # Настройки проекции
 SCALE = SCREEN_WIDTH // RAYS_AMOUNT
@@ -88,3 +90,6 @@ PROJECTION_COEFFICIENT = TILE * DISTANCE_TO_PROJECTION_PLANE * 3
 MINI_MAP = set()
 MAP_SCALE = 5
 MAP_TILE = SCREEN_HEIGHT / MAP_SIZE[1] // MAP_SCALE
+
+# Текстуры
+SKY_TEXTURE = load_image('sky.png')

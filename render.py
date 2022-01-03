@@ -18,6 +18,7 @@ class Render:
         self.screen_map = screen_map
 
     def render(self):
+        self._draw_sky()
         self._draw_floor()
         self._draw_walls()
         self._draw_minimap()
@@ -32,7 +33,14 @@ class Render:
             pygame.draw.line(self.screen, WHITE, player_pos, hit_point)
 
     def _draw_floor(self):
-        pygame.draw.rect(self.screen, DARKGREY, (0, HALF_SCREEN_HEIGHT, SCREEN_WIDTH, HALF_SCREEN_HEIGHT))
+        pygame.draw.rect(self.screen, BRICK, (0, HALF_SCREEN_HEIGHT, SCREEN_WIDTH, HALF_SCREEN_HEIGHT))
+
+    def _draw_sky(self):
+        texture = SKY_TEXTURE.convert()
+        sky_offset = math.degrees(self.player.direction) % SCREEN_WIDTH
+        self.screen.blit(texture, (sky_offset, 0))
+        self.screen.blit(texture, (sky_offset - SCREEN_WIDTH, 0))
+        self.screen.blit(texture, (sky_offset + SCREEN_WIDTH, 0))
 
     # Отрисовка 2.5D
     def _draw_walls(self):
@@ -67,5 +75,5 @@ class Render:
         pygame.draw.line(self.screen_map, YELLOW, (map_x, map_y), (map_x + 10 * cos_a, map_y + 10 * sin_a), 2)
         pygame.draw.circle(self.screen_map, RED, (int(map_x), int(map_y)), 3)
         for x, y in MINI_MAP:
-            pygame.draw.rect(self.screen_map, GREEN, (x, y, MAP_TILE, MAP_TILE))
+            pygame.draw.rect(self.screen_map, SKYBLUE, (x, y, MAP_TILE, MAP_TILE))
         self.screen.blit(self.screen_map, (0, SCREEN_HEIGHT - SCREEN_HEIGHT // MAP_SCALE))
