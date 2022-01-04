@@ -55,7 +55,7 @@ class Render:
             distance = hit.distance * math.cos(self.player.direction - hit.angel)
             distance = max(distance, 0.00001)
             projection_height = min(PROJECTION_COEFFICIENT / (distance + 10 ** -10), SCREEN_HEIGHT * 2)
-            wall = wall_texture.convert().subsurface(offset * TEXTURE_SCALE, 0, TEXTURE_SCALE, TEXTURE_HEIGHT)
+            wall = wall_texture.subsurface(offset * TEXTURE_SCALE, 0, TEXTURE_SCALE, TEXTURE_HEIGHT)
             wall = pygame.transform.scale(wall, (SCALE, projection_height))
             self.screen.blit(wall, (hit_index * SCALE, HALF_SCREEN_HEIGHT - projection_height // 2))
 
