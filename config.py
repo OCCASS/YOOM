@@ -92,4 +92,5 @@ MAP_SCALE = 5
 MAP_TILE = SCREEN_HEIGHT / MAP_SIZE[1] // MAP_SCALE
 
 # Текстуры
-SKY_TEXTURE = load_image('sky.png')
+SKY_TEXTURE = 'sky.png'
+WALL_TEXTURE = load_image('wall.png')
