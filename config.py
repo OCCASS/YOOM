@@ -15,6 +15,7 @@ from load_image import load_image
 
 Батталов Арслан:
 03.01.2021. Добавлены константы для коллизии
+04.01.2021 Изменены константы коллизии
 """
 
 # Настройки экрана
@@ -24,11 +25,11 @@ WINDOW_NAME = 'Game'
 
 # Настройки игрока и луча
 FPS = 120
-PLAYER_SPEED = 1
+PLAYER_SPEED = 5
 SENSITIVITY = 0.005
 MAX_VIEW_DISTANCE = 800
-PLAYER_SIZE = 20
-MAX_DISTANCE_TO_WALL = 10
+PLAYER_SIZE = 15
+MAX_DISTANCE_TO_WALL = PLAYER_SIZE * 4
 
 # Настройки ray casting
 FOV = math.pi / 3
@@ -65,7 +66,7 @@ MAP: List[str] = [
     '11111111111111111111111111111111'
 ]
 WALL_CHARS = ('1', '2')
-TILE = 25
+TILE = 100
 WORLD_MAP = set()
 MAP_SIZE = (len(MAP[0]), len(MAP))
 COLLISION_MAP = list()

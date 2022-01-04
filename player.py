@@ -2,12 +2,15 @@ import pygame
 
 from config import *
 from point import Point
+from ray import Ray
 
 """
 Павлов Тимур 26.12.2021. Создан класс Player
 
 Батталов Арслан 03.01.2022. Изменена функция _process_keyboard, добавлены функции find_collison, change_cors
 (пока не отлажено)
+
+Батталов Арслан 04.01.2022. Добавлена функция can_move
 """
 
 
@@ -41,21 +44,21 @@ class Player:
         cos_a, sin_a = math.cos(self.direction), math.sin(self.direction)
 
         if pressed_keys[pygame.K_w]:
-            step_x = cos_a * PLAYER_SPEED
-            step_y = sin_a * PLAYER_SPEED
-            self.change_cors(*self.find_collison(step_x, step_y))
+            if self.can_move(self.direction):
+                self._x += cos_a * PLAYER_SPEED
+                self._y += sin_a * PLAYER_SPEED
         if pressed_keys[pygame.K_s]:
-            step_x = -cos_a * PLAYER_SPEED
-            step_y = -sin_a * PLAYER_SPEED
-            self.change_cors(*self.find_collison(step_x, step_y))
+            if self.can_move(self.direction - math.pi):
+                self._x += -cos_a * PLAYER_SPEED
+                self._y += -sin_a * PLAYER_SPEED
         if pressed_keys[pygame.K_a]:
-            step_x = sin_a * PLAYER_SPEED
-            step_y = -cos_a * PLAYER_SPEED
-            self.change_cors(*self.find_collison(step_x, step_y))
+            if self.can_move(self.direction - math.pi / 2):
+                self._x += sin_a * PLAYER_SPEED
+                self._y += -cos_a * PLAYER_SPEED
         if pressed_keys[pygame.K_d]:
-            step_x = -sin_a * PLAYER_SPEED
-            step_y = cos_a * PLAYER_SPEED
-            self.change_cors(*self.find_collison(step_x, step_y))
+            if self.can_move(self.direction + math.pi / 2):
+                self._x += -sin_a * PLAYER_SPEED
+                self._y += cos_a * PLAYER_SPEED
         if pressed_keys[pygame.K_LEFT]:
             self.direction -= SENSITIVITY
         if pressed_keys[pygame.K_RIGHT]:
@@ -68,8 +71,13 @@ class Player:
             self.direction += difference * SENSITIVITY
             self.direction %= math.radians(360)
 
-    def find_collison(self, x, y):
-        return x, y
+    def can_move(self, direction):
+        ray = Ray(self.pos, direction, MAX_RAY_DISTANCE)
+
+        if ray.ray_cast().distance <= MAX_DISTANCE_TO_WALL:
+            return False
+
+        return True
 
     def change_cors(self, delta_x, delta_y):
         self._x += delta_x

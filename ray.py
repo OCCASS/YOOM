@@ -9,6 +9,8 @@ from point import Point
 Батталов Арслан 2.01.2022 написаны функции vertical_collision, horizontal_collision, ray_cast
 
 Вайман Ангелина 04.01.2022. Доработаны функции vertical_collision, horizontal_collision, ray_cast
+
+Батталов Арслан 04.01.2022. Исправлена ошибка деления на ноль в функции ray_cast
 """
 
 
@@ -54,6 +56,9 @@ class Ray:
         player_x, player_y = self.origin
         cos_a, sin_a = math.cos(self.direction), math.sin(self.direction)
         square_x, square_y = self._check_map(player_x, player_y)
+
+        cos_a = 10 ** -10 if cos_a == 0 else cos_a
+        sin_a = 10 ** -10 if sin_a == 0 else sin_a
 
         x_ver, y_ver, vert_dist, ver_offset = self.vertical_collision(square_x, player_x, player_y, sin_a, cos_a)
         x_hor, y_hor, hor_dist, hor_offset = self.horizontal_collision(square_y, player_x, player_y, sin_a, cos_a)
