@@ -44,19 +44,19 @@ class Player:
         cos_a, sin_a = math.cos(self.direction), math.sin(self.direction)
 
         if pressed_keys[pygame.K_w]:
-            if self.can_move(self.direction):
+            if self.can_move(self.direction, PLAYER_SIZE * 4):
                 self._x += cos_a * PLAYER_SPEED
                 self._y += sin_a * PLAYER_SPEED
         if pressed_keys[pygame.K_s]:
-            if self.can_move(self.direction - math.pi):
+            if self.can_move(self.direction - math.pi, PLAYER_SIZE * 4):
                 self._x += -cos_a * PLAYER_SPEED
                 self._y += -sin_a * PLAYER_SPEED
         if pressed_keys[pygame.K_a]:
-            if self.can_move(self.direction - math.pi / 2):
+            if self.can_move(self.direction - math.pi / 2, PLAYER_SIZE * 2):
                 self._x += sin_a * PLAYER_SPEED
                 self._y += -cos_a * PLAYER_SPEED
         if pressed_keys[pygame.K_d]:
-            if self.can_move(self.direction + math.pi / 2):
+            if self.can_move(self.direction + math.pi / 2, PLAYER_SIZE * 2):
                 self._x += -sin_a * PLAYER_SPEED
                 self._y += cos_a * PLAYER_SPEED
         if pressed_keys[pygame.K_LEFT]:
@@ -71,10 +71,10 @@ class Player:
             self.direction += difference * SENSITIVITY
             self.direction %= math.radians(360)
 
-    def can_move(self, direction):
+    def can_move(self, direction, collision_distance):
         ray = Ray(self.pos, direction, MAX_RAY_DISTANCE)
 
-        if ray.ray_cast().distance <= MAX_DISTANCE_TO_WALL:
+        if ray.ray_cast().distance <= collision_distance:
             return False
 
         return True
