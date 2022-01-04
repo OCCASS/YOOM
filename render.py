@@ -2,16 +2,18 @@ import pygame
 
 from config import *
 from ray_casting import ray_casting
-from utils import get_color_depend_distance
 from load_image import load_image
 
 """
 Вайман Ангелина:
 02.01.2022. Создан класс Render с использованием алгоритма Павлова Тимура
 03.01.2022. Создана функция _draw_minimap, _draw_sky
+04.01.2022. Доработано фунукция _draw_walls и добавлены текстуры
 """
 
 sky_texture = load_image(SKY_TEXTURE)
+wall_texture = load_image(WALL_TEXTURE)
+
 
 class Render:
     def __init__(self, screen, player, screen_map):
@@ -49,17 +51,13 @@ class Render:
         hits = ray_casting(self.player.pos, self.player.direction)
 
         for hit_index, hit in enumerate(hits):
-
+            offset = int(hit.offset) % TILE
             distance = hit.distance * math.cos(self.player.direction - hit.angel)
-            # distance = max(distance, 0.00001)
+            distance = max(distance, 0.00001)
             projection_height = min(PROJECTION_COEFFICIENT / (distance + 10 ** -10), SCREEN_HEIGHT * 2)
-
-            # wall = WALL_TEXTURE.convert().subsurface(offset * TEXTURE_SCALE, 0, TEXTURE_SCALE, TEXTURE_HEIGHT)
-            # wall = pygame.transform.scale(wall, (SCALE, projection_height))
-            color = get_color_depend_distance(distance)
-            pygame.draw.rect(self.screen, color,
-                             (hit_index * SCALE, HALF_SCREEN_HEIGHT - projection_height // 2, SCALE, projection_height))
-            # self.screen.blit(wall, ())
+            wall = wall_texture.convert().subsurface(offset * TEXTURE_SCALE, 0, TEXTURE_SCALE, TEXTURE_HEIGHT)
+            wall = pygame.transform.scale(wall, (SCALE, projection_height))
+            self.screen.blit(wall, (hit_index * SCALE, HALF_SCREEN_HEIGHT - projection_height // 2))
 
     def _draw_map(self):
         for row_index, row in enumerate(MAP):

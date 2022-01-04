@@ -7,11 +7,13 @@ from point import Point
 Использованы алгоритмы написанные Ангелиной Вайман 28.12.2021 и Арсланом Батталовым 29.12.2021
 
 Батталов Арслан 2.01.2022 написаны функции vertical_collision, horizontal_collision, ray_cast
+
+Вайман Ангелина 04.01.2022. Доработаны функции vertical_collision, horizontal_collision, ray_cast
 """
 
 
 class RayCastHit:
-    def __init__(self, distance: float, point: Point, angel: float):
+    def __init__(self, distance: float, point: Point, angel: float, offset):
         """
         Structure used to get information back from a raycast
         :param distance: the distance from the ray's origin to the impact point
@@ -21,6 +23,7 @@ class RayCastHit:
         self.distance = distance
         self.point = point
         self.angel = angel
+        self.offset = offset
 
 
 class Ray:
@@ -52,12 +55,12 @@ class Ray:
         cos_a, sin_a = math.cos(self.direction), math.sin(self.direction)
         square_x, square_y = self._check_map(player_x, player_y)
 
-        x_ver, y_ver, vert_dist = self.vertical_collision(square_x, player_x, player_y, sin_a, cos_a)
-        x_hor, y_hor, hor_dist = self.horizontal_collision(square_y, player_x, player_y, sin_a, cos_a)
+        x_ver, y_ver, vert_dist, ver_offset = self.vertical_collision(square_x, player_x, player_y, sin_a, cos_a)
+        x_hor, y_hor, hor_dist, hor_offset = self.horizontal_collision(square_y, player_x, player_y, sin_a, cos_a)
 
         if hor_dist > vert_dist:
-            return RayCastHit(vert_dist, (x_ver, y_ver), self.direction)
-        return RayCastHit(hor_dist, (x_hor, y_hor), self.direction)
+            return RayCastHit(vert_dist, (x_ver, y_ver), self.direction, ver_offset)
+        return RayCastHit(hor_dist, (x_hor, y_hor), self.direction, hor_offset)
 
     def vertical_collision(self, square_x, player_x, player_y, sin_a, cos_a):
         y_ver, vert_dist = 0, 0
@@ -68,7 +71,8 @@ class Ray:
             if self._check_map(x_ver + sign_x, y_ver) in WORLD_MAP:
                 break
             x_ver += sign_x * TILE
-        return x_ver, y_ver, vert_dist
+        offset = y_ver
+        return x_ver, y_ver, vert_dist, offset
 
     def horizontal_collision(self, square_y, player_x, player_y, sin_a, cos_a):
         x_hor, hor_dist = 0, 0
@@ -79,4 +83,5 @@ class Ray:
             if self._check_map(x_hor, y_hor + sign_y) in WORLD_MAP:
                 break
             y_hor += sign_y * TILE
-        return x_hor, y_hor, hor_dist
+        offset = x_hor
+        return x_hor, y_hor, hor_dist, offset

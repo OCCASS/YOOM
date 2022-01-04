@@ -11,6 +11,7 @@ from load_image import load_image
 Вайман Ангелина:
 28.12.2021. Внесены поправки
 03.01.2022. Добавлены настройки миникарты и новые цвета
+04.01.2022. Добавлены настройки текстур
 
 Батталов Арслан:
 03.01.2021. Добавлены константы для коллизии
@@ -91,6 +92,8 @@ MINI_MAP = set()
 MAP_SCALE = 5
 MAP_TILE = SCREEN_HEIGHT / MAP_SIZE[1] // MAP_SCALE
 
-# Текстуры
+# Настройки текстур
 SKY_TEXTURE = 'sky.png'
-WALL_TEXTURE = load_image('wall.png')
+WALL_TEXTURE = 'wall.png'
+TEXTURE_WIDTH, TEXTURE_HEIGHT = 1200, 1200
+TEXTURE_SCALE = TEXTURE_WIDTH // TILE
