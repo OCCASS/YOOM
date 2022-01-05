@@ -3,6 +3,7 @@ import pygame
 from config import *
 from point import Point
 from ray import Ray
+from sound import SoundEffect
 
 """
 Павлов Тимур 26.12.2021. Создан класс Player
@@ -11,6 +12,7 @@ from ray import Ray
 (пока не отлажено)
 
 Батталов Арслан 04.01.2022. Добавлена функция can_move
+Батталов Арслан 05.01.2022. Добавлены функции sound_effect_init, sound
 """
 
 
@@ -20,11 +22,16 @@ class Player:
         self.direction = 0
         self.player_collision = pygame.Rect(x, y, PLAYER_SIZE, PLAYER_SPEED)
         self.collision_map = COLLISION_MAP
+        self.sound_effect_init()
 
     def update(self):
         self._process_mouse()
         self._process_keyboard()
+        self.sound()
         self.player_collision.center = self._x, self._y
+
+    def sound_effect_init(self):
+        self.footstep_sound = SoundEffect(FOOTSTEP)
 
     @property
     def pos(self) -> Point:
@@ -82,3 +89,10 @@ class Player:
     def change_cors(self, delta_x, delta_y):
         self._x += delta_x
         self._y += delta_y
+
+    def sound(self):
+        pressed_keys = pygame.key.get_pressed()
+
+        if (pressed_keys[pygame.K_w] or pressed_keys[pygame.K_s]
+                or pressed_keys[pygame.K_a] or pressed_keys[pygame.K_d]):
+            self.footstep_sound.play_sound()

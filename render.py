@@ -13,7 +13,7 @@ from load_image import load_image
 
 sky_texture = load_image(SKY_TEXTURE)
 wall_texture = load_image(WALL_TEXTURE)
-floor_texture = load_image(FLOOR_TEXTURE)
+# floor_texture = load_image(FLOOR_TEXTURE)
 
 
 class Render:

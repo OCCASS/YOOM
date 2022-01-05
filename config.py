@@ -1,6 +1,5 @@
-from typing import List
 import math
-from load_image import load_image
+from typing import List
 
 """
 Павлов Тимур:
@@ -14,8 +13,9 @@ from load_image import load_image
 04.01.2022. Добавлены настройки текстур
 
 Батталов Арслан:
-03.01.2021. Добавлены константы для коллизии
-04.01.2021 Изменены константы коллизии
+03.01.2022. Добавлены константы для коллизии
+04.01.2022 Изменены константы коллизии
+05.01.2022 Добавлены настройки музыки
 """
 
 # Настройки экрана
@@ -25,7 +25,7 @@ WINDOW_NAME = 'Game'
 
 # Настройки игрока и луча
 FPS = 120
-PLAYER_SPEED = 5
+PLAYER_SPEED = 3
 SENSITIVITY = 0.005
 MAX_VIEW_DISTANCE = 800
 PLAYER_SIZE = 15
@@ -99,3 +99,7 @@ WALL_TEXTURE = 'wall.png'
 FLOOR_TEXTURE = 'floor.png'
 TEXTURE_WIDTH, TEXTURE_HEIGHT = 1200, 1200
 TEXTURE_SCALE = TEXTURE_WIDTH // TILE
+
+# Настройки музыки
+THEME_MUSIC = 'music/theme.mp3'
+FOOTSTEP = 'sound/footstep.wav'

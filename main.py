@@ -1,14 +1,16 @@
 import pygame
 
 from config import *
-from player import Player
 from map import create_map, create_minimap
+from player import Player
 from render import Render
+from sound import Music
 
 """
 Павлов Тимур 26.12.2021. Создан класс Game
 Вайман Ангелина 28.12.2021. Внесены поправки
 Вайман Ангелина 03.01.2022. Создана новая поверхность screen_map для миникарты
+Батталов Арслан 05.01.2022. Добавлены функция play_theme
 """
 
 
@@ -24,6 +26,7 @@ class Game:
 
     def run(self):
         self._init()
+        self.play_theme(THEME_MUSIC)
         self._config()
         self._update()
         self._finish()
@@ -58,6 +61,11 @@ class Game:
     @staticmethod
     def _finish():
         pygame.quit()
+
+    @staticmethod
+    def play_theme(path):
+        theme = Music(path)
+        theme.play_music()
 
 
 if __name__ == '__main__':
