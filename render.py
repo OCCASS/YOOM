@@ -25,10 +25,8 @@ class Render:
         self.screen = screen
         self.player = player
         self.screen_map = screen_map
-        self.shot_animation_count = 0
-        self.weapon_rect = sprite_gun_base.get_rect()
-        self.weapon_pos = (HALF_SCREEN_WIDTH - self.weapon_rect.width // 2, SCREEN_HEIGHT - self.weapon_rect.height)
-        self.length_count = 0
+        self.shot_animation_count, self.length_count = 0, 0
+        self.weapon_pos = (HALF_SCREEN_WIDTH - WEAPON_SIZE[0] // 2, SCREEN_HEIGHT - WEAPON_SIZE[1])
 
     def render(self):
         self._draw_sky()
@@ -62,13 +60,15 @@ class Render:
 
     def _draw_minimap(self):
         self.screen_map.fill(BLACK)
-        map_x, map_y = self.player.x / MAP_TILE, self.player.y / MAP_TILE
+        x, y = self.player.x / MAP_TILE, self.player.y / MAP_TILE
         cos_a, sin_a = math.cos(self.player.direction), math.sin(self.player.direction)
-        pygame.draw.line(self.screen_map, YELLOW, (map_x, map_y), (map_x + 10 * cos_a, map_y + 10 * sin_a), 2)
-        pygame.draw.circle(self.screen_map, RED, (int(map_x), int(map_y)), 3)
+        pygame.draw.line(self.screen_map, YELLOW, (int(x) // MAP_TILE, int(y) // MAP_TILE),
+                         (int(x) // MAP_TILE + 10 * cos_a, int(y) // MAP_TILE + 10 * sin_a), 2)
+        pygame.draw.circle(self.screen_map, RED, (int(x) // MAP_TILE, int(y) // MAP_TILE), 3)
         for x, y in MINI_MAP:
             pygame.draw.rect(self.screen_map, SKYBLUE, (x, y, MAP_TILE, MAP_TILE))
-        self.screen.blit(self.screen_map, (0, SCREEN_HEIGHT - SCREEN_HEIGHT // MAP_SCALE))
+        self.screen.blit(self.screen_map,
+                         (SCREEN_WIDTH - SCREEN_WIDTH // MAP_TILE + 80, SCREEN_HEIGHT - SCREEN_HEIGHT // MAP_SCALE))
 
     def weapon_animation(self):
         if self.player.shot:
