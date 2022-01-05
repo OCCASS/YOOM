@@ -16,6 +16,7 @@ class Music:
         self.theme.load(path)
 
     def play_music(self):
+        self.theme.set_volume(0.5)
         self.theme.play(-1)
 
 
