@@ -23,6 +23,7 @@ class Player:
         self.player_collision = pygame.Rect(x, y, PLAYER_SIZE, PLAYER_SPEED)
         self.collision_map = COLLISION_MAP
         self.sound_effect_init()
+        self.shot = False
 
     def update(self):
         self._process_mouse()

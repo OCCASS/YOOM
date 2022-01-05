@@ -103,3 +103,9 @@ TEXTURE_SCALE = TEXTURE_WIDTH // TILE
 # Настройки музыки
 THEME_MUSIC = 'music/theme.mp3'
 FOOTSTEP = 'sound/playerstep.mp3'
+
+# Настройки спрайтов
+GUN_BASE = 'gun_base.png'
+WEAPON_SIZE = (200, 200)
+ANIMATION_SPEED = 3
+

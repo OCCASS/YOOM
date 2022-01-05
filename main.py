@@ -43,7 +43,6 @@ class Game:
 
     def _update(self):
         running = True
-
         while running:
             self.screen.fill(SKYBLUE)
             self.clock.tick(FPS)
@@ -51,7 +50,8 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
                     running = False
-
+                if event.type == pygame.MOUSEBUTTONDOWN and not self.player.shot:
+                    self.player.shot = True
             self.player.update()
             self.render.render()
 
