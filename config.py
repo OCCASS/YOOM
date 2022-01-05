@@ -25,7 +25,7 @@ WINDOW_NAME = 'Game'
 
 # Настройки игрока и луча
 FPS = 120
-PLAYER_SPEED = 3
+PLAYER_SPEED = 5
 SENSITIVITY = 0.005
 MAX_VIEW_DISTANCE = 800
 PLAYER_SIZE = 15
@@ -102,4 +102,4 @@ TEXTURE_SCALE = TEXTURE_WIDTH // TILE
 
 # Настройки музыки
 THEME_MUSIC = 'music/theme.mp3'
-FOOTSTEP = 'sound/footstep.wav'
+FOOTSTEP = 'sound/playerstep.mp3'
