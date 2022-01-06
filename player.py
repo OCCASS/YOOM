@@ -22,7 +22,7 @@ class Player:
         self.direction = 0
         self.player_collision = pygame.Rect(x, y, PLAYER_SIZE, PLAYER_SPEED)
         self.collision_map = COLLISION_MAP
-        self.sound_effect_init()
+        self.footstep_sound = SoundEffect(FOOTSTEP)
         self.shot = False
 
     def update(self):
@@ -30,9 +30,6 @@ class Player:
         self._process_keyboard()
         self.sound()
         self.player_collision.center = self._x, self._y
-
-    def sound_effect_init(self):
-        self.footstep_sound = SoundEffect(FOOTSTEP)
 
     @property
     def pos(self) -> Point:
@@ -60,11 +57,11 @@ class Player:
                 self._x += -cos_a * PLAYER_SPEED
                 self._y += -sin_a * PLAYER_SPEED
         if pressed_keys[pygame.K_a]:
-            if self.can_move(self.direction - math.pi / 2, PLAYER_SIZE * 2):
+            if self.can_move(self.direction - math.pi / 2, PLAYER_SIZE * 3):
                 self._x += sin_a * PLAYER_SPEED
                 self._y += -cos_a * PLAYER_SPEED
         if pressed_keys[pygame.K_d]:
-            if self.can_move(self.direction + math.pi / 2, PLAYER_SIZE * 2):
+            if self.can_move(self.direction + math.pi / 2, PLAYER_SIZE * 3):
                 self._x += -sin_a * PLAYER_SPEED
                 self._y += cos_a * PLAYER_SPEED
         if pressed_keys[pygame.K_LEFT]:
@@ -86,10 +83,6 @@ class Player:
             return False
 
         return True
-
-    def change_cors(self, delta_x, delta_y):
-        self._x += delta_x
-        self._y += delta_y
 
     def sound(self):
         pressed_keys = pygame.key.get_pressed()

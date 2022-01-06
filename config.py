@@ -108,6 +108,6 @@ FOOTSTEP = 'sound/playerstep.mp3'
 # Настройки оружия
 WEAPON_FILE = 'weapon_sprites'
 GUN_BASE = '0.png'
-WEAPON_SIZE = (300, 300)
+WEAPON_SIZE = (300, 200)
 ANIMATION_SPEED = 3
 
