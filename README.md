@@ -22,4 +22,5 @@
 
 Имитация игры в DOOM сделанная на pygame
 
-![Screenshot_4](https://user-images.githubusercontent.com/72919856/147969879-4c504827-5b68-4646-9b8a-91e83639f131.png)
+![Screenshot_6](https://user-images.githubusercontent.com/72919856/148360853-3c5af578-19c3-4c35-9634-970215da87dd.png)
+
