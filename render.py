@@ -13,11 +13,10 @@ from load_image import load_image
 05.01.2022. Добавлена функция weapon_animation
 """
 
-sky_texture = load_image(SKY_TEXTURE)
-wall_texture = load_image(WALL_TEXTURE)
-sprite_gun_base = load_image(GUN_BASE)
-sprite_gun_base = pygame.transform.scale(sprite_gun_base, WEAPON_SIZE)
-animations_sprites_list = collections.deque([load_image(f'gun_{i}.png') for i in range(20)])
+sky_texture = load_image(TEXTURE_FILE, SKY_TEXTURE)
+wall_texture = load_image(TEXTURE_FILE, WALL_TEXTURE)
+sprite_gun_base = pygame.transform.scale(load_image(WEAPON_FILE, GUN_BASE), WEAPON_SIZE)
+animations_sprites_list = collections.deque([load_image(WEAPON_FILE, f'{i}.png') for i in range(11)])
 
 
 class Render:

@@ -94,6 +94,7 @@ MAP_SCALE = 5
 MAP_TILE = SCREEN_HEIGHT / MAP_SIZE[1] // MAP_SCALE
 
 # Настройки текстур
+TEXTURE_FILE = 'textures_sprites'
 SKY_TEXTURE = 'sky.png'
 WALL_TEXTURE = 'wall.png'
 FLOOR_TEXTURE = 'floor.png'
@@ -104,8 +105,9 @@ TEXTURE_SCALE = TEXTURE_WIDTH // TILE
 THEME_MUSIC = 'music/theme.mp3'
 FOOTSTEP = 'sound/playerstep.mp3'
 
-# Настройки спрайтов
-GUN_BASE = 'gun_base.png'
+# Настройки оружия
+WEAPON_FILE = 'weapon_sprites'
+GUN_BASE = '0.png'
 WEAPON_SIZE = (200, 200)
 ANIMATION_SPEED = 3
 
