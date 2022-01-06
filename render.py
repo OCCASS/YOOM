@@ -60,9 +60,9 @@ class Render:
         cos_a, sin_a = math.cos(self.player.direction), math.sin(self.player.direction)
         pygame.draw.line(self.screen_map, YELLOW, (int(x) // MAP_TILE, int(y) // MAP_TILE),
                          (int(x) // MAP_TILE + 10 * cos_a, int(y) // MAP_TILE + 10 * sin_a), 2)
-        pygame.draw.circle(self.screen_map, RED, (int(x) // MAP_TILE, int(y) // MAP_TILE), 3)
+        pygame.draw.circle(self.screen_map, GREEN, (int(x) // MAP_TILE, int(y) // MAP_TILE), 3)
         for x, y in MINI_MAP:
-            pygame.draw.rect(self.screen_map, SKYBLUE, (x, y, MAP_TILE, MAP_TILE))
+            pygame.draw.rect(self.screen_map, RED, (x, y, MAP_TILE, MAP_TILE))
         self.screen.blit(self.screen_map,
                          (SCREEN_WIDTH - SCREEN_WIDTH // MAP_TILE + 80, SCREEN_HEIGHT - SCREEN_HEIGHT // MAP_TILE))
 
