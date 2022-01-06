@@ -1,9 +1,9 @@
 import pygame
-import collections
 
 from config import *
 from ray_casting import ray_casting
 from load_image import load_image
+from weapon import Weapon
 
 """
 Вайман Ангелина:
@@ -15,8 +15,6 @@ from load_image import load_image
 
 sky_texture = load_image(TEXTURE_FILE, SKY_TEXTURE)
 wall_texture = load_image(TEXTURE_FILE, WALL_TEXTURE)
-sprite_gun_base = pygame.transform.scale(load_image(WEAPON_FILE, GUN_BASE), WEAPON_SIZE)
-animations_sprites_list = collections.deque([load_image(WEAPON_FILE, f'{i}.png') for i in range(11)])
 
 
 class Render:
@@ -24,14 +22,13 @@ class Render:
         self.screen = screen
         self.player = player
         self.screen_map = screen_map
-        self.shot_animation_count, self.length_count = 0, 0
-        self.weapon_pos = (HALF_SCREEN_WIDTH - WEAPON_SIZE[0] // 2, SCREEN_HEIGHT - WEAPON_SIZE[1])
+        self.weapon = Weapon(screen, player)
 
     def render(self):
         self._draw_sky()
         self._draw_floor()
         self._draw_walls()
-        self.weapon_animation()
+        self.weapon.run()
         self._draw_minimap()
 
     def _draw_floor(self):
@@ -69,18 +66,3 @@ class Render:
         self.screen.blit(self.screen_map,
                          (SCREEN_WIDTH - SCREEN_WIDTH // MAP_TILE + 80, SCREEN_HEIGHT - SCREEN_HEIGHT // MAP_SCALE))
 
-    def weapon_animation(self):
-        if self.player.shot:
-            shot_sprite = animations_sprites_list[0]
-            shot_sprite = pygame.transform.scale(shot_sprite, WEAPON_SIZE)
-            self.screen.blit(shot_sprite, self.weapon_pos)
-            self.shot_animation_count += 1
-            if self.shot_animation_count == ANIMATION_SPEED:
-                animations_sprites_list.rotate(-1)
-                self.shot_animation_count = 0
-                self.length_count += 1
-            if self.length_count == len(animations_sprites_list):
-                self.player.shot = False
-                self.length_count = 0
-        else:
-            self.screen.blit(sprite_gun_base, self.weapon_pos)

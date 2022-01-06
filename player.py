@@ -24,6 +24,7 @@ class Player:
         self.collision_map = COLLISION_MAP
         self.footstep_sound = SoundEffect(FOOTSTEP)
         self.shot = False
+        self.gun = 1
 
     def update(self):
         self._process_mouse()
@@ -68,6 +69,12 @@ class Player:
             self.direction -= SENSITIVITY
         if pressed_keys[pygame.K_RIGHT]:
             self.direction += SENSITIVITY
+        if pressed_keys[pygame.K_1]:
+            self.gun = 1
+        if pressed_keys[pygame.K_2]:
+            self.gun = 2
+        if pressed_keys[pygame.K_3]:
+            self.gun = 3
 
     def _process_mouse(self):
         if pygame.mouse.get_focused():

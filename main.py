@@ -5,6 +5,7 @@ from map import create_map, create_minimap
 from player import Player
 from render import Render
 from sound import Music
+from weapon import Weapon
 
 """
 Павлов Тимур 26.12.2021. Создан класс Game
@@ -22,6 +23,7 @@ class Game:
 
         self.player = Player(200, 200)
         self.render = Render(self.screen, self.player, self.screen_map)
+        self.weapon = Weapon(self.screen, self.player)
         self.caption = caption
 
     def run(self):
