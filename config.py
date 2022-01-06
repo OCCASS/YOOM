@@ -66,7 +66,7 @@ MAP: List[str] = [
     '11111111111111111111111111111111'
 ]
 WALL_CHARS = ('1', '2')
-TILE = 100
+TILE = 120
 WORLD_MAP = set()
 MAP_SIZE = (len(MAP[0]), len(MAP))
 COLLISION_MAP = list()

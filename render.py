@@ -3,7 +3,7 @@ import pygame
 from config import *
 from ray_casting import ray_casting
 from load_image import load_image
-from weapon import Weapon
+
 
 """
 Вайман Ангелина:
@@ -63,5 +63,5 @@ class Render:
         for x, y in MINI_MAP:
             pygame.draw.rect(self.screen_map, SKYBLUE, (x, y, MAP_TILE, MAP_TILE))
         self.screen.blit(self.screen_map,
-                         (SCREEN_WIDTH - SCREEN_WIDTH // MAP_TILE + 80, SCREEN_HEIGHT - SCREEN_HEIGHT // MAP_SCALE))
+                         (SCREEN_WIDTH - SCREEN_WIDTH // MAP_TILE + 80, SCREEN_HEIGHT - SCREEN_HEIGHT // MAP_TILE))
 
