@@ -1,9 +1,9 @@
 import pygame
 import collections
+import os
 
 from config import *
 from load_image import load_image
-
 
 """
 Вайман Ангелина:
@@ -12,36 +12,45 @@ from load_image import load_image
 
 
 class Weapon:
-    def __init__(self, screen, player):
-        self.screen = screen
-        self.player = player
-        self.shot_animation_count, self.length_count = 0, 0
-        self.weapon_pos = (HALF_SCREEN_WIDTH - WEAPON_FILES[self.player.gun][2][0] // 2,
-                           SCREEN_HEIGHT - WEAPON_FILES[self.player.gun][2][1])
+    def __init__(self, screen, name, size):
+        self._name = name
+        self._size = size
+        self._weapon_animation_list_path = os.path.join(WEAPON_FILE, name)
+        self._shot_animation_count = 0
+        self._animation_list = self._load_weapon()
 
-    def run(self):
-        self._weapon_animation()
+        width, height = size
+        self._weapon_pos = (HALF_SCREEN_WIDTH - width // 2, SCREEN_HEIGHT - height)
+        self._lost_frames_count = 0
+
+        self._screen = screen
+
+    def animation(self):
+        shot_sprite = self._animation_list[0]
+        self._screen.blit(shot_sprite, self._weapon_pos)
+        self._shot_animation_count += 1
+        if self._shot_animation_count == ANIMATION_SPEED:
+            self._animation_list.rotate(-1)
+            self._shot_animation_count = 0
+            self._lost_frames_count += 1
+            return True
+
+        if self._lost_frames_count == len(self._animation_list):
+            self._lost_frames_count = 0
+            self.static_animation()
+            return False
+
+        return True
+
+    def static_animation(self):
+        self._screen.blit(self._animation_list[0], self._weapon_pos)
 
     def _load_weapon(self):
-        animations_sprites_list = collections.deque(
-            [pygame.transform.scale(load_image(WEAPON_FILE + WEAPON_FILES[self.player.gun][0], f'{i}.png'),
-                                    WEAPON_FILES[self.player.gun][2])
-             for i in
-             range(WEAPON_FILES[self.player.gun][1])])
-        return animations_sprites_list
+        animation_list = []
 
-    def _weapon_animation(self):
-        animations_sprites_list = self._load_weapon()
-        if self.player.shot:
-            shot_sprite = animations_sprites_list[0]
-            self.screen.blit(shot_sprite, self.weapon_pos)
-            self.shot_animation_count += 1
-            if self.shot_animation_count == ANIMATION_SPEED:
-                animations_sprites_list.rotate(-1)
-                self.shot_animation_count = 0
-                self.length_count += 1
-            if self.length_count == len(animations_sprites_list):
-                self.player.shot = False
-                self.length_count = 0
-        else:
-            self.screen.blit(animations_sprites_list[0], self.weapon_pos)
+        for file_name in os.listdir(self._weapon_animation_list_path):
+            file = os.path.join(self._name, file_name)
+            image = pygame.transform.scale(load_image(WEAPON_FILE, file), self._size)
+            animation_list.append(image)
+
+        return collections.deque(animation_list)

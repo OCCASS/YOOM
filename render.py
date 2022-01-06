@@ -22,14 +22,13 @@ class Render:
         self.screen = screen
         self.player = player
         self.screen_map = screen_map
-        self.weapon = Weapon(screen, player)
 
     def render(self):
         self._draw_sky()
         self._draw_floor()
         self._draw_walls()
-        self.weapon.run()
         self._draw_minimap()
+        self.player.draw()
 
     def _draw_floor(self):
         pygame.draw.rect(self.screen, BRICK, (0, HALF_SCREEN_HEIGHT, SCREEN_WIDTH, HALF_SCREEN_HEIGHT))

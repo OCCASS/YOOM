@@ -110,8 +110,4 @@ WEAPON_FILE = 'WeaponSprite/'
 WEAPON_BASE = '0.png'
 GUN_BASE = '0.png'
 WEAPON_SIZE = (400, 260)
-ANIMATION_SPEED = 3
-WEAPON_FILES = {1: ('Gun1/', 11, (300, 200)),
-                2: ('Gun2/', 27, (300, 200)),
-                3: ('Gun3/', 8, (300, 200))
-                }
+ANIMATION_SPEED = 10

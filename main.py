@@ -21,9 +21,13 @@ class Game:
         self.screen_map = pygame.Surface((MAP_SIZE[0] * MAP_TILE, MAP_SIZE[1] * MAP_TILE))
         self.clock = pygame.time.Clock()
 
-        self.player = Player(200, 200)
+        self.weapons = [
+            Weapon(self.screen, 'Gun1', (300, 200)),
+            Weapon(self.screen, 'Gun2', (300, 300)),
+            Weapon(self.screen, 'Gun3', (300, 300))
+        ]
+        self.player = Player(200, 200, self.weapons)
         self.render = Render(self.screen, self.player, self.screen_map)
-        self.weapon = Weapon(self.screen, self.player)
         self.caption = caption
 
     def run(self):
@@ -52,8 +56,17 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
                     running = False
-                if event.type == pygame.MOUSEBUTTONDOWN and not self.player.shot:
+                if event.type == pygame.MOUSEBUTTONDOWN and not self.player.shot and event.button == 1:
                     self.player.shot = True
+                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 4:
+                    if self.player.current_gun_index > 0:
+                        self.player.current_gun_index -= 1
+                        self.player.current_gun_index %= len(self.player.weapons)
+                    else:
+                        self.player.current_gun_index = 2
+                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 5:
+                    self.player.current_gun_index += 1
+                    self.player.current_gun_index %= len(self.player.weapons)
             self.player.update()
             self.render.render()
 
