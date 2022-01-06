@@ -82,6 +82,7 @@ GREEN = 'Green'
 RED = 'Red'
 WHITE = 'White'
 BRICK = (139, 79, 57)
+ANTHRACITE = (45, 45, 45)
 
 # Настройки проекции
 SCALE = SCREEN_WIDTH // RAYS_AMOUNT
@@ -96,9 +97,9 @@ MAP_TILE = SCREEN_HEIGHT / MAP_SIZE[1] // MAP_SCALE
 # Настройки текстур
 TEXTURE_FILE = 'TextureSprite'
 SKY_TEXTURE = 'sky.png'
-WALL_TEXTURE = 'wall.png'
+WALL_TEXTURE = 'wall2.jpg'
 FLOOR_TEXTURE = 'floor.png'
-TEXTURE_WIDTH, TEXTURE_HEIGHT = 1200, 1200
+TEXTURE_WIDTH, TEXTURE_HEIGHT = 128, 128
 TEXTURE_SCALE = TEXTURE_WIDTH // TILE
 
 # Настройки музыки

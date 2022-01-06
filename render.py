@@ -11,10 +11,11 @@ from load_image import load_image
 03.01.2022. Создана функция _draw_minimap, _draw_sky
 04.01.2022. Доработана фунукция _draw_walls и добавлены текстуры
 05.01.2022. Добавлена функция weapon_animation
+06.01.2022 Изменена обработка текстур стены
 """
 
 sky_texture = load_image(TEXTURE_FILE, SKY_TEXTURE)
-wall_texture = load_image(TEXTURE_FILE, WALL_TEXTURE)
+wall_texture = load_image(TEXTURE_FILE, WALL_TEXTURE, color_key=None)
 
 
 class Render:
@@ -31,7 +32,7 @@ class Render:
         self.player.draw()
 
     def _draw_floor(self):
-        pygame.draw.rect(self.screen, BRICK, (0, HALF_SCREEN_HEIGHT, SCREEN_WIDTH, HALF_SCREEN_HEIGHT))
+        pygame.draw.rect(self.screen, ANTHRACITE, (0, HALF_SCREEN_HEIGHT, SCREEN_WIDTH, HALF_SCREEN_HEIGHT))
 
     def _draw_sky(self):
         sky_image = pygame.transform.scale(sky_texture, (SCREEN_WIDTH, SCREEN_HEIGHT))
