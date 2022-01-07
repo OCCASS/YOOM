@@ -50,9 +50,10 @@ class Render:
         for hit_index, hit in enumerate(hits):
             offset = int(hit.offset) % TILE
             distance = hit.distance * math.cos(self.player.direction - hit.angel)
-            distance = max(distance, 0.00001)
+            distance = max(distance, MIN_DISTANCE)
             projection_height = min(PROJECTION_COEFFICIENT / (distance + 10 ** -10), SCREEN_HEIGHT * 2)
-            wall = wall_textures[wall_char[hit_index]].subsurface(offset * TEXTURE_SCALE, 0, TEXTURE_SCALE, TEXTURE_HEIGHT)
+            wall = wall_textures[wall_char[hit_index]].subsurface(offset * TEXTURE_SCALE, 0, TEXTURE_SCALE,
+                                                                  TEXTURE_HEIGHT)
             wall = pygame.transform.scale(wall, (SCALE, projection_height))
             self.screen.blit(wall, (hit_index * SCALE, HALF_SCREEN_HEIGHT - projection_height // 2))
 
@@ -61,7 +62,8 @@ class Render:
         x, y = self.player.x / MAP_TILE, self.player.y / MAP_TILE
         cos_a, sin_a = math.cos(self.player.direction), math.sin(self.player.direction)
         pygame.draw.line(self.screen_map, YELLOW, (int(x) // MAP_TILE, int(y) // MAP_TILE),
-                         (int(x) // MAP_TILE + 10 * cos_a, int(y) // MAP_TILE + 10 * sin_a), 2)
+                         (int(x) // MAP_TILE + MIINIMAP_OFFSET * cos_a, int(y) // MAP_TILE + MIINIMAP_OFFSET * sin_a),
+                         2)
         pygame.draw.circle(self.screen_map, GREEN, (int(x) // MAP_TILE, int(y) // MAP_TILE), 3)
         for x, y in MINI_MAP:
             pygame.draw.rect(self.screen_map, RED, (x, y, MAP_TILE, MAP_TILE))
