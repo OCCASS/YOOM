@@ -23,7 +23,7 @@ class Game:
 
         self.weapons = [
             Weapon(self.screen, 'Gun1', (500, 450), 12),
-            Weapon(self.screen, 'Gun2', (500, 450), 2),
+            Weapon(self.screen, 'Gun2', (400, 400), 2),
             Weapon(self.screen, 'Gun3', (350, 300), 10)
         ]
         self.player = Player(200, 200, self.weapons)
