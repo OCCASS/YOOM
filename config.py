@@ -106,6 +106,10 @@ WALL_TEXTURE_2 = 'wall2.jpg'
 FLOOR_TEXTURE = 'floor.png'
 TEXTURE_WIDTH, TEXTURE_HEIGHT = 128, 128
 TEXTURE_SCALE = TEXTURE_WIDTH // TILE
+MENU_BACKGROUND = 'StartWindow.jpg'
+MENU_BACKGROUND_POS = (0, 0)
+SCULL = 'scull.jpg'
+SCULL_SIZE = (40, 40)
 
 # Настройки музыки
 THEME_MUSIC = 'music/theme.mp3'

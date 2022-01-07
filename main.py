@@ -6,6 +6,7 @@ from player import Player
 from render import Render
 from sound import Music, GunSound
 from weapon import Weapon
+from menu import Menu
 
 """
 Павлов Тимур 26.12.2021. Создан класс Game
@@ -29,9 +30,11 @@ class Game:
         self.player = Player(200, 200, self.weapons)
         self.render = Render(self.screen, self.player, self.screen_map)
         self.caption = caption
+        self.menu = Menu(self.screen, self.clock)
 
     def run(self):
         self._init()
+        self.menu.run()
         # self.play_theme(THEME_MUSIC)
         self._config()
         self._update()
