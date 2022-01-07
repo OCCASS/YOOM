@@ -22,9 +22,9 @@ class Game:
         self.clock = pygame.time.Clock()
 
         self.weapons = [
-            Weapon(self.screen, 'Gun1', (500, 450), 12),
-            Weapon(self.screen, 'Gun2', (400, 400), 2),
-            Weapon(self.screen, 'Gun3', (350, 300), 10)
+            Weapon(self.screen, 'Gun1', (500, 450), 12, SHOTGUN),
+            Weapon(self.screen, 'Gun2', (400, 400), 2, SHOTGUN),
+            Weapon(self.screen, 'Gun3', (350, 300), 10, SHOTGUN)
         ]
         self.player = Player(200, 200, self.weapons)
         self.render = Render(self.screen, self.player, self.screen_map)
@@ -32,7 +32,7 @@ class Game:
 
     def run(self):
         self._init()
-        self.play_theme(THEME_MUSIC)
+        # self.play_theme(THEME_MUSIC)
         self._config()
         self._update()
         self._finish()

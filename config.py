@@ -106,10 +106,11 @@ TEXTURE_SCALE = TEXTURE_WIDTH // TILE
 # Настройки музыки
 THEME_MUSIC = 'music/theme.mp3'
 FOOTSTEP = 'sound/playerstep.mp3'
+SHOTGUN = 'sound/shotgun.mp3'
 
 # Настройки оружия
 WEAPON_FILE = 'WeaponSprite/'
 WEAPON_BASE = '0.png'
 GUN_BASE = '0.png'
 WEAPON_SIZE = (400, 260)
-ANIMATION_SPEED = 10
+ANIMATION_SPEED = 7

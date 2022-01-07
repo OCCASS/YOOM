@@ -4,6 +4,7 @@ import os
 
 from config import *
 from load_image import load_image
+from sound import SoundEffect
 
 """
 Вайман Ангелина:
@@ -12,13 +13,16 @@ from load_image import load_image
 
 
 class Weapon:
-    def __init__(self, screen, name, size, sprites_amount):
+    def __init__(self, screen, name, size, sprites_amount, sound_path):
         self._name = name
         self._size = size
         self._sprites_amount = sprites_amount
         self._weapon_animation_list_path = os.path.join(WEAPON_FILE, name)
         self._shot_animation_count = 0
         self._animation_list = self._load_weapon()
+
+        self.sound = SoundEffect(sound_path)
+        self.sound.init_track(sound_path)
 
         width, height = size
         self._weapon_pos = (HALF_SCREEN_WIDTH - width // 2, SCREEN_HEIGHT - height)
@@ -45,6 +49,9 @@ class Weapon:
 
     def static_animation(self):
         self._screen.blit(self._animation_list[0], self._weapon_pos)
+
+    def fire_sound(self):
+        self.sound.play_sound()
 
     def _load_weapon(self):
         animation_list = [pygame.transform.scale(load_image(self._weapon_animation_list_path, f'{i}.gif'), self._size)
