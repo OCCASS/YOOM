@@ -22,9 +22,9 @@ class Game:
         self.clock = pygame.time.Clock()
 
         self.weapons = [
-            Weapon(self.screen, 'Gun1', (300, 200), 12),
-            Weapon(self.screen, 'Gun2', (300, 300), 9),
-            Weapon(self.screen, 'Gun3', (300, 300), 8)
+            Weapon(self.screen, 'Gun1', (500, 450), 12),
+            Weapon(self.screen, 'Gun2', (500, 450), 3),
+            Weapon(self.screen, 'Gun3', (300, 300), 2)
         ]
         self.player = Player(200, 200, self.weapons)
         self.render = Render(self.screen, self.player, self.screen_map)
