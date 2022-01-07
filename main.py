@@ -4,7 +4,7 @@ from config import *
 from map import create_map, create_minimap
 from player import Player
 from render import Render
-from sound import Music
+from sound import Music, GunSound
 from weapon import Weapon
 
 """
@@ -32,7 +32,7 @@ class Game:
 
     def run(self):
         self._init()
-        self.play_theme(THEME_MUSIC)
+        # self.play_theme(THEME_MUSIC)
         self._config()
         self._update()
         self._finish()
@@ -59,6 +59,7 @@ class Game:
                 if event.type == pygame.MOUSEBUTTONDOWN and not self.player.shot and event.button == 1:
                     self.player.shot = True
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 4:
+                    GunSound.stop_sound()
                     self.player.shot = False
                     if self.player.current_gun_index > 0:
                         self.player.current_gun_index -= 1
@@ -66,6 +67,7 @@ class Game:
                     else:
                         self.player.current_gun_index = 2
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 5:
+                    GunSound.stop_sound()
                     self.player.shot = False
                     self.player.current_gun_index += 1
                     self.player.current_gun_index %= len(self.player.weapons)
