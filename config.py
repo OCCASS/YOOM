@@ -17,6 +17,7 @@ from typing import List
 03.01.2022. Добавлены константы для коллизии
 04.01.2022 Изменены константы коллизии
 05.01.2022 Добавлены настройки музыки
+07.01.2022 Добавлены настройки звука оружия
 """
 
 # Настройки экрана
@@ -107,10 +108,12 @@ TEXTURE_SCALE = TEXTURE_WIDTH // TILE
 THEME_MUSIC = 'music/theme.mp3'
 FOOTSTEP = 'sound/playerstep.mp3'
 SHOTGUN = 'sound/shotgun.mp3'
+PISTOL = 'sound/pistol.mp3'
+RIFLE = 'sound/rifle.mp3'
 
 # Настройки оружия
 WEAPON_FILE = 'WeaponSprite/'
 WEAPON_BASE = '0.png'
 GUN_BASE = '0.png'
 WEAPON_SIZE = (400, 260)
-ANIMATION_SPEED = 7
+ANIMATION_SPEED = 6

@@ -86,7 +86,6 @@ class Player:
         curren_weapon = self.weapons[self.current_gun_index]
         if self.shot:
             self.shot = curren_weapon.animation()
-            curren_weapon.fire_sound()
         else:
             curren_weapon.static_animation()
 

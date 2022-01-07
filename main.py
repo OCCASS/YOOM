@@ -11,7 +11,7 @@ from weapon import Weapon
 Павлов Тимур 26.12.2021. Создан класс Game
 Вайман Ангелина 28.12.2021. Внесены поправки
 Вайман Ангелина 03.01.2022. Создана новая поверхность screen_map для миникарты
-Батталов Арслан 05.01.2022. Добавлены функция play_theme
+Батталов Арслан 05.01.2022. Добавлена функция play_theme
 """
 
 
@@ -23,8 +23,8 @@ class Game:
 
         self.weapons = [
             Weapon(self.screen, 'Gun1', (500, 450), 12, SHOTGUN),
-            Weapon(self.screen, 'Gun2', (400, 400), 2, SHOTGUN),
-            Weapon(self.screen, 'Gun3', (350, 300), 10, SHOTGUN)
+            Weapon(self.screen, 'Gun2', (400, 400), 2, PISTOL),
+            Weapon(self.screen, 'Gun3', (350, 300), 10, RIFLE)
         ]
         self.player = Player(200, 200, self.weapons)
         self.render = Render(self.screen, self.player, self.screen_map)
@@ -32,7 +32,7 @@ class Game:
 
     def run(self):
         self._init()
-        # self.play_theme(THEME_MUSIC)
+        self.play_theme(THEME_MUSIC)
         self._config()
         self._update()
         self._finish()
@@ -57,6 +57,7 @@ class Game:
                 if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
                     running = False
                 if event.type == pygame.MOUSEBUTTONDOWN and not self.player.shot and event.button == 1:
+                    # self.weapons[self.player.current_gun_index].fire_sound()
                     self.player.shot = True
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 4:
                     self.player.shot = False

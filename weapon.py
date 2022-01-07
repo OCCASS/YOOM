@@ -4,11 +4,12 @@ import os
 
 from config import *
 from load_image import load_image
-from sound import SoundEffect
+from sound import GunSound
 
 """
 Вайман Ангелина:
 06.01.2022. Создан класс Weapon
+07.01.2022 Батталов Арслан добавлен звук выстрела
 """
 
 
@@ -21,7 +22,7 @@ class Weapon:
         self._shot_animation_count = 0
         self._animation_list = self._load_weapon()
 
-        self.sound = SoundEffect(sound_path)
+        self.sound = GunSound(sound_path)
         self.sound.init_track(sound_path)
 
         width, height = size
@@ -31,6 +32,7 @@ class Weapon:
         self._screen = screen
 
     def animation(self):
+        self.fire_sound()
         shot_sprite = self._animation_list[0]
         self._screen.blit(shot_sprite, self._weapon_pos)
         self._shot_animation_count += 1
