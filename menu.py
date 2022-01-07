@@ -5,6 +5,10 @@ from load_image import load_image
 
 scull = pygame.transform.scale(load_image(TEXTURE_FILE, SCULL), SCULL_SIZE)
 
+"""
+Вайман Ангелина 08.01.2022. Добавлен класс Menu и Button
+"""
+
 
 class Menu:
     def __init__(self, screen, clock):
