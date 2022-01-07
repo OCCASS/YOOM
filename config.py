@@ -18,6 +18,7 @@ from typing import List
 04.01.2022 Изменены константы коллизии
 05.01.2022 Добавлены настройки музыки
 07.01.2022 Добавлены настройки звука оружия
+08.01.2022 Изменены константы максимальной прорисовки
 """
 
 # Настройки экрана
@@ -32,13 +33,6 @@ SENSITIVITY = 0.005
 MAX_VIEW_DISTANCE = 800
 PLAYER_SIZE = 15
 MAX_DISTANCE_TO_WALL = PLAYER_SIZE * 4
-
-# Настройки ray casting
-FOV = math.pi / 3
-HALF_FOV = FOV / 2
-RAYS_AMOUNT = 300
-MAX_RAY_DISTANCE = 800
-DELTA_ANGLE = FOV / RAYS_AMOUNT
 
 # Карта и настройки карты
 MAP: List[str] = [
@@ -69,9 +63,17 @@ MAP: List[str] = [
 ]
 WALL_CHARS = ('1', '2')
 TILE = 125
-WORLD_MAP = set()
+WORLD_MAP = {}
 MAP_SIZE = (len(MAP[0]), len(MAP))
 COLLISION_MAP = list()
+
+# Настройки ray casting
+FOV = math.pi / 3
+HALF_FOV = FOV / 2
+RAYS_AMOUNT = 300
+MAX_HORIZONTAL_RAY_DISTANCE = TILE * MAP_SIZE[0]
+MAX_VERTICAL_RAY_DISTANCE = TILE * MAP_SIZE[1]
+DELTA_ANGLE = FOV / RAYS_AMOUNT
 
 # Цвета
 ORANGE = 'Orange'
@@ -99,7 +101,8 @@ MAP_TILE = SCREEN_HEIGHT / MAP_SIZE[1] // MAP_SCALE
 # Настройки текстур
 TEXTURE_FILE = 'TextureSprite'
 SKY_TEXTURE = 'sky.png'
-WALL_TEXTURE = 'wall2.jpg'
+WALL_TEXTURE_1 = 'wall1.jpg'
+WALL_TEXTURE_2 = 'wall2.jpg'
 FLOOR_TEXTURE = 'floor.png'
 TEXTURE_WIDTH, TEXTURE_HEIGHT = 128, 128
 TEXTURE_SCALE = TEXTURE_WIDTH // TILE
