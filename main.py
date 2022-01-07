@@ -57,7 +57,6 @@ class Game:
                 if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
                     running = False
                 if event.type == pygame.MOUSEBUTTONDOWN and not self.player.shot and event.button == 1:
-                    # self.weapons[self.player.current_gun_index].fire_sound()
                     self.player.shot = True
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 4:
                     self.player.shot = False
