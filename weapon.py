@@ -12,9 +12,10 @@ from load_image import load_image
 
 
 class Weapon:
-    def __init__(self, screen, name, size):
+    def __init__(self, screen, name, size, sprites_amount):
         self._name = name
         self._size = size
+        self._sprites_amount = sprites_amount
         self._weapon_animation_list_path = os.path.join(WEAPON_FILE, name)
         self._shot_animation_count = 0
         self._animation_list = self._load_weapon()
@@ -46,11 +47,7 @@ class Weapon:
         self._screen.blit(self._animation_list[0], self._weapon_pos)
 
     def _load_weapon(self):
-        animation_list = []
-
-        for file_name in os.listdir(self._weapon_animation_list_path):
-            file = os.path.join(self._name, file_name)
-            image = pygame.transform.scale(load_image(WEAPON_FILE, file), self._size)
-            animation_list.append(image)
+        animation_list = [pygame.transform.scale(load_image(self._weapon_animation_list_path, f'{i}.gif'), self._size)
+                          for i in range(self._sprites_amount)]
 
         return collections.deque(animation_list)

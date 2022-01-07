@@ -22,9 +22,9 @@ class Game:
         self.clock = pygame.time.Clock()
 
         self.weapons = [
-            Weapon(self.screen, 'Gun1', (300, 200)),
-            Weapon(self.screen, 'Gun2', (300, 300)),
-            Weapon(self.screen, 'Gun3', (300, 300))
+            Weapon(self.screen, 'Gun1', (300, 200), 12),
+            Weapon(self.screen, 'Gun2', (300, 300), 9),
+            Weapon(self.screen, 'Gun3', (300, 300), 8)
         ]
         self.player = Player(200, 200, self.weapons)
         self.render = Render(self.screen, self.player, self.screen_map)
@@ -59,12 +59,14 @@ class Game:
                 if event.type == pygame.MOUSEBUTTONDOWN and not self.player.shot and event.button == 1:
                     self.player.shot = True
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 4:
+                    self.player.shot = False
                     if self.player.current_gun_index > 0:
                         self.player.current_gun_index -= 1
                         self.player.current_gun_index %= len(self.player.weapons)
                     else:
                         self.player.current_gun_index = 2
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 5:
+                    self.player.shot = False
                     self.player.current_gun_index += 1
                     self.player.current_gun_index %= len(self.player.weapons)
             self.player.update()
