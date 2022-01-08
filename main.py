@@ -1,13 +1,11 @@
 import pygame
-# import pygame_gui
 
 from config import *
 from map import create_map, create_minimap, create_sprites_map
 from player import Player
 from render import Render
 from sound import Music
-from weapon import Weapon
-# from menu import Menu
+from weapon import Weapon, GunSound
 
 """
 Павлов Тимур 26.12.2021. Создан класс Game
@@ -34,8 +32,6 @@ class Game:
         self.player = Player(200, 200, self.weapons)
         self.render = Render(self.screen, self.player, self.screen_map)
         self.caption = caption
-        # self.manager = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT))
-        # self.menu = Menu(self.manager)
 
     def run(self):
         self._init()
@@ -59,7 +55,7 @@ class Game:
         running = True
         while running:
             self.screen.fill(SKYBLUE)
-            ticks = self.clock.tick(FPS)
+            self.clock.tick(FPS)
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
@@ -68,6 +64,7 @@ class Game:
                     Weapon.fire_sound(self.weapons[self.player.current_gun_index])
                     self.player.set_shot(True)
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 4:
+                    GunSound.stop_sound()
                     self.player.set_shot(False)
                     self.player.weapons[self.player.current_gun_index].reset()
                     if self.player.current_gun_index > 0:
@@ -76,17 +73,12 @@ class Game:
                     else:
                         self.player.current_gun_index = 2
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 5:
+                    GunSound.stop_sound()
                     self.player.weapons[self.player.current_gun_index].reset()
                     self.player.set_shot(False)
                     self.player.current_gun_index += 1
                     self.player.current_gun_index %= len(self.player.weapons)
-                # if event.type == pygame_gui.UI_BUTTON_PRESSED:
-                #     if event.ui_element == self.menu.hello_button:
-                #         print('hi')
-                # self.manager.process_events(event)
             self.player.update()
-            # self.manager.update(ticks / 1000)
-            # self.manager.draw_ui(self.screen)
             self.render.render()
 
             pygame.display.set_caption('FPS: ' + str(int(self.clock.get_fps())))
