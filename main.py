@@ -8,6 +8,7 @@ from sound import Music
 from weapon import Weapon, GunSound
 from sprite import create_sprites
 import os
+from menu import Menu
 
 """
 Павлов Тимур 26.12.2021. Создан класс Game
@@ -20,20 +21,7 @@ import os
 """
 
 
-def load_level(filename):
-    filename = os.path.join('Levels', filename)
-    level_map = []
-    if os.path.exists(filename):
-        with open(filename, 'r') as mapFile:
-            for el in mapFile:
-                level_map.append(el[:-1])
-        return level_map
-    else:
-        print('Такого уровня не существует!')
-        exit()
-
-
-level = load_level('level1.txt')
+# level = load_level('level1.txt')
 
 
 class Game:
@@ -51,18 +39,19 @@ class Game:
         self.sprites = create_sprites()
         self.render = Render(self.screen, self.player, self.screen_map, self.sprites)
         self.caption = caption
+        self.menu = Menu(self.screen, self.clock)
 
     def run(self):
+        self.menu.run()
         self._init()
         # self.play_theme(THEME_MUSIC)
         self._config()
         self._update()
         self._finish()
 
-    @staticmethod
-    def _init():
-        create_map(level)
-        create_minimap(level)
+    def _init(self):
+        create_map(self.menu.chosen_level)
+        create_minimap(self.menu.chosen_level)
         pygame.init()
 
     def _config(self):
