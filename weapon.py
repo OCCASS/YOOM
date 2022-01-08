@@ -20,7 +20,8 @@ from sound import GunSound
 
 
 class Weapon:
-    def __init__(self, screen, name, size, sprites_amount, sound):
+    def __init__(self, screen, name, size, sprites_amount, sound, ammo):
+        self.ammo = ammo
         self._name = name
         self._size = size
         self._sprites_amount = sprites_amount
@@ -28,12 +29,9 @@ class Weapon:
         self._shot_animation_count = 0
         self._animation_list = self._load_weapon()
         self._default_animation_list = self._animation_list.copy()
-        self.sound = GunSound(sound)
-
-        width, height = size
-        self._weapon_pos = (HALF_SCREEN_WIDTH - width // 2, SCREEN_HEIGHT - height)
+        self._sound = GunSound(sound)
+        self._weapon_pos = (HALF_SCREEN_WIDTH - size[0] // 2, SCREEN_HEIGHT - size[1])
         self._lost_frames_count = 0
-
         self._screen = screen
 
     def animation(self):
@@ -61,11 +59,19 @@ class Weapon:
     def static_animation(self):
         self._screen.blit(self._animation_list[0], self._weapon_pos)
 
+    def fire_sound(self):
+        self._sound.play_sound()
+
+    @staticmethod
+    def empty_fire_sound():
+        empty_shot_sound = GunSound(EMPTY_SHOT_SOUND)
+        empty_shot_sound.play_sound()
+
+    def shot(self):
+        self.ammo -= 1
+
     def _load_weapon(self):
         animation_list = [pygame.transform.scale(load_image(self._weapon_animation_list_path, f'{i}.gif'), self._size)
                           for i in range(self._sprites_amount)]
 
         return collections.deque(animation_list)
-
-    def fire_sound(self):
-        self.sound.play_sound()

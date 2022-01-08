@@ -123,6 +123,7 @@ FOOTSTEP = 'sound/playerstep.mp3'
 SHOTGUN = 'sound/shotgun.mp3'
 PISTOL = 'sound/pistol.mp3'
 RIFLE = 'sound/rifle.mp3'
+EMPTY_SHOT_SOUND = 'sound/null_ammo.mp3'
 
 # Настройки оружия
 WEAPON_FILE = 'WeaponSprite/'

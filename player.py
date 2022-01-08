@@ -40,15 +40,24 @@ class Player:
         self._shot()
 
     def do_shot(self, sprites):
-        self.set_shot(True)
+        if self._can_shot():
+            Weapon.fire_sound(self.weapons[self.current_gun_index])
+            self.set_shot(True)
+            self.weapons[self.current_gun_index].shot()
 
-        all_casted_sprites = sprites_ray_casting(sprites, self.pos, self.direction)
-        for sprite_hit in all_casted_sprites:
-            if int(math.degrees(sprite_hit.angel)) == 0:
-                sprites[sprite_hit.sprite_index].is_dead = True
-                break
+            all_casted_sprites = sprites_ray_casting(sprites, self.pos, self.direction)
+            for sprite_hit in all_casted_sprites:
+                if int(math.degrees(sprite_hit.angel)) == 0:
+                    sprites[sprite_hit.sprite_index].is_dead = True
+                    break
+        else:
+            Weapon.empty_fire_sound()
 
         return sprites
+
+    def _can_shot(self):
+        current_weapon = self.weapons[self.current_gun_index]
+        return not self.shot and current_weapon.ammo > 0
 
     def set_shot(self, val):
         if (not val) == self.shot:
