@@ -36,6 +36,10 @@ class Player:
     def draw(self):
         self._shot()
 
+    def set_shot(self, val):
+        if (not val) == self.shot:
+            self.shot = val
+
     @property
     def pos(self) -> Point:
         return Point(self._x, self._y)
