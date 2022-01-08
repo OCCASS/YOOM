@@ -1,3 +1,5 @@
+import os
+
 import pygame
 
 from config import *
@@ -5,9 +7,8 @@ from map import create_map, create_minimap
 from player import Player
 from render import Render
 from sound import Music
-from weapon import Weapon, GunSound
 from sprite import create_sprites
-import os
+from weapon import Weapon, GunSound
 from menu import Menu
 
 """
@@ -35,7 +36,7 @@ class Game:
             Weapon(self.screen, 'Gun2', (400, 400), 2, PISTOL),
             Weapon(self.screen, 'Gun3', (350, 300), 10, RIFLE)
         ]
-        self.player = Player(200, 200, self.weapons)
+        self.player = Player(TILE * 2 - TILE // 2, TILE * 2 - TILE // 2, self.weapons)
         self.sprites = create_sprites()
         self.render = Render(self.screen, self.player, self.screen_map, self.sprites)
         self.caption = caption
@@ -85,6 +86,7 @@ class Game:
                     self.player.set_shot(False)
                     self.player.current_gun_index += 1
                     self.player.current_gun_index %= len(self.player.weapons)
+
             self.player.update()
             self.render.render()
 

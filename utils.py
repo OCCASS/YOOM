@@ -1,6 +1,6 @@
 import numba
 import math
-from config import TILE
+from config import TILE, MAP_SIZE, WALLS_MAP
 
 """
 Павлов Тимур 08.01.2022. Создана функция get_distance, world_pos2cell
@@ -15,3 +15,9 @@ def get_distance(x0, y0, x1, y1):
 @numba.njit(fastmath=True, cache=True)
 def world_pos2cell(x, y):
     return int(x // TILE), int(y // TILE)
+
+
+@numba.njit(fastmath=True, cache=True)
+def is_cell_a_wall(x, y):
+    if 0 <= x < MAP_SIZE[0] and 0 <= y < MAP_SIZE[1]:
+        return bool(WALLS_MAP[y][x])

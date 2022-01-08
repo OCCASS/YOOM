@@ -1,6 +1,8 @@
 import math
 from typing import List
 
+import numpy
+
 """
 Павлов Тимур:
 26.12.2021. Созданы константы
@@ -39,11 +41,11 @@ MAX_DISTANCE_TO_WALL = PLAYER_SIZE * 4
 MAP: List[str] = [
     '11111111111111111111111111111111',
     '1..............................1',
-    '1.222......1...1.1...1.....222.1',
+    '1.222......1.5.1.1.5.1.....222.1',
     '1.222......11111.11111.....222.1',
     '1.....212..............212.....1',
     '1.222......11111.11111.....222.1',
-    '1.222......1...1.1.5.1.....222.1',
+    '1.222......1.5.1.1.5.1.....222.1',
     '1..............................1',
     '1.11111..................11111.1',
     '1.11111..................11111.1',
@@ -68,7 +70,9 @@ STATIC_SPRITES = ('3', '4')
 MOVABLE_SPRITES = ('5',)
 TILE = 125
 WORLD_MAP = {}
-MAP_SIZE = (len(MAP[0]), len(MAP))
+MAP_SIZE = numpy.array([len(MAP[0]), len(MAP)])
+WALLS_MAP = numpy.matrix(
+    [numpy.array([1 if MAP[y][x] in WALL_CHARS else 0 for x in range(MAP_SIZE[0])]) for y in range(MAP_SIZE[1])])
 
 # Настройки ray casting
 FOV = math.pi / 3

@@ -1,7 +1,10 @@
 from copy import deepcopy
-from config import TILE, SPRITE_CHARS, MAP, TEXTURE_FILE, STATIC_SPRITES, MOVABLE_SPRITES, MAP_SIZE
+
+from config import TILE, SPRITE_CHARS, MAP, TEXTURE_FILE, STATIC_SPRITES, MOVABLE_SPRITES
 from load_image import load_image
 from utils import world_pos2cell
+from wave_algorithm import *
+import numpy
 
 """
 Павлов Тимур 08.01.2022. Создан класс Sprite и функция create_sprites
@@ -26,102 +29,69 @@ class MovableSprite(Sprite):
         super(MovableSprite, self).__init__(texture, pos)
         self.speed = speed
 
-        self._current_route = []
-        self._steps_to_end_route = -1
-
-        self._ticks = 0
-        self._to_x, self._to_y = -1, -1
-        self._dx, self._dy = 0, 0
+        self._route = []
+        self._previous_to_x, self._previous_to_y = -1, -1
+        self._move_x_coefficient, self._move_y_coefficient = 0, 0
 
     @staticmethod
     def _get_clean_board():
         return [[0 for _ in range(MAP_SIZE[0])] for _ in range(MAP_SIZE[1])]
 
     def move_to(self, to_x, to_y):
-        if int(self._to_x) != int(to_x // TILE) or int(self._to_y) != int(to_y // TILE):
-            self._current_route = []
+        to_x, to_y = world_pos2cell(to_x, to_y)
+        from_x, from_y = world_pos2cell(*self.pos)
 
-        if not self._current_route:
-            from_x, from_y = world_pos2cell(*self.pos)
-            to_x, to_y = world_pos2cell(to_x, to_y)
-            wave_map = self.has_path(from_x, from_y, to_x, to_y)
-            self._to_x, self._to_y = to_x, to_y
+        if self._previous_to_x != to_x or self._previous_to_y != to_y:
+            self._route = numpy.array([])
 
-            if wave_map:
-                route = self.get_route_to_point(wave_map, to_x, to_y)
-                self._current_route = deepcopy(route)
-                self.set_delta_move()
-        else:
-            if self.pos[0] // TILE == self._current_route[0][0] * TILE \
-                    and self.pos[1] // TILE == self._current_route[0][1] * TILE:
-                self.set_delta_move()
-                self._current_route = self._current_route[1:]
+        # If not route, create new route
+        if self._route is None or numpy.array_equal(self._route, numpy.array([])):
+            wave_map = self._get_wave_map(from_x, from_y, to_x, to_y)
+            self._previous_to_x, self._previous_to_y = to_x, to_y
+
+            if wave_map is not None:
+                self._route = deepcopy(get_route_to_point(wave_map, to_x, to_y))
+                self._set_move_coefficient()
             else:
-                self.pos[0] += self._dx * self.speed
-                self.pos[1] += self._dy * self.speed
+                return
 
-    def has_path(self, x0, y0, x1, y1):
+        # If route calculated update sprite pos
+        if self._route is not None and not numpy.array_equal(self._route, numpy.array([])):
+            to_cell_x, to_cell_y = self._route[0]
+            to_tile_x, to_tile_y = to_cell_x * TILE, to_cell_y * TILE
+
+            if from_x == to_tile_x and from_y == to_tile_y:
+                self._set_move_coefficient()
+                self._route = self._route[1:]
+            else:
+                self.pos[0] += self._move_x_coefficient * self.speed
+                self.pos[1] += self._move_y_coefficient * self.speed
+
+    def _get_wave_map(self, x0, y0, x1, y1):
         wave_map = self._get_clean_board()
         wave_map[y0][x0] = 1
 
         current_step = 1
         while wave_map[y1][x1] == 0:
-            previous_wave_map = deepcopy(wave_map)
-            wave_map = self._next_step(wave_map, current_step)
+            if wave_map is not None:
+                previous_wave_map = wave_map.copy()
+                wave_map = next_step(numpy.array(wave_map), current_step)
 
-            if previous_wave_map == wave_map:
-                return
+                if numpy.array_equal(previous_wave_map, wave_map):
+                    return
 
-            current_step += 1
+                current_step += 1
+            else:
+                break
 
         return wave_map
 
-    @staticmethod
-    def get_route_to_point(wave_map, to_x, to_y):
-        k = wave_map[to_y][to_x]
-        route = [(to_x, to_y)]
-        while k > 1:
-            if to_y > 0 and wave_map[to_y - 1][to_x] == k - 1:
-                to_y, to_x = to_y - 1, to_x
-                route.append((to_x, to_y))
-                k -= 1
-            elif to_y < MAP_SIZE[1] - 1 and wave_map[to_y + 1][to_x] == k - 1:
-                to_y, to_x = to_y + 1, to_x
-                route.append((to_x, to_y))
-                k -= 1
-            elif to_x > 0 and wave_map[to_y][to_x - 1] == k - 1:
-                to_y, to_x = to_y, to_x - 1
-                route.append((to_x, to_y))
-                k -= 1
-            elif to_x < MAP_SIZE[0] - 1 and wave_map[to_y][to_x + 1] == k - 1:
-                to_y, to_x = to_y, to_x + 1
-                route.append((to_x, to_y))
-                k -= 1
-
-        return route[::-1]
-
-    def set_delta_move(self):
-        if len(self._current_route) > 1:
-            self._dx = self._current_route[1][0] - self._current_route[0][0]
-            self._dy = self._current_route[1][1] - self._current_route[0][1]
+    def _set_move_coefficient(self):
+        if len(self._route) > 1:
+            self._move_x_coefficient = self._route[1][0] - self._route[0][0]
+            self._move_y_coefficient = self._route[1][1] - self._route[0][1]
         else:
-            self._dx, self._dy = 0, 0
-
-    @staticmethod
-    def _next_step(map_, current_step):
-        for i in range(MAP_SIZE[1]):
-            for j in range(MAP_SIZE[0]):
-                if map_[i][j] == current_step:
-                    if i > 0 and map_[i - 1][j] == 0 and MAP[i - 1][j] == '.':
-                        map_[i - 1][j] = current_step + 1
-                    if j > 0 and map_[i][j - 1] == 0 and MAP[i][j - 1] == '.':
-                        map_[i][j - 1] = current_step + 1
-                    if i < MAP_SIZE[1] - 1 and map_[i + 1][j] == 0 and MAP[i + 1][j] == '.':
-                        map_[i + 1][j] = current_step + 1
-                    if j < MAP_SIZE[0] - 1 and map_[i][j + 1] == 0 and MAP[i][j + 1] == '.':
-                        map_[i][j + 1] = current_step + 1
-
-        return map_
+            self._move_x_coefficient, self._move_y_coefficient = 0, 0
 
 
 def create_sprites() -> list[Sprite]:
