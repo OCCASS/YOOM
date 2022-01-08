@@ -20,10 +20,10 @@ from sprite import MovableSprite
 08.01.2022. Создана поддержка отрисовки спрайтов
 """
 
-sky_texture = load_image(TEXTURE_FILE, SKY_TEXTURE)
+sky_texture = load_image(TEXTURES_PATH, SKY_TEXTURE)
 # wall_textures = {'1': load_image(TEXTURE_FILE, WALL_TEXTURE_1, color_key=None),
 #                  '2': load_image(TEXTURE_FILE, WALL_TEXTURE_2, color_key=None)}
-wall_texture = load_image(TEXTURE_FILE, WALL_TEXTURE_1, color_key=None)
+wall_texture = load_image(TEXTURES_PATH, WALL_TEXTURE_1, color_key=None)
 
 
 class Render:

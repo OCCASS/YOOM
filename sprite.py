@@ -1,6 +1,6 @@
 from copy import deepcopy
 
-from config import TILE, SPRITE_CHARS, MAP, TEXTURE_FILE, STATIC_SPRITES, MOVABLE_SPRITES
+from config import TILE, SPRITE_CHARS, MAP, TEXTURES_PATH, STATIC_SPRITES, MOVABLE_SPRITES
 from load_image import load_image
 from utils import world_pos2cell
 from wave_algorithm import *
@@ -8,12 +8,13 @@ import numpy
 
 """
 Павлов Тимур 08.01.2022. Создан класс Sprite и функция create_sprites
+Павлов Тимур 09.01.2022. Создан класс MovableSprite
 """
 
 sprite_textures = {
-    '3': load_image(TEXTURE_FILE, 'plant.png'),
-    '4': load_image(TEXTURE_FILE, 'barrel.png'),
-    '5': load_image(TEXTURE_FILE, 'enemy.png')
+    '3': load_image(TEXTURES_PATH, 'plant.png'),
+    '4': load_image(TEXTURES_PATH, 'barrel.png'),
+    '5': load_image(TEXTURES_PATH, 'enemy.png')
 }
 sprite_speed = 5
 

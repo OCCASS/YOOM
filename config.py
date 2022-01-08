@@ -15,6 +15,7 @@ import numpy
 03.01.2022. Добавлены настройки миникарты и новые цвета
 04.01.2022. Добавлены настройки текстур
 06.01.2022. Добавлены настройки оружия
+09.01.2022. Добавлены настройки меню
 
 Батталов Арслан:
 03.01.2022. Добавлены константы для коллизии
@@ -34,8 +35,7 @@ FPS = 120
 PLAYER_SPEED = 5
 SENSITIVITY = 0.005
 MAX_VIEW_DISTANCE = 800
-PLAYER_SIZE = 15
-MAX_DISTANCE_TO_WALL = PLAYER_SIZE * 4
+PLAYER_SIZE = 20
 
 # Карта и настройки карты
 MAP: List[str] = [
@@ -109,7 +109,7 @@ MAP_TILE = SCREEN_HEIGHT / MAP_SIZE[1] // MAP_SCALE
 MIINIMAP_OFFSET = 10
 
 # Настройки текстур
-TEXTURE_FILE = 'TextureSprite'
+TEXTURES_PATH = 'TextureSprite'
 SKY_TEXTURE = 'sky.png'
 WALL_TEXTURE_1 = 'wall1.jpg'
 WALL_TEXTURE_2 = 'wall2.jpg'

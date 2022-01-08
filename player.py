@@ -3,9 +3,9 @@ import pygame
 from config import *
 from point import Point
 from ray import Ray
+from ray_casting import sprites_ray_casting
 from sound import SoundEffect
 from weapon import Weapon
-from ray_casting import sprites_ray_casting
 
 """
 Павлов Тимур 26.12.2021. Создан класс Player
@@ -17,6 +17,8 @@ from ray_casting import sprites_ray_casting
 Батталов Арслан 05.01.2022. Добавлены функции sound_effect_init, sound
 
 Вайман Ангелина 06.01.2022. Добавлены функции _shot
+
+Павлов Тимур 09.01.2022. Добавлена функция do_shot
 """
 
 
@@ -39,11 +41,12 @@ class Player:
 
     def do_shot(self, sprites):
         self.set_shot(True)
+
         all_casted_sprites = sprites_ray_casting(sprites, self.pos, self.direction)
         for sprite_hit in all_casted_sprites:
             if int(math.degrees(sprite_hit.angel)) == 0:
-                sprite_index = sprite_hit.sprite_index
-                sprites[sprite_index].is_dead = True
+                sprites[sprite_hit.sprite_index].is_dead = True
+                break
 
         return sprites
 

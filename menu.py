@@ -14,7 +14,7 @@ from load_level import load_level
 
 pygame.init()
 
-background = load_image(TEXTURE_FILE, MENU_BACKGROUND, color_key=None)
+background = load_image(TEXTURES_PATH, MENU_BACKGROUND, color_key=None)
 button_font = pygame.font.Font(FONT, BUTTON_FONT_SIZE)
 logo_font = pygame.font.Font(FONT, LOGO_FONT_SIZE)
 pygame.init()
