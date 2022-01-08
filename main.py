@@ -1,12 +1,11 @@
 import pygame
 
 from config import *
-from map import create_map, create_minimap
+from map import create_map, create_minimap, create_sprites_map
 from player import Player
 from render import Render
 from sound import Music
-from weapon import Weapon
-from sprite import create_sprites
+from weapon import Weapon, GunSound
 
 """
 Павлов Тимур 26.12.2021. Создан класс Game
@@ -14,7 +13,8 @@ from sprite import create_sprites
 Вайман Ангелина 03.01.2022. Создана новая поверхность screen_map для миникарты
 Батталов Арслан 05.01.2022. Добавлены функция play_theme
 Батталов Арслан 08.01.2022 Добавлена поддержка звуков выстрела
-Павлов Тимур 08.01.2022. Исправлена ошибка анимации оружия 
+Павлов Тимур 08.01.2022. Исправлена ошибка анимации оружия
+Батталов Арслан 08.01.2022 Исправлена проблема двойного проигрывания звуков
 """
 
 
@@ -29,9 +29,8 @@ class Game:
             Weapon(self.screen, 'Gun2', (400, 400), 2, PISTOL),
             Weapon(self.screen, 'Gun3', (350, 300), 10, RIFLE)
         ]
-        self.sprites = create_sprites()
         self.player = Player(200, 200, self.weapons)
-        self.render = Render(self.screen, self.player, self.screen_map, self.sprites)
+        self.render = Render(self.screen, self.player, self.screen_map)
         self.caption = caption
 
     def run(self):
@@ -45,6 +44,7 @@ class Game:
     def _init():
         create_map(MAP)
         create_minimap(MAP)
+        create_sprites_map(MAP)
         pygame.init()
 
     def _config(self):
@@ -61,8 +61,10 @@ class Game:
                 if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
                     running = False
                 if event.type == pygame.MOUSEBUTTONDOWN and not self.player.shot and event.button == 1:
+                    Weapon.fire_sound(self.weapons[self.player.current_gun_index])
                     self.player.set_shot(True)
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 4:
+                    GunSound.stop_sound()
                     self.player.set_shot(False)
                     self.player.weapons[self.player.current_gun_index].reset()
                     if self.player.current_gun_index > 0:
@@ -71,6 +73,7 @@ class Game:
                     else:
                         self.player.current_gun_index = 2
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 5:
+                    GunSound.stop_sound()
                     self.player.weapons[self.player.current_gun_index].reset()
                     self.player.set_shot(False)
                     self.player.current_gun_index += 1
