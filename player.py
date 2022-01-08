@@ -86,11 +86,11 @@ class Player:
             self.direction %= math.pi * 2
 
     def _shot(self):
-        curren_weapon = self.weapons[self.current_gun_index]
+        current_weapon = self.weapons[self.current_gun_index]
         if self.shot:
-            self.shot = curren_weapon.animation()
+            self.shot = current_weapon.animation()
         else:
-            curren_weapon.static_animation()
+            current_weapon.static_animation()
 
     def _can_move(self, direction, collision_distance):
         ray = Ray(self.pos, direction, MAX_VIEW_DISTANCE)

@@ -7,6 +7,7 @@ from render import Render
 from sound import Music
 from weapon import Weapon, GunSound
 from sprite import create_sprites
+import os
 
 """
 Павлов Тимур 26.12.2021. Создан класс Game
@@ -17,6 +18,22 @@ from sprite import create_sprites
 Павлов Тимур 08.01.2022. Исправлена ошибка анимации оружия
 Батталов Арслан 08.01.2022 Исправлена проблема двойного проигрывания звуков
 """
+
+
+def load_level(filename):
+    filename = os.path.join('Levels', filename)
+    level_map = []
+    if os.path.exists(filename):
+        with open(filename, 'r') as mapFile:
+            for el in mapFile:
+                level_map.append(el[:-1])
+        return level_map
+    else:
+        print('Такого уровня не существует!')
+        exit()
+
+
+level = load_level(input())
 
 
 class Game:
@@ -37,15 +54,15 @@ class Game:
 
     def run(self):
         self._init()
-        self.play_theme(THEME_MUSIC)
+        # self.play_theme(THEME_MUSIC)
         self._config()
         self._update()
         self._finish()
 
     @staticmethod
     def _init():
-        create_map(MAP)
-        create_minimap(MAP)
+        create_map(level)
+        create_minimap(level)
         pygame.init()
 
     def _config(self):

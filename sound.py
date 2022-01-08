@@ -35,8 +35,7 @@ class SoundEffect(Music):
 
 class GunSound(SoundEffect):
     def play_sound(self):
-        if not pygame.mixer.Channel(1).get_busy():
-            pygame.mixer.Channel(1).play(self.effect)
+        pygame.mixer.Channel(1).play(self.effect)
 
     @staticmethod
     def stop_sound():
