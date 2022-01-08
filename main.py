@@ -33,7 +33,7 @@ def load_level(filename):
         exit()
 
 
-level = load_level(input())
+level = load_level('level1.txt')
 
 
 class Game:
