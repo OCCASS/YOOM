@@ -5,7 +5,7 @@ from map import create_map, create_minimap, create_sprites_map
 from player import Player
 from render import Render
 from sound import Music
-from weapon import Weapon
+from weapon import Weapon, GunSound
 
 """
 Павлов Тимур 26.12.2021. Создан класс Game
@@ -64,6 +64,7 @@ class Game:
                     Weapon.fire_sound(self.weapons[self.player.current_gun_index])
                     self.player.set_shot(True)
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 4:
+                    GunSound.stop_sound()
                     self.player.set_shot(False)
                     self.player.weapons[self.player.current_gun_index].reset()
                     if self.player.current_gun_index > 0:
@@ -72,6 +73,7 @@ class Game:
                     else:
                         self.player.current_gun_index = 2
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 5:
+                    GunSound.stop_sound()
                     self.player.weapons[self.player.current_gun_index].reset()
                     self.player.set_shot(False)
                     self.player.current_gun_index += 1
