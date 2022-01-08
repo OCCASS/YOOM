@@ -15,7 +15,7 @@ from weapon import Weapon
 Батталов Арслан 04.01.2022. Добавлена функция can_move
 Батталов Арслан 05.01.2022. Добавлены функции sound_effect_init, sound
 
-Вайман Ангелина 06.01.2022. Добавлены функции _shot, 
+Вайман Ангелина 06.01.2022. Добавлены функции _shot
 """
 
 
@@ -23,7 +23,6 @@ class Player:
     def __init__(self, x, y, weapons):
         self._x, self._y = x, y
         self.direction = 0
-        self.collision_map = COLLISION_MAP
         self.footstep_sound = SoundEffect(FOOTSTEP)
         self.shot = False
         self.current_gun_index = 0
@@ -80,7 +79,7 @@ class Player:
             difference = pygame.mouse.get_pos()[0] - HALF_SCREEN_WIDTH
             pygame.mouse.set_pos((HALF_SCREEN_WIDTH, HALF_SCREEN_HEIGHT))
             self.direction += difference * SENSITIVITY
-            self.direction %= math.radians(360)
+            self.direction %= math.pi * 2
 
     def _shot(self):
         curren_weapon = self.weapons[self.current_gun_index]

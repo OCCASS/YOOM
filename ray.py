@@ -1,5 +1,6 @@
 from config import *
 from point import Point
+from hit import RayCastHit
 
 """
 Павлов Тимур 01.01.2021. Написаны классы Ray и RayCastHit 
@@ -14,20 +15,6 @@ from point import Point
 
 Батталов Арслан 08.01.2022. Исправлена ошибка прорисовки, добавлена поддержка различных текстур стен
 """
-
-
-class RayCastHit:
-    def __init__(self, distance: float, point: Point, angel: float, offset):
-        """
-        Structure used to get information back from a raycast
-        :param distance: the distance from the ray's origin to the impact point
-        :param point: the impact point in world space where the ray hit the collider
-        :param angel:
-        """
-        self.distance = distance
-        self.point = point
-        self.angel = angel
-        self.offset = offset
 
 
 class Ray:
