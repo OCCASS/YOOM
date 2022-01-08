@@ -59,7 +59,7 @@ class Ray:
         return RayCastHit(hor_dist, (x_hor, y_hor), self.direction, hor_offset), wall_num
 
     def vertical_collision(self, square_x, player_x, player_y, sin_a, cos_a):
-        y_ver, vert_dist, wall_num = 0, 0, '1'
+        y_ver, vert_dist, wall_num = 0, 0, '2'
         x_ver, sign_x = (square_x + TILE, 1) if cos_a >= 0 else (square_x, -1)
         for i in range(0, MAX_VERTICAL_RAY_DISTANCE, TILE):
             vert_dist = (x_ver - player_x) / cos_a
@@ -73,7 +73,7 @@ class Ray:
         return x_ver, y_ver, vert_dist, offset, wall_num
 
     def horizontal_collision(self, square_y, player_x, player_y, sin_a, cos_a):
-        x_hor, hor_dist, wall_num = 0, 0, '1'
+        x_hor, hor_dist, wall_num = 0, 0, '2'
         y_hor, sign_y = (square_y + TILE, 1) if sin_a >= 0 else (square_y, -1)
         for i in range(0, MAX_HORIZONTAL_RAY_DISTANCE, TILE):
             hor_dist = (y_hor - player_y) / sin_a

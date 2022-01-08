@@ -1,4 +1,4 @@
-import numba
+# import numba
 import math
 from config import TILE
 
@@ -7,11 +7,11 @@ from config import TILE
 """
 
 
-@numba.njit(fastmath=True, cache=True)
+# @numba.njit(fastmath=True, cache=True)
 def get_distance(x0, y0, x1, y1):
     return math.sqrt((x0 - x1) ** 2 + (y0 - y1) ** 2)
 
 
-@numba.njit(fastmath=True, cache=True)
+# @numba.njit(fastmath=True, cache=True)
 def world_pos2cell(x, y):
     return x // TILE, y // TILE
