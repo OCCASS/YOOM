@@ -49,7 +49,10 @@ class Player:
             for sprite_hit in all_casted_sprites:
                 if int(math.degrees(sprite_hit.angel)) == 0:
                     sprites[sprite_hit.sprite_index].is_dead = True
+                    SoundEffect(SPRITE_HIT_SOUND).play_sound()
                     break
+            else:
+                SoundEffect(WALL_HIT_SOUND).play_sound()
         else:
             Weapon.empty_fire_sound()
 

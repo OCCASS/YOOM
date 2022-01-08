@@ -124,6 +124,8 @@ SHOTGUN = 'sound/shotgun.mp3'
 PISTOL = 'sound/pistol.mp3'
 RIFLE = 'sound/rifle.mp3'
 EMPTY_SHOT_SOUND = 'sound/null_ammo.mp3'
+SPRITE_HIT_SOUND = 'sound/hit.mp3'
+WALL_HIT_SOUND = 'sound/wall_hit.mp3'
 
 # Настройки оружия
 WEAPON_FILE = 'WeaponSprite/'
