@@ -32,11 +32,3 @@ def create_minimap(map_):
             if el in WALL_CHARS:
                 x, y = col_index * MAP_TILE, row_index * MAP_TILE
                 MINI_MAP.add((x, y))
-
-
-def create_sprites_map(map_):
-    for row_index, row in enumerate(map_):
-        for col_index, el in enumerate(row):
-            if el in SPRITE_CHARS:
-                x, y = col_index * TILE, row_index * TILE
-                SPRITES_MAP.add((x + TILE // 2, y + TILE // 2))

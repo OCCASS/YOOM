@@ -22,14 +22,14 @@ from hit import RayCastHit, SpriteHit
 sky_texture = load_image(TEXTURE_FILE, SKY_TEXTURE)
 wall_textures = {'1': load_image(TEXTURE_FILE, WALL_TEXTURE_1, color_key=None),
                  '2': load_image(TEXTURE_FILE, WALL_TEXTURE_2, color_key=None)}
-sprite_texture = load_image(TEXTURE_FILE, 'sprite.png')
 
 
 class Render:
-    def __init__(self, screen, player, screen_map):
+    def __init__(self, screen, player, screen_map, sprites):
         self.screen = screen
         self.player = player
         self.screen_map = screen_map
+        self.sprites = sprites
 
     def render(self):
         self._draw_sky()
@@ -50,7 +50,7 @@ class Render:
 
     # Отрисовка 2.5D
     def _draw_world(self):
-        sprite_hits = sprites_ray_casting(self.player.pos, self.player.direction)
+        sprite_hits = sprites_ray_casting(self.sprites, self.player.pos, self.player.direction)
         wall_hits, wall_char = ray_casting(self.player.pos, self.player.direction)
         hits = [*enumerate(sprite_hits), *enumerate(wall_hits)]
         hits = list(sorted(hits, key=lambda i: i[1].distance, reverse=True))
@@ -62,15 +62,15 @@ class Render:
                 distance = max(distance, MIN_DISTANCE)
                 self._draw_wall(distance, offset, wall_char, hit_index)
             elif isinstance(hit, SpriteHit):
-                self._draw_sprite(hit.distance, hit.casted_ray_index)
+                self._draw_sprite(hit.texture, hit.distance, hit.casted_ray_index)
 
-    def _draw_sprite(self, distance, current_ray):
+    def _draw_sprite(self, texture, distance, current_ray):
         projection_height = min(PROJECTION_COEFFICIENT / distance, SCREEN_HEIGHT)
         projection_width = projection_height
         sprite_x = current_ray * SCALE - projection_width // 2
         sprite_y = HALF_SCREEN_HEIGHT - projection_height // 2
 
-        texture = pygame.transform.scale(sprite_texture, (projection_width, projection_height))
+        texture = pygame.transform.scale(texture, (projection_width, projection_height))
         self.screen.blit(texture, (sprite_x, sprite_y))
 
     def _draw_wall(self, distance, offset, wall_char, hit_index):

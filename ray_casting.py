@@ -3,6 +3,7 @@ from point import Point
 from ray import Ray, RayCastHit
 from utils import get_distance
 from hit import SpriteHit
+from sprite import Sprite
 
 """
 Вайман Ангелина 28.12.2021. Создана функция ray_casting.
@@ -37,11 +38,11 @@ def ray_casting(player_pos: Point, player_angle: float) -> (list[RayCastHit], st
     return ray_cast_hits, wall_char_list
 
 
-def sprites_ray_casting(player_pos: Point, player_angel: float) -> list[SpriteHit]:
+def sprites_ray_casting(sprites: list[Sprite], player_pos: Point, player_angel: float) -> list[SpriteHit]:
     sprites_hits = []
 
-    for sprite_pos in SPRITES_MAP:
-        x, y = sprite_pos
+    for sprite in sprites:
+        x, y = sprite.pos
         dx, dy = x - player_pos.x, y - player_pos.y
         distance = get_distance(x, y, player_pos.x, player_pos.y)
         point_angel = math.atan2(dy, dx)
@@ -56,6 +57,6 @@ def sprites_ray_casting(player_pos: Point, player_angel: float) -> list[SpriteHi
         distance *= math.cos(HALF_FOV - current_ray_index * DELTA_ANGLE)
 
         if 0 <= current_ray_index <= RAYS_AMOUNT - 1:
-            sprites_hits.append(SpriteHit(distance, delta_angel, current_ray_index))
+            sprites_hits.append(SpriteHit(distance, delta_angel, current_ray_index, sprite.texture))
 
     return sprites_hits
