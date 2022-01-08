@@ -1,7 +1,7 @@
 import pygame
 
 from config import *
-from map import create_map, create_minimap
+from map import create_map, create_minimap, create_sprites_map
 from player import Player
 from render import Render
 from sound import Music
@@ -12,6 +12,7 @@ from weapon import Weapon
 Вайман Ангелина 28.12.2021. Внесены поправки
 Вайман Ангелина 03.01.2022. Создана новая поверхность screen_map для миникарты
 Батталов Арслан 05.01.2022. Добавлены функция play_theme
+Павлов Тимур 08.01.2022. Исправлена ошибка анимации оружия 
 """
 
 
@@ -41,6 +42,7 @@ class Game:
     def _init():
         create_map(MAP)
         create_minimap(MAP)
+        create_sprites_map(MAP)
         pygame.init()
 
     def _config(self):
@@ -60,12 +62,14 @@ class Game:
                     self.player.shot = True
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 4:
                     self.player.shot = False
+                    self.player.weapons[self.player.current_gun_index].reset()
                     if self.player.current_gun_index > 0:
                         self.player.current_gun_index -= 1
                         self.player.current_gun_index %= len(self.player.weapons)
                     else:
                         self.player.current_gun_index = 2
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 5:
+                    self.player.weapons[self.player.current_gun_index].reset()
                     self.player.shot = False
                     self.player.current_gun_index += 1
                     self.player.current_gun_index %= len(self.player.weapons)

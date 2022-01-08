@@ -1,6 +1,7 @@
-import pygame
 import collections
 import os
+
+import pygame
 
 from config import *
 from load_image import load_image
@@ -8,6 +9,9 @@ from load_image import load_image
 """
 Вайман Ангелина:
 06.01.2022. Создан класс Weapon
+
+Павлов Тимур:
+08.01.2022. Исправлена ошибка анимации
 """
 
 
@@ -19,6 +23,7 @@ class Weapon:
         self._weapon_animation_list_path = os.path.join(WEAPON_FILE, name)
         self._shot_animation_count = 0
         self._animation_list = self._load_weapon()
+        self._default_animation_list = self._animation_list.copy()
 
         width, height = size
         self._weapon_pos = (HALF_SCREEN_WIDTH - width // 2, SCREEN_HEIGHT - height)
@@ -42,6 +47,11 @@ class Weapon:
             return False
 
         return True
+
+    def reset(self):
+        self._animation_list = self._default_animation_list.copy()
+        self._shot_animation_count = 0
+        self._lost_frames_count = 0
 
     def static_animation(self):
         self._screen.blit(self._animation_list[0], self._weapon_pos)
