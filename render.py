@@ -2,7 +2,8 @@ import pygame
 
 from config import *
 from load_image import load_image
-from ray_casting import ray_casting
+from ray_casting import ray_casting, sprites_ray_casting
+from hit import RayCastHit, SpriteHit
 
 """
 Вайман Ангелина:
@@ -13,11 +14,15 @@ from ray_casting import ray_casting
 
 Батталов Арслан:
 06.01.2022 Изменена обработка текстур стены
+
+Палов Тимур:
+08.01.2022. Создана поддержка отрисовки спрайтов
 """
 
 sky_texture = load_image(TEXTURE_FILE, SKY_TEXTURE)
 wall_textures = {'1': load_image(TEXTURE_FILE, WALL_TEXTURE_1, color_key=None),
                  '2': load_image(TEXTURE_FILE, WALL_TEXTURE_2, color_key=None)}
+sprite_texture = load_image(TEXTURE_FILE, 'sprite.png')
 
 
 class Render:
@@ -29,7 +34,7 @@ class Render:
     def render(self):
         self._draw_sky()
         self._draw_floor()
-        self._draw_walls()
+        self._draw_world()
         self._draw_minimap()
         self.player.draw()
 
@@ -44,18 +49,36 @@ class Render:
         self.screen.blit(sky_image, (sky_offset - SCREEN_WIDTH, 0))
 
     # Отрисовка 2.5D
-    def _draw_walls(self):
-        hits, wall_char = ray_casting(self.player.pos, self.player.direction)
+    def _draw_world(self):
+        sprite_hits = sprites_ray_casting(self.player.pos, self.player.direction)
+        wall_hits, wall_char = ray_casting(self.player.pos, self.player.direction)
+        hits = [*enumerate(sprite_hits), *enumerate(wall_hits)]
+        hits = list(sorted(hits, key=lambda i: i[1].distance, reverse=True))
 
-        for hit_index, hit in enumerate(hits):
-            offset = int(hit.offset) % TILE
-            distance = hit.distance * math.cos(self.player.direction - hit.angel)
-            distance = max(distance, MIN_DISTANCE)
-            projection_height = min(PROJECTION_COEFFICIENT / (distance + 10 ** -10), SCREEN_HEIGHT * 2)
-            wall = wall_textures[wall_char[hit_index]].subsurface(offset * TEXTURE_SCALE, 0, TEXTURE_SCALE,
-                                                                  TEXTURE_HEIGHT)
-            wall = pygame.transform.scale(wall, (SCALE, projection_height))
-            self.screen.blit(wall, (hit_index * SCALE, HALF_SCREEN_HEIGHT - projection_height // 2))
+        for hit_index, hit in hits:
+            if isinstance(hit, RayCastHit):
+                offset = int(hit.offset) % TILE
+                distance = hit.distance * math.cos(self.player.direction - hit.angel)
+                distance = max(distance, MIN_DISTANCE)
+                self._draw_wall(distance, offset, wall_char, hit_index)
+            elif isinstance(hit, SpriteHit):
+                self._draw_sprite(hit.distance, hit.casted_ray_index)
+
+    def _draw_sprite(self, distance, current_ray):
+        projection_height = min(PROJECTION_COEFFICIENT / distance, SCREEN_HEIGHT)
+        projection_width = projection_height
+        sprite_x = current_ray * SCALE - projection_width // 2
+        sprite_y = HALF_SCREEN_HEIGHT - projection_height // 2
+
+        texture = pygame.transform.scale(sprite_texture, (projection_width, projection_height))
+        self.screen.blit(texture, (sprite_x, sprite_y))
+
+    def _draw_wall(self, distance, offset, wall_char, hit_index):
+        projection_height = min(PROJECTION_COEFFICIENT / (distance + 10 ** -10), SCREEN_HEIGHT * 2)
+        wall = wall_textures[wall_char[hit_index]].subsurface(offset * TEXTURE_SCALE, 0, TEXTURE_SCALE,
+                                                              TEXTURE_HEIGHT)
+        wall = pygame.transform.scale(wall, (SCALE, projection_height))
+        self.screen.blit(wall, (hit_index * SCALE, HALF_SCREEN_HEIGHT - projection_height // 2))
 
     def _draw_minimap(self):
         self.screen_map.fill(BLACK)
