@@ -12,6 +12,7 @@ from weapon import Weapon
 Вайман Ангелина 28.12.2021. Внесены поправки
 Вайман Ангелина 03.01.2022. Создана новая поверхность screen_map для миникарты
 Батталов Арслан 05.01.2022. Добавлены функция play_theme
+Батталов Арслан 08.01.2022 Добавлена поддержка звуков выстрела
 Павлов Тимур 08.01.2022. Исправлена ошибка анимации оружия 
 """
 
@@ -23,9 +24,9 @@ class Game:
         self.clock = pygame.time.Clock()
 
         self.weapons = [
-            Weapon(self.screen, 'Gun1', (500, 450), 12),
-            Weapon(self.screen, 'Gun2', (400, 400), 2),
-            Weapon(self.screen, 'Gun3', (350, 300), 10)
+            Weapon(self.screen, 'Gun1', (500, 450), 12, SHOTGUN),
+            Weapon(self.screen, 'Gun2', (400, 400), 2, PISTOL),
+            Weapon(self.screen, 'Gun3', (350, 300), 10, RIFLE)
         ]
         self.player = Player(200, 200, self.weapons)
         self.render = Render(self.screen, self.player, self.screen_map)
