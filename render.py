@@ -1,9 +1,8 @@
 import pygame
 
 from config import *
-from ray_casting import ray_casting
 from load_image import load_image
-
+from ray_casting import ray_casting
 
 """
 Вайман Ангелина:
@@ -17,7 +16,8 @@ from load_image import load_image
 """
 
 sky_texture = load_image(TEXTURE_FILE, SKY_TEXTURE)
-wall_texture = load_image(TEXTURE_FILE, WALL_TEXTURE, color_key=None)
+wall_textures = {'1': load_image(TEXTURE_FILE, WALL_TEXTURE_1, color_key=None),
+                 '2': load_image(TEXTURE_FILE, WALL_TEXTURE_2, color_key=None)}
 
 
 class Render:
@@ -45,14 +45,15 @@ class Render:
 
     # Отрисовка 2.5D
     def _draw_walls(self):
-        hits = ray_casting(self.player.pos, self.player.direction)
+        hits, wall_char = ray_casting(self.player.pos, self.player.direction)
 
         for hit_index, hit in enumerate(hits):
             offset = int(hit.offset) % TILE
             distance = hit.distance * math.cos(self.player.direction - hit.angel)
-            distance = max(distance, 0.00001)
+            distance = max(distance, MIN_DISTANCE)
             projection_height = min(PROJECTION_COEFFICIENT / (distance + 10 ** -10), SCREEN_HEIGHT * 2)
-            wall = wall_texture.subsurface(offset * TEXTURE_SCALE, 0, TEXTURE_SCALE, TEXTURE_HEIGHT)
+            wall = wall_textures[wall_char[hit_index]].subsurface(offset * TEXTURE_SCALE, 0, TEXTURE_SCALE,
+                                                                  TEXTURE_HEIGHT)
             wall = pygame.transform.scale(wall, (SCALE, projection_height))
             self.screen.blit(wall, (hit_index * SCALE, HALF_SCREEN_HEIGHT - projection_height // 2))
 
@@ -61,10 +62,10 @@ class Render:
         x, y = self.player.x / MAP_TILE, self.player.y / MAP_TILE
         cos_a, sin_a = math.cos(self.player.direction), math.sin(self.player.direction)
         pygame.draw.line(self.screen_map, YELLOW, (int(x) // MAP_TILE, int(y) // MAP_TILE),
-                         (int(x) // MAP_TILE + 10 * cos_a, int(y) // MAP_TILE + 10 * sin_a), 2)
+                         (int(x) // MAP_TILE + MIINIMAP_OFFSET * cos_a, int(y) // MAP_TILE + MIINIMAP_OFFSET * sin_a),
+                         2)
         pygame.draw.circle(self.screen_map, GREEN, (int(x) // MAP_TILE, int(y) // MAP_TILE), 3)
         for x, y in MINI_MAP:
             pygame.draw.rect(self.screen_map, RED, (x, y, MAP_TILE, MAP_TILE))
         self.screen.blit(self.screen_map,
                          (SCREEN_WIDTH - SCREEN_WIDTH // MAP_TILE + 80, SCREEN_HEIGHT - SCREEN_HEIGHT // MAP_TILE))
-

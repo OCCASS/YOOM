@@ -2,6 +2,7 @@ import pygame
 
 """
 Батталов Арслан 05.01.2022 Добавлен класс Music и SoundEffect
+Батталов Арслан 07.01.2022. Добавлен класс GunSound
 """
 
 
@@ -30,3 +31,13 @@ class SoundEffect(Music):
     def play_sound(self):
         if not pygame.mixer.Channel(2).get_busy():
             pygame.mixer.Channel(2).play(self.effect)
+
+
+class GunSound(SoundEffect):
+    def play_sound(self):
+        if not pygame.mixer.Channel(1).get_busy():
+            pygame.mixer.Channel(1).play(self.effect)
+
+    @staticmethod
+    def stop_sound():
+        pygame.mixer.Channel(1).stop()

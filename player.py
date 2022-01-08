@@ -14,6 +14,8 @@ from weapon import Weapon
 
 Батталов Арслан 04.01.2022. Добавлена функция can_move
 Батталов Арслан 05.01.2022. Добавлены функции sound_effect_init, sound
+
+Вайман Ангелина 06.01.2022. Добавлены функции _shot, 
 """
 
 
@@ -88,9 +90,9 @@ class Player:
             curren_weapon.static_animation()
 
     def _can_move(self, direction, collision_distance):
-        ray = Ray(self.pos, direction, MAX_RAY_DISTANCE)
+        ray = Ray(self.pos, direction, MAX_VIEW_DISTANCE)
 
-        if ray.ray_cast().distance <= collision_distance:
+        if ray.ray_cast()[0].distance <= collision_distance:
             return False
 
         return True

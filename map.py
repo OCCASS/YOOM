@@ -10,6 +10,8 @@ from config import *
 Вайман Ангелина 03.01.2022. Создана функция create_minimap
 
 Батталов Арслан 03.01.2022. Добавлена карта коллизии
+
+Батталов Арслан 08.01.2022. Добавлена поддержка разных текстур стен
 """
 
 
@@ -18,7 +20,10 @@ def create_map(map_):
         for col_index, el in enumerate(row):
             if el in WALL_CHARS:
                 x, y = col_index * TILE, row_index * TILE
-                WORLD_MAP.add((x, y))
+                if el == '1':
+                    WORLD_MAP[(x, y)] = '1'
+                elif el == '2':
+                    WORLD_MAP[(x, y)] = '1'
 
 
 def create_minimap(map_):

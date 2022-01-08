@@ -17,6 +17,8 @@ from typing import List
 03.01.2022. Добавлены константы для коллизии
 04.01.2022 Изменены константы коллизии
 05.01.2022 Добавлены настройки музыки
+07.01.2022 Добавлены настройки звука оружия
+08.01.2022 Изменены константы максимальной прорисовки
 """
 
 # Настройки экрана
@@ -31,13 +33,6 @@ SENSITIVITY = 0.005
 MAX_VIEW_DISTANCE = 800
 PLAYER_SIZE = 15
 MAX_DISTANCE_TO_WALL = PLAYER_SIZE * 4
-
-# Настройки ray casting
-FOV = math.pi / 3
-HALF_FOV = FOV / 2
-RAYS_AMOUNT = 300
-MAX_RAY_DISTANCE = 800
-DELTA_ANGLE = FOV / RAYS_AMOUNT
 
 # Карта и настройки карты
 MAP: List[str] = [
@@ -68,9 +63,17 @@ MAP: List[str] = [
 ]
 WALL_CHARS = ('1', '2')
 TILE = 125
-WORLD_MAP = set()
+WORLD_MAP = {}
 MAP_SIZE = (len(MAP[0]), len(MAP))
 COLLISION_MAP = list()
+
+# Настройки ray casting
+FOV = math.pi / 3
+HALF_FOV = FOV / 2
+RAYS_AMOUNT = 300
+MAX_HORIZONTAL_RAY_DISTANCE = TILE * MAP_SIZE[0]
+MAX_VERTICAL_RAY_DISTANCE = TILE * MAP_SIZE[1]
+DELTA_ANGLE = FOV / RAYS_AMOUNT
 
 # Цвета
 ORANGE = 'Orange'
@@ -89,16 +92,19 @@ ANTHRACITE = (45, 45, 45)
 SCALE = SCREEN_WIDTH // RAYS_AMOUNT
 DISTANCE_TO_PROJECTION_PLANE = RAYS_AMOUNT / (2 * math.tan(HALF_FOV))
 PROJECTION_COEFFICIENT = TILE * DISTANCE_TO_PROJECTION_PLANE * 3
+MIN_DISTANCE = 0.00001
 
 # Настройки миникарты
 MINI_MAP = set()
 MAP_SCALE = 5
 MAP_TILE = SCREEN_HEIGHT / MAP_SIZE[1] // MAP_SCALE
+MIINIMAP_OFFSET = 10
 
 # Настройки текстур
 TEXTURE_FILE = 'TextureSprite'
 SKY_TEXTURE = 'sky.png'
-WALL_TEXTURE = 'wall2.jpg'
+WALL_TEXTURE_1 = 'wall1.jpg'
+WALL_TEXTURE_2 = 'wall2.jpg'
 FLOOR_TEXTURE = 'floor.png'
 TEXTURE_WIDTH, TEXTURE_HEIGHT = 128, 128
 TEXTURE_SCALE = TEXTURE_WIDTH // TILE
@@ -106,10 +112,32 @@ TEXTURE_SCALE = TEXTURE_WIDTH // TILE
 # Настройки музыки
 THEME_MUSIC = 'music/theme.mp3'
 FOOTSTEP = 'sound/playerstep.mp3'
+SHOTGUN = 'sound/shotgun.mp3'
+PISTOL = 'sound/pistol.mp3'
+RIFLE = 'sound/rifle.mp3'
 
 # Настройки оружия
 WEAPON_FILE = 'WeaponSprite/'
 WEAPON_BASE = '0.png'
 GUN_BASE = '0.png'
 WEAPON_SIZE = (400, 260)
-ANIMATION_SPEED = 10
+ANIMATION_SPEED = 6
+
+# Настройки меню
+MENU_BACKGROUND = 'StartWindow.jpg'
+MENU_BACKGROUND_POS = (0, 0)
+SCULL_SIZE = (40, 40)
+LOGO = 'YOOM'
+BTN_LEVELS = 'Levels'
+BTN_ARCADE = 'Acrcade'
+BTN_SETTINGS = 'Settings'
+BTN_EXIT = 'Exit'
+BTN_SIZE = (150, 50)
+LOGO_POS = (110, 100)
+BTN_LEVELS_POS = (110, 200)
+BTN_ARCADE_POS = (110, 250)
+BTN_SETTINGS_POS = (110, 300)
+BTN_EXIT_POS = (110, 500)
+INACTIVE_COLOR = (177, 193, 206)
+ACTIVE_COLOR = (255, 255, 255)
+FONT = 'ARCADECLASSIC.TTF'
