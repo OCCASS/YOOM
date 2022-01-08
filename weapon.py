@@ -15,7 +15,7 @@ from sound import GunSound
 08.01.2022. Исправлена ошибка анимации
 
 Батталов Арслан:
-08.01.2022 Добавлена поддержка звуков выстрела
+08.01.2022 Добавлена поддержка звуков выстрела, функция fire_sound
 """
 
 
@@ -37,7 +37,6 @@ class Weapon:
         self._screen = screen
 
     def animation(self):
-        self.sound.play_sound()
         shot_sprite = self._animation_list[0]
         self._screen.blit(shot_sprite, self._weapon_pos)
         self._shot_animation_count += 1
@@ -67,3 +66,6 @@ class Weapon:
                           for i in range(self._sprites_amount)]
 
         return collections.deque(animation_list)
+
+    def fire_sound(self):
+        self.sound.play_sound()
