@@ -21,3 +21,11 @@ def world_pos2cell(x, y):
 def is_cell_a_wall(x, y):
     if 0 <= x < MAP_SIZE[0] and 0 <= y < MAP_SIZE[1]:
         return bool(WALLS_MAP[y][x])
+
+
+def is_game_over(sprites):
+    for sprite in sprites:
+        if not sprite.is_dead:
+            return False
+
+    return True

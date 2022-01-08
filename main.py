@@ -8,6 +8,7 @@ from player import Player
 from render import Render
 from sound import Music
 from sprite import create_sprites
+from utils import is_game_over
 from weapon import Weapon, GunSound
 from menu import Menu
 
@@ -89,6 +90,10 @@ class Game:
 
             self.player.update()
             self.render.render()
+
+            if is_game_over(self.sprites):
+                print('Game over')
+                running = False
 
             pygame.display.set_caption('FPS: ' + str(int(self.clock.get_fps())))
             pygame.display.flip()
