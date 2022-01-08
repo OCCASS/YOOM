@@ -13,7 +13,8 @@ from weapon import Weapon
 Вайман Ангелина 03.01.2022. Создана новая поверхность screen_map для миникарты
 Батталов Арслан 05.01.2022. Добавлены функция play_theme
 Батталов Арслан 08.01.2022 Добавлена поддержка звуков выстрела
-Павлов Тимур 08.01.2022. Исправлена ошибка анимации оружия 
+Павлов Тимур 08.01.2022. Исправлена ошибка анимации оружия
+Батталов Арслан 08.01.2022 Исправлена проблема двойного проигрывания звуков
 """
 
 
@@ -60,6 +61,7 @@ class Game:
                 if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
                     running = False
                 if event.type == pygame.MOUSEBUTTONDOWN and not self.player.shot and event.button == 1:
+                    Weapon.fire_sound(self.weapons[self.player.current_gun_index])
                     self.player.set_shot(True)
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 4:
                     self.player.set_shot(False)
