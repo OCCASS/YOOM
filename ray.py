@@ -49,14 +49,14 @@ class Ray:
         cos_a = 10 ** -10 if cos_a == 0 else cos_a
         sin_a = 10 ** -10 if sin_a == 0 else sin_a
 
-        x_ver, y_ver, vert_dist, ver_offset, wall_num = self.vertical_collision(square_x, player_x, player_y, sin_a,
-                                                                                cos_a)
-        x_hor, y_hor, hor_dist, hor_offset, wall_num = self.horizontal_collision(square_y, player_x, player_y, sin_a,
-                                                                                 cos_a)
+        x_ver, y_ver, vert_dist, ver_offset = self.vertical_collision(square_x, player_x, player_y, sin_a,
+                                                                      cos_a)
+        x_hor, y_hor, hor_dist, hor_offset = self.horizontal_collision(square_y, player_x, player_y, sin_a,
+                                                                       cos_a)
 
         if hor_dist > vert_dist:
-            return RayCastHit(vert_dist, (x_ver, y_ver), self.direction, ver_offset), wall_num
-        return RayCastHit(hor_dist, (x_hor, y_hor), self.direction, hor_offset), wall_num
+            return RayCastHit(vert_dist, (x_ver, y_ver), self.direction, ver_offset)
+        return RayCastHit(hor_dist, (x_hor, y_hor), self.direction, hor_offset)
 
     def vertical_collision(self, square_x, player_x, player_y, sin_a, cos_a):
         y_ver, vert_dist, wall_num = 0, 0, '1'
@@ -66,11 +66,10 @@ class Ray:
             y_ver = player_y + vert_dist * sin_a
             tile_pos = self._check_map(x_ver + sign_x, y_ver)
             if tile_pos in WORLD_MAP.keys():
-                wall_num = WORLD_MAP[tile_pos]
                 break
             x_ver += sign_x * TILE
         offset = y_ver
-        return x_ver, y_ver, vert_dist, offset, wall_num
+        return x_ver, y_ver, vert_dist, offset
 
     def horizontal_collision(self, square_y, player_x, player_y, sin_a, cos_a):
         x_hor, hor_dist, wall_num = 0, 0, '1'
@@ -80,8 +79,7 @@ class Ray:
             x_hor = player_x + hor_dist * cos_a
             tile_pos = self._check_map(x_hor, y_hor + sign_y)
             if tile_pos in WORLD_MAP.keys():
-                wall_num = WORLD_MAP[tile_pos]
                 break
             y_hor += sign_y * TILE
         offset = x_hor
-        return x_hor, y_hor, hor_dist, offset, wall_num
+        return x_hor, y_hor, hor_dist, offset

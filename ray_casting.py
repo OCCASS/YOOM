@@ -25,23 +25,21 @@ from sprite import Sprite
 def ray_casting(player_pos: Point, player_angle: float) -> (list[RayCastHit], str):
     current_angle: float = player_angle - HALF_FOV
     ray_cast_hits: list[RayCastHit] = []
-    wall_char_list = []
     for _ in range(RAYS_AMOUNT):
         ray = Ray(player_pos, current_angle, MAX_VIEW_DISTANCE)
 
-        ray_cast_hit, wall_char = ray.ray_cast()
+        ray_cast_hit = ray.ray_cast()
         ray_cast_hits.append(ray_cast_hit)
-        wall_char_list.append(wall_char)
 
         current_angle += DELTA_ANGLE
 
-    return ray_cast_hits, wall_char_list
+    return ray_cast_hits
 
 
 def sprites_ray_casting(sprites: list[Sprite], player_pos: Point, player_angel: float) -> list[SpriteHit]:
     sprites_hits = []
 
-    for sprite in sprites:
+    for sprite_index, sprite in enumerate(sprites):
         x, y = sprite.pos
         dx, dy = x - player_pos.x, y - player_pos.y
         distance = get_distance(x, y, player_pos.x, player_pos.y)
@@ -53,10 +51,10 @@ def sprites_ray_casting(sprites: list[Sprite], player_pos: Point, player_angel: 
 
         delta_ray_index = int(delta_angel / DELTA_ANGLE)
         current_ray_index = CENTER_RAY_INDEX + delta_ray_index
-        # fix fish eye effect
-        distance *= math.cos(HALF_FOV - current_ray_index * DELTA_ANGLE)
 
         if 0 <= current_ray_index <= RAYS_AMOUNT - 1:
-            sprites_hits.append(SpriteHit(distance, delta_angel, current_ray_index, sprite.texture))
+            # fix fish eye effect
+            distance *= math.cos(HALF_FOV - current_ray_index * DELTA_ANGLE)
+            sprites_hits.append(SpriteHit(sprite_index, distance, delta_angel, current_ray_index, sprite.texture))
 
     return sprites_hits
