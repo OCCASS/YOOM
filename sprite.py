@@ -22,6 +22,7 @@ class Sprite:
     def __init__(self, texture, pos):
         self.texture = texture
         self.pos = self.x, self.y = list(pos)
+        self.is_dead = False
 
 
 class MovableSprite(Sprite):

@@ -70,7 +70,7 @@ class Game:
                     running = False
                 if event.type == pygame.MOUSEBUTTONDOWN and not self.player.shot and event.button == 1:
                     Weapon.fire_sound(self.weapons[self.player.current_gun_index])
-                    self.player.set_shot(True)
+                    self.sprites = self.player.do_shot(self.sprites)
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 4:
                     GunSound.stop_sound()
                     self.player.set_shot(False)

@@ -64,6 +64,9 @@ class Render:
                 distance = max(distance, MIN_DISTANCE)
                 self._draw_wall(distance, offset, hit_index)
             elif isinstance(hit, SpriteHit):
+                if self.sprites[hit.sprite_index].is_dead:
+                    continue
+
                 if isinstance(self.sprites[hit.sprite_index], MovableSprite):
                     self.sprites[hit.sprite_index].move_to(self.player.x, self.player.y)
 

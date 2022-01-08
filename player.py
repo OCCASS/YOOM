@@ -5,6 +5,7 @@ from point import Point
 from ray import Ray
 from sound import SoundEffect
 from weapon import Weapon
+from ray_casting import sprites_ray_casting
 
 """
 Павлов Тимур 26.12.2021. Создан класс Player
@@ -35,6 +36,16 @@ class Player:
 
     def draw(self):
         self._shot()
+
+    def do_shot(self, sprites):
+        self.set_shot(True)
+        all_casted_sprites = sprites_ray_casting(sprites, self.pos, self.direction)
+        for sprite_hit in all_casted_sprites:
+            if int(math.degrees(sprite_hit.angel)) == 0:
+                sprite_index = sprite_hit.sprite_index
+                sprites[sprite_index].is_dead = True
+
+        return sprites
 
     def set_shot(self, val):
         if (not val) == self.shot:
