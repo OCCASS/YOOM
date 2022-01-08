@@ -1,11 +1,12 @@
 import pygame
 
 from config import *
-from map import create_map, create_minimap, create_sprites_map
+from map import create_map, create_minimap
 from player import Player
 from render import Render
 from sound import Music
 from weapon import Weapon
+from sprite import create_sprites
 
 """
 Павлов Тимур 26.12.2021. Создан класс Game
@@ -28,8 +29,9 @@ class Game:
             Weapon(self.screen, 'Gun2', (400, 400), 2, PISTOL),
             Weapon(self.screen, 'Gun3', (350, 300), 10, RIFLE)
         ]
+        self.sprites = create_sprites()
         self.player = Player(200, 200, self.weapons)
-        self.render = Render(self.screen, self.player, self.screen_map)
+        self.render = Render(self.screen, self.player, self.screen_map, self.sprites)
         self.caption = caption
 
     def run(self):
@@ -43,7 +45,6 @@ class Game:
     def _init():
         create_map(MAP)
         create_minimap(MAP)
-        create_sprites_map(MAP)
         pygame.init()
 
     def _config(self):
