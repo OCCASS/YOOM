@@ -54,7 +54,7 @@ class Game:
         self._sprites = create_sprites(self._menu.chosen_level)
         self._stats = Stats()
         self._player = Player(TILE * 2 - TILE // 2, TILE * 2 - TILE // 2, self._weapons, self._sprites, self._stats)
-        self._render = Render(self._screen, self._player, self._minimap_screen, self._sprites)
+        self._render = Render(self._screen, self._player, self._minimap_screen, self._sprites, self._menu.chosen_level)
 
         create_map(self._menu.chosen_level)
         create_minimap(self._menu.chosen_level)
