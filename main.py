@@ -85,9 +85,9 @@ class Game:
                 kills_count = self._stats.get_kills()
 
                 if is_game_over(self._player):
-                    self._losing.run()
+                    self._losing.run(total_time, kills_count)
                 elif is_win(self._sprites):
-                    self._win.run()
+                    self._win.run(total_time, kills_count)
             else:
                 self._player.update()
                 self._render.render()

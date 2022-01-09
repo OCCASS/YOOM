@@ -53,21 +53,17 @@ class MovableSprite(Sprite):
     def _get_angel_to_player(self, player):
         dx, dy = player.x - self.pos[0], player.y - self.pos[1]
         direction = angle_between_vectors(RIGHT_VECTOR, (dx, dy, 0))
-
         if player.y < self.pos[1]:
             direction = 2 * math.pi - direction
-
         return -direction
 
     def move_to(self, to_x, to_y):
         distance = get_distance(to_x, to_y, *self.pos)
-
         if abs(distance) > TILE * 2:
             dx, dy = self.pos[0] - to_x, self.pos[1] - to_y
             move_coefficient_x, move_coefficient_y = 1 if dx < 0 else -1, 1 if dy < 0 else -1
             next_x = self.pos[0] + move_coefficient_x * self.speed
             next_y = self.pos[1] + move_coefficient_y * self.speed
-
             cell_x, cell_y = world_pos2cell(next_x, next_y)
             if (cell_x * TILE, cell_y * TILE) not in WORLD_MAP:
                 self.pos = [next_x, next_y]
@@ -75,17 +71,14 @@ class MovableSprite(Sprite):
     def check_damage(self, player):
         self._delay += pygame.time.get_ticks() / 1000
         distance_to_player = get_distance(*self.pos, player.x, player.y)
-
         ray = Ray(Point(*self.pos), self._get_angel_to_player(player), MAX_VIEW_DISTANCE)
         ray_cast = ray.ray_cast()
         ray_cast_distance = ray_cast.distance
-
         if distance_to_player <= self.hit_distance \
                 and distance_to_player <= ray_cast_distance \
                 and self._delay >= SPRITE_DAMAGE_DELAY:
             self._delay = 0
             return True
-
         return False
 
 
@@ -97,13 +90,11 @@ sprites_dict = {
 
 def create_sprites(world_map) -> list[Sprite]:
     sprites = []
-
     for row_index, row in enumerate(world_map):
         for col_index, el in enumerate(row):
             if el in SPRITE_CHARS:
                 x, y = col_index * TILE + TILE // 2, row_index * TILE + TILE // 2
                 texture = sprite_textures[el]
-
                 if el in STATIC_SPRITES:
                     sprite = Sprite(texture, (x, y))
                     sprites.append(sprite)
@@ -111,7 +102,6 @@ def create_sprites(world_map) -> list[Sprite]:
                     sprite = sprites_dict[el]
                     sprite.pos = (x, y)
                     sprites.append(sprite)
-
     return sprites
 
 

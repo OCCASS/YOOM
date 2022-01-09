@@ -50,11 +50,9 @@ class Player:
         self.set_shot(False)
         self.weapons[self.current_gun_index].reset()
         GunSound.stop_sound()
-
         if delta == -1:
             if self.current_gun_index < 0:
                 self.current_gun_index = 2
-
         self.current_gun_index -= delta
         self.current_gun_index %= len(self.weapons)
 
@@ -71,22 +69,17 @@ class Player:
             Weapon.fire_sound(self.weapons[self.current_gun_index])
             self.set_shot(True)
             self.weapons[self.current_gun_index].shot()
-
             all_casted_sprites = sprites_ray_casting(self._sprites, self.pos, self.direction)
             for sprite_hit in all_casted_sprites:
                 if -1 <= int(math.degrees(sprite_hit.angel)) <= 1:
                     self._sprites[sprite_hit.sprite_index].is_dead = True
                     SoundEffect(SPRITE_HIT_SOUND).play_sound()
-
                     if isinstance(self._sprites[sprite_hit.sprite_index], MovableSprite):
                         self._stats.update_kills()
-
                     break
-
         current_weapon = self.weapons[self.current_gun_index]
         if current_weapon.ammo <= 0:
             Weapon.empty_fire_sound()
-
         return self._sprites
 
     def set_shot(self, val):
