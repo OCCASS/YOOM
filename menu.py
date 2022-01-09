@@ -1,6 +1,7 @@
-import pygame
-import sys
 import random
+import sys
+
+import pygame
 
 from config import *
 from load_image import load_image
@@ -10,6 +11,9 @@ from load_level import load_level
 Вайман Ангелина:
 07.01.2022. Добавлен класс Menu и Button
 08.01.2022. Доработан класс Menu. Создан класс Levels
+
+Батталов Арслан:
+08.01.2022. Добавлена наследование классов, добавлен класс Menu
 """
 
 pygame.init()
@@ -44,12 +48,14 @@ class Menu:
         self.x = 0
         self.screen = screen
         self.clock = clock
-        self.menu_run = True
-        self.levels_class = Levels(self.screen, self.clock)
+        self.delay = 0
+        self.running = True
         self.chosen_level = None
 
     def run(self):
-        while self.menu_run:
+        pygame.time.delay(self.delay)
+        self.running = True
+        while self.running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -60,6 +66,8 @@ class Menu:
             self._logo()
             self._create_buttons()
             self._mouse_operations()
+            if self.chosen_level is not None:
+                return self.chosen_level
             pygame.display.flip()
             self.clock.tick(20)
 
@@ -67,6 +75,21 @@ class Menu:
         color = random.randint(0, 50)
         logo = logo_font.render(LOGO, True, (color, color, color))
         self.screen.blit(logo, (HALF_SCREEN_WIDTH - 270, 0))
+
+    def _create_buttons(self):
+        pass
+
+    def _mouse_operations(self):
+        pass
+
+    def check_chosen_level(self):
+        pass
+
+
+class MainMenu(Menu):
+    def __init__(self, screen, clock):
+        super().__init__(screen, clock)
+        self.levels_class = Levels(self.screen, self.clock)
 
     def _create_buttons(self):
         self.btn_levels, self.levels = button(self.screen, LEVELS_NAME, BLACK, (HALF_SCREEN_WIDTH - 140, 200),
@@ -110,38 +133,14 @@ class Menu:
                 sys.exit()
 
 
-class Levels:
+class Levels(Menu):
     def __init__(self, screen, clock):
-        self.screen = screen
-        self.clock = clock
-        self.levels_run = True
-        self.x = 0
-        self.chosen_level = None
+        super().__init__(screen, clock)
+        self.delay = 250
 
-    def run(self):
-        pygame.time.delay(250)
-        self.levels_run = True
-        while self.levels_run:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
-            self.screen.blit(background, (0, 0),
-                             (self.x % SCREEN_WIDTH, HALF_SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT))
-            self.x += 1
-            self._logo()
-            self._create_buttons()
-            self.mouse_operations()
-            if self.chosen_level is not None:
-                return self.chosen_level
-            self.x += 1
-            pygame.display.flip()
-            self.clock.tick(20)
-
-    def _logo(self):
-        color = random.randint(0, 50)
-        logo = logo_font.render(LOGO, True, (color, color, color))
-        self.screen.blit(logo, (HALF_SCREEN_WIDTH - 270, 0))
+    def check_chosen_level(self):
+        if self.chosen_level is not None:
+            return self.chosen_level
 
     def _create_buttons(self):
         self.btn_level_1, self.level_1 = button(self.screen, LEVEL_1_NAME, BLACK, (HALF_SCREEN_WIDTH - 140, 200),
@@ -161,7 +160,7 @@ class Levels:
                                                 LEVEL_BTN_SIZE[1])
         self.btn_menu_back, self.menu_back = button(self.screen, BACK_NAME, BLACK, (50, 500), 150, 50)
 
-    def mouse_operations(self):
+    def _mouse_operations(self):
         mouse_pos = pygame.mouse.get_pos()
         mouse_click = pygame.mouse.get_pressed()
         chosen_levels = [self._btn_level_1_check(mouse_pos, mouse_click),
