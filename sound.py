@@ -56,6 +56,7 @@ class SoundEffect:
     def play_sound(self):
         if not pygame.mixer.Channel(2).get_busy():
             pygame.mixer.Channel(2).play(self.effect)
+
     @staticmethod
     def change_effects_volume(volume):
         pygame.mixer.Channel(2).set_volume(volume)

@@ -68,8 +68,8 @@ class MovableSprite(Sprite):
             next_y = self.pos[1] + move_coefficient_y * self.speed
 
             cell_x, cell_y = world_pos2cell(next_x, next_y)
-            # if (cell_x * TILE, cell_y * TILE) not in WORLD_MAP:
-            self.pos = [next_x, next_y]
+            if (cell_x * TILE, cell_y * TILE) not in WORLD_MAP:
+                self.pos = [next_x, next_y]
 
     def check_damage(self, player):
         self._delay += pygame.time.get_ticks() / 1000
