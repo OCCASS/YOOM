@@ -77,6 +77,11 @@ class Player:
             ray = Ray(self.pos, self.direction, MAX_VIEW_DISTANCE)
             ray_cast_distance = ray.ray_cast().distance
             for sprite_hit in all_casted_sprites:
+                sprite = self._sprites[sprite_hit.sprite_index]
+
+                if sprite.is_dead:
+                    continue
+
                 if -2 <= int(math.degrees(sprite_hit.angel)) <= 2 and sprite_hit.distance < ray_cast_distance:
                     self._sprites[sprite_hit.sprite_index].kill()
                     SoundEffect(SPRITE_HIT_SOUND).play_sound()
