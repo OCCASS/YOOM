@@ -20,10 +20,7 @@ def create_map(map_):
         for col_index, el in enumerate(row):
             if el in WALL_CHARS:
                 x, y = col_index * TILE, row_index * TILE
-                if el == '1':
-                    WORLD_MAP[(x, y)] = '1'
-                elif el == '2':
-                    WORLD_MAP[(x, y)] = '1'
+                WORLD_MAP[(x, y)] = el
 
 
 def create_minimap(map_):
