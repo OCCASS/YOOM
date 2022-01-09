@@ -154,7 +154,7 @@ class MovableSprite(StaticSprite):
         self._speed = speed
         self._hit_distance = hit_distance
         self._delay = 0
-        self._attack = True
+        self._attack = False
         self._attack_animation_list = None if attack_animation_list is None else attack_animation_list.copy()
         self._death_animation_list = None if death_animation_list is None else death_animation_list.copy()
         self._is_death_animation = False
