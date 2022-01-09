@@ -1,4 +1,5 @@
 import math
+import os.path
 from os import listdir
 from os.path import isfile, join
 
@@ -108,7 +109,7 @@ MENU_THEME = 'music/menu.mp3'
 DAMAGE_SOUND = 'sound/damage.wav'
 DEAD_SOUND = 'sound/dead.wav'
 MUSIC_FOLDER = 'Levels_music'
-MUSIC_FILES = ['Levels_music/' + file for file in listdir(MUSIC_FOLDER) if isfile(join(MUSIC_FOLDER, file))]
+MUSIC_FILES = [os.path.join(MUSIC_FOLDER, file) for file in listdir(MUSIC_FOLDER) if isfile(join(MUSIC_FOLDER, file))]
 
 # Настройки оружия
 WEAPON_FILE = 'WeaponSprite/'
