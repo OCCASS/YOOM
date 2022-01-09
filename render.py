@@ -4,7 +4,7 @@ from config import *
 from hit import RayCastHit, SpriteHit
 from load_image import load_image
 from ray_casting import ray_casting, sprites_ray_casting
-from sprite import MovableSprite
+from staticsprite import MovableSprite
 from utils import world_pos2cell
 
 """
@@ -89,18 +89,18 @@ class Render:
                 if isinstance(sprite, MovableSprite):
                     self.sprites[hit.sprite_index].full_update(self._player)
                 if hit.distance > TILE:
-                    texture = sprite.get_texture()
-                    self.draw_sprite(texture, hit.distance, hit.casted_ray_index, sprite.scale)
+                    self.draw_sprite(sprite.get_texture(), hit.distance, hit.casted_ray_index, sprite.vertical_scale,
+                                     sprite.vertical_shift)
 
-    def draw_sprite(self, texture, distance, current_ray, scale):
+    def draw_sprite(self, texture, distance, current_ray, vertical_scale, vertical_shift):
         distance = max(distance, MIN_DISTANCE)
-        projection_height = min(PROJECTION_COEFFICIENT / distance, SCREEN_HEIGHT) * scale
-        projection_width = projection_height * scale
+        projection_height = min(PROJECTION_COEFFICIENT / distance, SCREEN_HEIGHT) * vertical_scale
+        projection_width = projection_height
         sprite_x = current_ray * SCALE - projection_width // 2
         sprite_y = HALF_SCREEN_HEIGHT - projection_height // 2
 
         texture = pygame.transform.scale(texture, (projection_width, projection_height))
-        self.screen.blit(texture, (sprite_x, sprite_y))
+        self.screen.blit(texture, (sprite_x, sprite_y + vertical_shift))
 
     def _draw_wall(self, distance, offset, hit_index, point):
         cell = world_pos2cell(*point)

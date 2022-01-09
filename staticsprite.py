@@ -30,8 +30,13 @@ sprite_textures = {
     },
     '5': {
         'default': collections.deque(
-            [load_image(TEXTURES_PATH, f'flame/{i}.png') for i in range(FLAME_ANIMATION_FLAMES_COUNT)]),
+            [load_image(TEXTURES_PATH, f'flame/{i}.png') for i in range(FLAME_ANIMATION_FRAMES_COUNT)]),
         'dead': load_image(TEXTURES_PATH, 'flame/dead.png')
+    },
+    '6': {
+        'default': collections.deque(
+            [load_image(TEXTURES_PATH, f'barrel/{i}.png') for i in range(BARREL_ANIMATION_FRAME_COUNT)]),
+        'dead': load_image(TEXTURES_PATH, 'barrel/dead.png')
     }
 }
 
@@ -50,12 +55,14 @@ def sprites_update(sprites, player):
     return sprites
 
 
-class Sprite:
-    def __init__(self, animation_list, dead_texture, pos, scale=1.0):
+class StaticSprite:
+    def __init__(self, animation_list, dead_texture, pos, vertical_scale=1.0, vertical_shift=0.0, destroyed=False):
         self.dead_texture = dead_texture
         self.pos = pos
         self.is_dead = False
-        self.scale = scale
+        self.vertical_scale = vertical_scale
+        self.vertical_shift = vertical_shift
+        self.destroyed = destroyed
 
         self.animation_list = animation_list
         self._animation_count = 0
@@ -70,18 +77,28 @@ class Sprite:
         self.is_dead = False
 
     def get_texture(self):
-        return self.animation_list[0]
+        if not self.destroyed:
+            return self.animation_list[0]
+        else:
+            if self.is_dead:
+                return self.dead_texture
+            else:
+                return self.animation_list[0]
 
     def update(self):
         self._animation_count += 1
-        if self._animation_count == ANIMATION_SPEED * 3:
+        if self._animation_count == ANIMATION_SPEED * 5:
             self.animation_list.rotate(-1)
             self._animation_count = 0
 
+    def copy(self):
+        return StaticSprite(self.animation_list, self.dead_texture, self.pos, self.vertical_scale, self.vertical_shift)
 
-class MovableSprite(Sprite):
-    def __init__(self, animation_list, dead_texture, pos, speed, damage, hit_distance, scale=1.0):
-        super(MovableSprite, self).__init__(animation_list, dead_texture, pos, scale)
+
+class MovableSprite(StaticSprite):
+    def __init__(self, animation_list, dead_texture, pos, speed, damage, hit_distance, vertical_scale=1.0,
+                 vertical_shift=0.0):
+        super(MovableSprite, self).__init__(animation_list, dead_texture, pos, vertical_scale, vertical_shift)
         self.speed = speed
         self.damage = damage
         self.hit_distance = hit_distance
@@ -132,30 +149,35 @@ class MovableSprite(Sprite):
         return False
 
 
-sprites_dict = {
+movable_sprites_dict = {
     '3': MovableSprite(sprite_textures['3']['default'], sprite_textures['3']['dead'], None, speed=2, damage=5,
                        hit_distance=SPRITE_HIT_DISTANCE * 2),
     '4': MovableSprite(sprite_textures['4']['default'], sprite_textures['4']['dead'], None, speed=1, damage=3,
-                       hit_distance=SPRITE_HIT_DISTANCE * 5, scale=.5)
+                       hit_distance=SPRITE_HIT_DISTANCE * 5, vertical_scale=.5)
+}
+
+static_sprites_dict = {
+    '5': StaticSprite(sprite_textures['5']['default'], sprite_textures['5']['dead'], None, 0.7, 20),
+    '6': StaticSprite(sprite_textures['6']['default'], sprite_textures['6']['dead'], None, 0.5, 70, True)
 }
 
 
-def create_sprites(world_map) -> list[Sprite]:
+def create_sprites(world_map) -> list[StaticSprite]:
     sprites = []
     for row_index, row in enumerate(world_map):
         for col_index, el in enumerate(row):
             if el in SPRITE_CHARS:
                 x, y = col_index * TILE + TILE // 2, row_index * TILE + TILE // 2
-                texture = sprite_textures[el]
                 if el in STATIC_SPRITES:
-                    sprite = Sprite(texture['default'], texture['dead'], (x, y))
-                    sprite.reset()
-                    sprites.append(sprite)
+                    sprite = static_sprites_dict[el].copy()
                 elif el in MOVABLE_SPRITES:
-                    sprite = sprites_dict[el].copy()
+                    sprite = movable_sprites_dict[el].copy()
+
+                if el in SPRITE_CHARS:
                     sprite.pos = (x, y)
                     sprite.reset()
                     sprites.append(sprite)
+
     return sprites
 
 
