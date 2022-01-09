@@ -55,6 +55,14 @@ class Player:
         self.current_gun_index -= delta
         self.current_gun_index %= len(self.weapons)
 
+    def on_mouse_down(self, event, sprites):
+        if event.button == pygame.BUTTON_LEFT:
+            self.do_shot(sprites)
+        if event.button == pygame.BUTTON_WHEELDOWN:
+            self.set_weapon(-1)
+        if event.button == pygame.BUTTON_WHEELUP:
+            self.set_weapon(1)
+
     def do_shot(self, sprites):
         if self._can_shot():
             Weapon.fire_sound(self.weapons[self.current_gun_index])

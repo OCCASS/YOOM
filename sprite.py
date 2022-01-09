@@ -1,13 +1,9 @@
-import math
 from copy import deepcopy
 
-from config import TILE, SPRITE_CHARS, MAP, TEXTURES_PATH, STATIC_SPRITES, MOVABLE_SPRITES
+from config import TILE, SPRITE_CHARS, TEXTURES_PATH, STATIC_SPRITES, MOVABLE_SPRITES
 from load_image import load_image
-from point import Point
 from utils import world_pos2cell, get_distance
 from wave_algorithm import *
-from ray import Ray
-import numpy
 
 """
 Павлов Тимур 08.01.2022. Создан класс Sprite и функция create_sprites
@@ -108,10 +104,10 @@ class MovableSprite(Sprite):
             self._move_x_coefficient, self._move_y_coefficient = 0, 0
 
 
-def create_sprites() -> list[Sprite]:
+def create_sprites(world_map) -> list[Sprite]:
     sprites = []
 
-    for row_index, row in enumerate(MAP):
+    for row_index, row in enumerate(world_map):
         for col_index, el in enumerate(row):
             if el in SPRITE_CHARS:
                 x, y = col_index * TILE + TILE // 2, row_index * TILE + TILE // 2
