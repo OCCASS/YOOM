@@ -57,9 +57,9 @@ class SoundEffect:
     def init_track(self, path):
         self.effect = pygame.mixer.Sound(path)
 
-    def play_sound(self):
-        if not pygame.mixer.Channel(2).get_busy():
-            pygame.mixer.Channel(2).play(self.effect)
+    def play_sound(self, channel=2):
+        if not pygame.mixer.Channel(channel).get_busy():
+            pygame.mixer.Channel(channel).play(self.effect)
 
     @staticmethod
     def change_effects_volume(volume):

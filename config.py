@@ -45,6 +45,7 @@ SENSITIVITY = 0.005
 MAX_VIEW_DISTANCE = 800
 PLAYER_SIZE = 20
 PLAYER_HEALTH = 100
+SHOOTING_SPREAD = 2
 
 # Карта и настройки карты
 WALL_CHARS = ('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q')
@@ -126,6 +127,7 @@ WALL_HIT_SOUND = 'sound/wall_hit.mp3'
 MENU_THEME = 'music/menu.mp3'
 DAMAGE_SOUND = 'sound/damage.wav'
 DEAD_SOUND = 'sound/dead.wav'
+DO_DAMAGE_SOUND = 'sound/do_damage.mp3'
 MUSIC_FOLDER = 'Levels_music'
 MUSIC_FILES = [os.path.join(MUSIC_FOLDER, file) for file in listdir(MUSIC_FOLDER) if isfile(join(MUSIC_FOLDER, file))]
 

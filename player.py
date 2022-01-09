@@ -35,6 +35,18 @@ class Player:
         self._sprites = sprites
         self._stats = stats
 
+    @property
+    def pos(self) -> Point:
+        return Point(self._x, self._y)
+
+    @property
+    def x(self):
+        return self._x
+
+    @property
+    def y(self):
+        return self._y
+
     def update(self):
         self._process_mouse()
         self._process_keyboard()
@@ -45,13 +57,13 @@ class Player:
 
     def dead(self):
         self.health = 0
-        SoundEffect(DEAD_SOUND).play_sound()
+        SoundEffect(DEAD_SOUND).play_sound(3)
 
     def draw(self):
         self._shot()
 
     def set_weapon(self, delta):
-        self.set_shot(False)
+        self._set_shot(False)
         self.weapons[self.current_gun_index].reset()
         GunSound.stop_sound()
         if delta == -1:
@@ -68,23 +80,23 @@ class Player:
         if event.button == pygame.BUTTON_WHEELUP:
             self.set_weapon(1)
 
+    def shot_with_effects(self):
+        Weapon.fire_sound(self.weapons[self.current_gun_index])
+        self._set_shot(True)
+        self.weapons[self.current_gun_index].shot()
+
     def do_shot(self):
         if self._can_shot():
-            Weapon.fire_sound(self.weapons[self.current_gun_index])
-            self.set_shot(True)
-            self.weapons[self.current_gun_index].shot()
+            self.shot_with_effects()
             all_casted_sprites = sprites_ray_casting(self._sprites, self.pos, self.direction)
-            ray = Ray(self.pos, self.direction, MAX_VIEW_DISTANCE)
-            ray_cast_distance = ray.ray_cast().distance
+            ray_cast = Ray(self.pos, self.direction, MAX_VIEW_DISTANCE).ray_cast()
+            ray_cast_distance = ray_cast.distance
             for sprite_hit in all_casted_sprites:
                 sprite = self._sprites[sprite_hit.sprite_index]
-
-                if sprite.is_dead:
-                    continue
-
-                if -2 <= int(math.degrees(sprite_hit.angel)) <= 2 and sprite_hit.distance < ray_cast_distance:
+                if self._is_can_kill_the_sprite(sprite_hit.angel, sprite_hit.distance,
+                                                ray_cast_distance) and not sprite.is_dead:
                     self._sprites[sprite_hit.sprite_index].kill()
-                    SoundEffect(SPRITE_HIT_SOUND).play_sound()
+                    SoundEffect(SPRITE_HIT_SOUND).play_sound(3)
                     if isinstance(self._sprites[sprite_hit.sprite_index], MovableSprite):
                         self._stats.update_kills()
                     break
@@ -92,25 +104,40 @@ class Player:
         if current_weapon.ammo <= 0:
             Weapon.empty_fire_sound()
 
-    def set_shot(self, val):
-        if (not val) == self.shot:
-            self.shot = val
+    @staticmethod
+    def _is_hooked_to_sprite(angel):
+        return -SHOOTING_SPREAD <= int(math.degrees(angel)) <= SHOOTING_SPREAD
+
+    @staticmethod
+    def _is_can_hit_sprite(distance_to_sprite, distance_to_wall):
+        return distance_to_sprite < distance_to_wall
+
+    def _is_can_kill_the_sprite(self, angel, distance_to_sprite, distance_to_wall):
+        return self._is_hooked_to_sprite(angel) and self._is_can_hit_sprite(distance_to_sprite, distance_to_wall)
 
     def _can_shot(self):
         current_weapon = self.weapons[self.current_gun_index]
         return not self.shot and current_weapon.ammo > 0
 
-    @property
-    def pos(self) -> Point:
-        return Point(self._x, self._y)
+    def _set_shot(self, val):
+        if (not val) == self.shot:
+            self.shot = val
 
-    @property
-    def x(self):
-        return self._x
-
-    @property
-    def y(self):
-        return self._y
+    def _process_keyboard(self):
+        pressed_keys = pygame.key.get_pressed()
+        cos_a, sin_a = math.cos(self.direction), math.sin(self.direction)
+        if pressed_keys[pygame.K_w]:
+            if self._can_move_forward():
+                self._move_forward(cos_a, sin_a)
+        if pressed_keys[pygame.K_s]:
+            if self._can_move_backward():
+                self._move_backward(cos_a, sin_a)
+        if pressed_keys[pygame.K_a]:
+            if self._can_move(self.direction - math.pi / 2, PLAYER_SIZE * 3):
+                self._move_right(cos_a, sin_a)
+        if pressed_keys[pygame.K_d]:
+            if self._can_move(self.direction + math.pi / 2, PLAYER_SIZE * 3):
+                self._move_left(cos_a, sin_a)
 
     def _can_move_forward(self):
         if self._can_move(self.direction, PLAYER_SIZE * 4):
@@ -145,22 +172,6 @@ class Player:
     def _move_left(self, cos_a, sin_a):
         self._x += -sin_a * PLAYER_SPEED
         self._y += cos_a * PLAYER_SPEED
-
-    def _process_keyboard(self):
-        pressed_keys = pygame.key.get_pressed()
-        cos_a, sin_a = math.cos(self.direction), math.sin(self.direction)
-        if pressed_keys[pygame.K_w]:
-            if self._can_move_forward():
-                self._move_forward(cos_a, sin_a)
-        if pressed_keys[pygame.K_s]:
-            if self._can_move_backward():
-                self._move_backward(cos_a, sin_a)
-        if pressed_keys[pygame.K_a]:
-            if self._can_move(self.direction - math.pi / 2, PLAYER_SIZE * 3):
-                self._move_right(cos_a, sin_a)
-        if pressed_keys[pygame.K_d]:
-            if self._can_move(self.direction + math.pi / 2, PLAYER_SIZE * 3):
-                self._move_left(cos_a, sin_a)
 
     def _process_mouse(self):
         if pygame.mouse.get_focused():
