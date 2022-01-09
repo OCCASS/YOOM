@@ -1,9 +1,9 @@
 from config import *
+from hit import SpriteHit
 from point import Point
 from ray import Ray, RayCastHit
-from utils import get_distance
-from hit import SpriteHit
 from sprite import Sprite
+from utils import get_distance
 
 """
 Вайман Ангелина 28.12.2021. Создана функция ray_casting.

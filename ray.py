@@ -1,6 +1,6 @@
 from config import *
-from point import Point
 from hit import RayCastHit
+from point import Point
 
 """
 Павлов Тимур 01.01.2021. Написаны классы Ray и RayCastHit 

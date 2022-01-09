@@ -5,7 +5,6 @@ from point import Point
 from ray import Ray
 from ray_casting import sprites_ray_casting
 from sound import SoundEffect, GunSound
-from sprite import MovableSprite
 from weapon import Weapon
 
 """

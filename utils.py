@@ -1,6 +1,8 @@
-import numba
 import math
-from config import TILE, MAP_SIZE
+
+import numba
+
+from config import TILE
 
 """
 Павлов Тимур 08.01.2022. Создана функция get_distance, world_pos2cell
