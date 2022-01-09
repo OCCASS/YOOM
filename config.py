@@ -105,6 +105,8 @@ EMPTY_SHOT_SOUND = 'sound/null_ammo.mp3'
 SPRITE_HIT_SOUND = 'sound/hit.mp3'
 WALL_HIT_SOUND = 'sound/wall_hit.mp3'
 MENU_THEME = 'music/menu.mp3'
+DAMAGE_SOUND = 'sound/damage.wav'
+DEAD_SOUND = 'sound/dead.wav'
 MUSIC_FOLDER = 'Levels_music'
 MUSIC_FILES = ['Levels_music/' + file for file in listdir(MUSIC_FOLDER) if isfile(join(MUSIC_FOLDER, file))]
 

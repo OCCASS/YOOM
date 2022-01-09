@@ -43,6 +43,10 @@ class Player:
     def damage(self, val=1):
         self.health -= val
 
+    def dead(self):
+        self.health = 0
+        SoundEffect(DEAD_SOUND).play_sound()
+
     def draw(self):
         self._shot()
 

@@ -4,6 +4,7 @@ from config import *
 from load_image import load_image
 from point import Point
 from ray import Ray
+from sound import SoundEffect
 from utils import get_distance, world_pos2cell, angle_between_vectors
 
 """
@@ -27,6 +28,7 @@ def sprites_update(sprites, player):
             sprites[i].move_to(player.x, player.y)
 
             if sprite.check_damage(player):
+                SoundEffect(DAMAGE_SOUND).play_sound()
                 player.damage(sprite.damage)
 
     return sprites
@@ -97,10 +99,12 @@ def create_sprites(world_map) -> list[Sprite]:
                 texture = sprite_textures[el]
                 if el in STATIC_SPRITES:
                     sprite = Sprite(texture, (x, y))
+                    sprite.is_dead = False
                     sprites.append(sprite)
                 elif el in MOVABLE_SPRITES:
                     sprite = sprites_dict[el]
                     sprite.pos = (x, y)
+                    sprite.is_dead = False
                     sprites.append(sprite)
     return sprites
 
