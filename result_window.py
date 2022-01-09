@@ -7,6 +7,10 @@ from config import *
 from menu import button
 from load_image import load_image
 
+"""
+Вайман Ангелина 08.01.2022. Добавлено окно выигрыша и проигрыша
+"""
+
 font = pygame.font.Font(FONT, 200)
 font_res = pygame.font.Font(FONT, 75)
 
@@ -98,4 +102,3 @@ class Losing:
         color = random.randrange(0, 255)
         button(self.screen, LOSE, (color, color, color), SENT_POS, SENT_SIZE[0], SENT_SIZE[1], font)
         show_res(self.screen, total_time, kills_count)
-
