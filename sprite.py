@@ -7,7 +7,7 @@ from load_image import load_image
 from point import Point
 from ray import Ray
 from sound import SpritesSound
-from utils import get_distance, world_pos2cell, angle_between_vectors
+from utils import get_distance, world_pos2cell, angle_between_vectors, compare_deque
 
 """
 Павлов Тимур 08.01.2022. Создан класс Sprite и функция create_sprites
@@ -109,7 +109,7 @@ class StaticSprite:
         self.vertical_shift = vertical_shift
         self.destroyed = destroyed
 
-        self._default_animation_list = animation_list.copy()
+        self.default_animation_list = animation_list.copy()
         self.animation_list = animation_list
         self.animation_count = 0
         self.animation_speed = animation_speed
@@ -174,17 +174,27 @@ class MovableSprite(StaticSprite):
     def attack(self):
         if self._attack_animation_list and not self._attack:
             self.animation_list = self._attack_animation_list.copy()
+            self.animation_list.rotate(-1)
 
         self._attack = True
 
     def stop_attack(self):
-        self._attack = False
+        if self._attack_animation_list is not None and self._attack:
+            if self._attack and compare_deque(self.animation_list, self._attack_animation_list):
+                self._attack = False
+                self.animation_list = self.default_animation_list.copy()
+        else:
+            self._attack = False
 
     def full_update(self, player):
         self.move_to(player.x, player.y)
         super(MovableSprite, self).update()
 
     def get_texture(self):
+        if self._is_death_animation and self._death_animation_list is not None:
+            if compare_deque(self.animation_list, self._death_animation_list):
+                self.animation_list = collections.deque([self.dead_texture.copy()])
+
         if self.is_dead and self._death_animation_list is None:
             return self.dead_texture
         else:
