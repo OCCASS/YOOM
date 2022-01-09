@@ -47,8 +47,8 @@ PLAYER_HEALTH = 100
 
 # Карта и настройки карты
 WALL_CHARS = ('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q')
-STATIC_SPRITES = ('3', '4')
-MOVABLE_SPRITES = ('5', '6')
+STATIC_SPRITES = tuple()
+MOVABLE_SPRITES = ('3',)
 SPRITE_CHARS = (*STATIC_SPRITES, *MOVABLE_SPRITES)
 TILE = 125
 WORLD_MAP = dict()
