@@ -110,9 +110,9 @@ def create_sprites(world_map) -> list[Sprite]:
 
 
 def is_win(sprites):
+    sprites = list(filter(lambda i: isinstance(i, MovableSprite), sprites))
     for sprite in sprites:
-        if isinstance(sprite, MovableSprite):
-            if not sprite.is_dead:
-                return False
+        if not sprite.is_dead:
+            return False
 
     return True
