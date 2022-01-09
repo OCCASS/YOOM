@@ -1,5 +1,9 @@
 from time import time
 
+"""
+Павлов Тимур 09.01.2022. Создан класс Stats
+"""
+
 
 class Stats:
     def __init__(self):

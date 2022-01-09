@@ -1,7 +1,8 @@
 import math
-import numpy
 from os import listdir
 from os.path import isfile, join
+
+import numpy
 
 """
 Павлов Тимур:
@@ -9,6 +10,7 @@ from os.path import isfile, join
 28.12.2021. Внесены поправки
 01.01.2021. Добавлены настройки проекции
 08.01.2022. Добавлены настройки проекции
+09.01.2022. Добавлены настройки спрайтов и игрока
 
 Вайман Ангелина:
 28.12.2021. Внесены поправки

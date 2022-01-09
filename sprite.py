@@ -8,7 +8,8 @@ from utils import get_distance, world_pos2cell, angle_between_vectors
 
 """
 Павлов Тимур 08.01.2022. Создан класс Sprite и функция create_sprites
-Павлов Тимур 09.01.2022. Создан класс MovableSprite
+Павлов Тимур 09.01.2022. Создан класс MovableSprite, создана функция sprites_update, is_win, улучшен алгоритм поиска 
+    пути и дамага игрока
 """
 
 sprite_textures = {

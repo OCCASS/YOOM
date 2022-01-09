@@ -18,6 +18,7 @@ from sprite import MovableSprite
 
 Палов Тимур:
 08.01.2022. Создана поддержка отрисовки спрайтов
+09.01.2022. Создана обработка двигающихся спрайтов
 """
 
 sky_texture = load_image(TEXTURES_PATH, SKY_TEXTURE)
