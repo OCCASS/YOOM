@@ -14,6 +14,7 @@ from utils import get_distance, world_pos2cell, angle_between_vectors
 Павлов Тимур 09.01.2022. Создан класс MovableSprite, создана функция sprites_update, is_win, улучшен алгоритм поиска 
     пути и дамага игрока
 Павлов Тимур 09.01.2022. Добавлена анимация спрайтов
+Павлов Тимур 09.01.2022. Добавлена анимация статичным спрайтам
 """
 
 sprite_textures = {
@@ -27,12 +28,18 @@ sprite_textures = {
             [load_image(TEXTURES_PATH, f'pin/{i}.png') for i in range(PIN_ANIMATION_FRAMES_COUNT)]),
         'dead': load_image(TEXTURES_PATH, 'pin/dead.png')
     },
+    '5': {
+        'default': collections.deque(
+            [load_image(TEXTURES_PATH, f'flame/{i}.png') for i in range(FLAME_ANIMATION_FLAMES_COUNT)]),
+        'dead': load_image(TEXTURES_PATH, 'flame/dead.png')
+    }
 }
 
 
 def sprites_update(sprites, player):
     for i in range(len(sprites)):
         sprite = sprites[i]
+        sprite.update()
         if isinstance(sprite, MovableSprite):
             sprites[i].move_to(player.x, player.y)
 
@@ -62,6 +69,15 @@ class Sprite:
     def reset(self):
         self.is_dead = False
 
+    def get_texture(self):
+        return self.animation_list[0]
+
+    def update(self):
+        self._animation_count += 1
+        if self._animation_count == ANIMATION_SPEED * 3:
+            self.animation_list.rotate(-1)
+            self._animation_count = 0
+
 
 class MovableSprite(Sprite):
     def __init__(self, animation_list, dead_texture, pos, speed, damage, hit_distance, scale=1.0):
@@ -71,18 +87,15 @@ class MovableSprite(Sprite):
         self.hit_distance = hit_distance
         self._delay = 0
 
+    def full_update(self, player):
+        self.move_to(player.x, player.y)
+        super(MovableSprite, self).update()
+
     def get_texture(self):
         if self.is_dead:
             return self.dead_texture
         else:
             return self.animation_list[0]
-
-    def update(self, player):
-        self.move_to(player.x, player.y)
-        self._animation_count += 1
-        if self._animation_count == ANIMATION_SPEED * 2:
-            self.animation_list.rotate(-1)
-            self._animation_count = 0
 
     def copy(self):
         return MovableSprite(self.animation_list, self.dead_texture, self.pos, self.speed, self.damage,
@@ -135,7 +148,7 @@ def create_sprites(world_map) -> list[Sprite]:
                 x, y = col_index * TILE + TILE // 2, row_index * TILE + TILE // 2
                 texture = sprite_textures[el]
                 if el in STATIC_SPRITES:
-                    sprite = Sprite(texture['default'], texture['dead'], (x, y))
+                    sprite = Sprite(texture['default'], texture['dead'], (x, y), 0.7)
                     sprite.reset()
                     sprites.append(sprite)
                 elif el in MOVABLE_SPRITES:

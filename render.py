@@ -84,7 +84,7 @@ class Render:
             elif isinstance(hit, SpriteHit):
                 sprite = self.sprites[hit.sprite_index]
                 if isinstance(sprite, MovableSprite):
-                    self.sprites[hit.sprite_index].update(self._player)
+                    self.sprites[hit.sprite_index].full_update(self._player)
                 if hit.distance > TILE:
                     texture = sprite.get_texture()
                     self.draw_sprite(texture, hit.distance, hit.casted_ray_index, sprite.scale)

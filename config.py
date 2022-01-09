@@ -13,6 +13,7 @@ import numpy
 08.01.2022. Добавлены настройки проекции
 09.01.2022. Добавлены настройки спрайтов и игрока
 09.01.2022. Добавлены новые звуки
+09.01.2022. Добавлены настройки анимации спрайтов
 
 Вайман Ангелина:
 28.12.2021. Внесены поправки
@@ -47,7 +48,7 @@ PLAYER_HEALTH = 100
 
 # Карта и настройки карты
 WALL_CHARS = ('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q')
-STATIC_SPRITES = tuple()
+STATIC_SPRITES = ('5',)
 MOVABLE_SPRITES = ('3', '4')
 SPRITE_CHARS = (*STATIC_SPRITES, *MOVABLE_SPRITES)
 TILE = 125
@@ -133,7 +134,7 @@ WEAPON_FILE = 'WeaponSprite/'
 WEAPON_BASE = '0.png'
 GUN_BASE = '0.png'
 WEAPON_SIZE = (400, 260)
-ANIMATION_SPEED = 6
+ANIMATION_SPEED = 10
 
 # Настройки меню
 MENU_BTN_SIZE = (360, 100)
@@ -188,6 +189,7 @@ SPRITE_HIT_DISTANCE = 120
 SPRITE_DAMAGE_DELAY = 300
 DEVIL_ANIMATION_FRAMES_COUNT = 4
 PIN_ANIMATION_FRAMES_COUNT = 7
+FLAME_ANIMATION_FLAMES_COUNT = 16
 
 # Настройки векторов
 RIGHT_VECTOR = (1, 0, 0)
