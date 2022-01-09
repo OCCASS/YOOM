@@ -60,7 +60,8 @@ sprite_textures = {
     'a': {
         'default': collections.deque(
             [load_image(TEXTURES_PATH, f'soldier/{i}.png') for i in range(SOLDIER_ANIMATION_FRAMES_COUNT)]),
-        'dead': load_image(TEXTURES_PATH, f'soldier/dead.png'),
+        'dead': collections.deque(
+            [load_image(TEXTURES_PATH, f'soldier/dead/{i}.png') for i in range(SOLDIER_DEATH_ANIMATION_FRAMES_COUNT)]),
         'attack': collections.deque(
             [load_image(TEXTURES_PATH, f'soldier/attack/{i}.png') for i in range(SOLDIER_ATTACK_ANIMATION_FRAMES_COUNT)]
         )
@@ -155,6 +156,20 @@ class MovableSprite(StaticSprite):
         self._delay = 0
         self._attack = True
         self._attack_animation_list = None if attack_animation_list is None else attack_animation_list.copy()
+        self._death_animation_list = None if death_animation_list is None else death_animation_list.copy()
+        self._is_death_animation = False
+
+    def kill(self):
+        self.is_dead = True
+
+        if self._death_animation_list is not None:
+            if not self._is_death_animation:
+                self.animation_list = self._death_animation_list.copy()
+                self.animation_list.rotate(-1)
+                self._is_death_animation = True
+        else:
+            self._is_death_animation = False
+            self.animation_list = collections.deque([self.dead_texture.copy()])
 
     def attack(self):
         if self._attack_animation_list and not self._attack:
@@ -170,7 +185,7 @@ class MovableSprite(StaticSprite):
         super(MovableSprite, self).update()
 
     def get_texture(self):
-        if self.is_dead:
+        if self.is_dead and self._death_animation_list is None:
             return self.dead_texture
         else:
             return self.animation_list[0]
@@ -178,7 +193,7 @@ class MovableSprite(StaticSprite):
     def copy(self):
         return MovableSprite(self.animation_list, self.dead_texture, self.pos, self._speed, self.damage,
                              self._hit_distance, self.vertical_scale, self.vertical_shift, self._attack_animation_list,
-                             self.animation_speed)
+                             self._death_animation_list, self.animation_speed)
 
     def _get_angel_to_player(self, player):
         dx, dy = player.x - self.pos[0], player.y - self.pos[1]
@@ -224,8 +239,9 @@ movable_sprites_dict = {
                        hit_distance=SPRITE_HIT_DISTANCE * 1.5, vertical_scale=2),
     '9': MovableSprite(sprite_textures['9']['default'], sprite_textures['9']['dead'], None, speed=2, damage=5,
                        hit_distance=SPRITE_HIT_DISTANCE * 1.5, attack_animation_list=sprite_textures['9']['attack']),
-    'a': MovableSprite(sprite_textures['a']['default'], sprite_textures['a']['dead'], None, speed=1, damage=7,
-                       hit_distance=SPRITE_HIT_DISTANCE * 6, attack_animation_list=sprite_textures['a']['attack'])
+    'a': MovableSprite(sprite_textures['a']['default'], sprite_textures['a']['dead'][-1], None, speed=1, damage=7,
+                       hit_distance=SPRITE_HIT_DISTANCE * 6, attack_animation_list=sprite_textures['a']['attack'],
+                       death_animation_list=sprite_textures['a']['dead'])
 }
 
 static_sprites_dict = {
