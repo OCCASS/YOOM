@@ -5,12 +5,12 @@ from map import create_map, create_minimap
 from menu import MainMenu, show_info
 from player import Player
 from render import Render
+from result_window import Win, Losing
 from sound import Music
 from sprite import create_sprites, sprites_update, is_win
 from stats import Stats
 from utils import is_game_over
 from weapon import Weapon
-from result_window import Win, Losing
 
 """
 Павлов Тимур 26.12.2021. Создан класс Game

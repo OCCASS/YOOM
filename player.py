@@ -5,6 +5,7 @@ from point import Point
 from ray import Ray
 from ray_casting import sprites_ray_casting
 from sound import SoundEffect, GunSound
+from sprite import MovableSprite
 from weapon import Weapon
 
 """
@@ -76,7 +77,10 @@ class Player:
                 if -1 <= int(math.degrees(sprite_hit.angel)) <= 1:
                     self._sprites[sprite_hit.sprite_index].is_dead = True
                     SoundEffect(SPRITE_HIT_SOUND).play_sound()
-                    self._stats.update_kills()
+
+                    if isinstance(self._sprites[sprite_hit.sprite_index], MovableSprite):
+                        self._stats.update_kills()
+
                     break
 
         current_weapon = self.weapons[self.current_gun_index]
