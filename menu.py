@@ -209,4 +209,4 @@ class Levels(Menu):
         if self.btn_menu_back.collidepoint(mouse_pos):
             button(self.screen, BACK_NAME, WHITE, BTN_EXIT_BACK_POS, BTN_EXIT_BACK_SIZE[0], BTN_EXIT_BACK_SIZE[1])
             if mouse_click[0]:
-                self.levels_run = False
+                self.running = False
