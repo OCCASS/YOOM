@@ -4,7 +4,7 @@ from config import *
 from point import Point
 from ray import Ray
 from ray_casting import sprites_ray_casting
-from sound import GunSound, Sounds
+from sound import GunSound, SpritesSound
 from sprite import MovableSprite
 from weapon import Weapon
 
@@ -57,7 +57,7 @@ class Player:
 
     def dead(self):
         self.health = 0
-        Sounds.dead(3)
+        SpritesSound.dead(3)
 
     def draw(self):
         self._shot()
@@ -96,17 +96,17 @@ class Player:
                 if self._is_can_kill_the_sprite(sprite_hit.angel, sprite_hit.distance,
                                                 ray_cast_distance) and not sprite.is_dead:
                     self._sprites[sprite_hit.sprite_index].kill()
-                    Sounds.sprite_hit(3)
+                    SpritesSound.sprite_hit(3)
                     if isinstance(self._sprites[sprite_hit.sprite_index], MovableSprite):
                         self._stats.update_kills()
 
                     break
             else:
-                Sounds.wall_hit(4)
+                SpritesSound.wall_hit(4)
 
         current_weapon = self.weapons[self.current_gun_index]
         if current_weapon.ammo <= 0:
-            Sounds.no_ammo(3)
+            SpritesSound.no_ammo(3)
 
     @staticmethod
     def _is_hit_to_wall(sprite_hit_distance, distance_to_wall):
@@ -208,4 +208,4 @@ class Player:
 
         if (pressed_keys[pygame.K_w] or pressed_keys[pygame.K_s]
                 or pressed_keys[pygame.K_a] or pressed_keys[pygame.K_d]):
-            Sounds.footstep(1)
+            SpritesSound.footstep(1)

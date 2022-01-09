@@ -6,7 +6,7 @@ from config import *
 from load_image import load_image
 from point import Point
 from ray import Ray
-from sound import Sounds
+from sound import SpritesSound
 from utils import get_distance, world_pos2cell, angle_between_vectors
 
 """
@@ -68,8 +68,8 @@ def sprites_update(sprites, player):
             sprites[sprite_index].move_to(player.x, player.y)
 
             if sprite.check_damage(player):
-                Sounds.damage()
-                Sounds.get_damage(3)
+                SpritesSound.damage()
+                SpritesSound.get_damage(3)
 
                 sprites[sprite_index].attack()
                 player.damage(sprite.damage)
