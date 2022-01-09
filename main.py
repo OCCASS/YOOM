@@ -2,13 +2,14 @@ import pygame
 
 from config import *
 from map import create_map, create_minimap
-from menu import MainMenu, show_info, show_game_over, show_win
+from menu import MainMenu, show_info
 from player import Player
 from render import Render
 from sound import Music
 from sprite import create_sprites, sprites_update, is_win
 from utils import is_game_over
 from weapon import Weapon
+from result_window import Win, Losing
 
 """
 Павлов Тимур 26.12.2021. Создан класс Game
@@ -36,6 +37,8 @@ class Game:
         ]
 
         self._menu = MainMenu(self._screen, self._clock)
+        self._losing = Losing(self._screen, self._clock)
+        self._win = Win(self._screen, self._clock)
 
     def run(self):
         self._menu.run()
@@ -76,9 +79,9 @@ class Game:
             self._is_game_end = is_game_over(self._player) or is_win(self._sprites)
             if self._is_game_end:
                 if is_game_over(self._player):
-                    show_game_over(self._screen)
+                    self._losing.run()
                 elif is_win(self._sprites):
-                    show_win(self._screen)
+                    self._win.run()
             else:
                 self._player.update()
                 self._render.render()
