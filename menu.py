@@ -18,6 +18,7 @@ from sound import MenuMusic, SoundEffect
 08.01.2022. Добавлен класс Settings, убран баг музыки
 08.01.2022. Добавлена поддержка плейлистов
 08.01.2022. Добавлено выключение и включение звуков
+09.01.2022. Рефактор класса Settings
 
 Павлов Тимур:
 09.01.2022. Добавлена функция show_info
@@ -118,7 +119,7 @@ class MainMenu(Menu):
         self.btn_levels, self.levels = button(self.screen, LEVELS_NAME, BLACK, BTN_LEVELS_POS,
                                               MENU_BTN_SIZE[0], MENU_BTN_SIZE[1], button_font)
         self.btn_arcade, self.arcade = button(self.screen, ARCADE_NAME, BLACK, BTN_ARCADE_POS,
-                                                  MENU_BTN_SIZE[0], MENU_BTN_SIZE[1], button_font)
+                                              MENU_BTN_SIZE[0], MENU_BTN_SIZE[1], button_font)
         self.btn_settings, self.settings = button(self.screen, SETTINGS_NAME, BLACK, BTN_SETTINGS_POS,
                                                   MENU_BTN_SIZE[0], MENU_BTN_SIZE[1], button_font)
         self.btn_exit, self.exit = button(self.screen, EXIT_NAME, BLACK, BTN_EXIT_BACK_POS, BTN_EXIT_BACK_SIZE[0],
@@ -165,25 +166,19 @@ class MainMenu(Menu):
 class Settings(Menu):
     def __init__(self, screen, clock):
         super().__init__(screen, clock)
-        if self.theme.return_volume() == 0:
-            self.music_off = True
-        else:
-            self.music_off = False
-        if SoundEffect.return_volume() == (0, 0):
-            self.sound_effect_off = True
-        else:
-            self.sound_effect_off = False
+        self.music_off = True if self.theme.return_volume() == 0 else False
+        self.sound_effect_off = True if SoundEffect.return_volume() == (0, 0) else False
         self.delay = 100
 
     def _create_buttons(self):
         self.btn_music, self.music = button(self.screen, MUSIC_NAME, BLACK, BTN_MUSIC_POS, MENU_BTN_SIZE[0],
                                             MENU_BTN_SIZE[1], button_font)
-        self.check_music_off()
+        self.get_music_state()
         self.check_sound_effect()
         self.btn_back, self.back = button(self.screen, BACK_NAME, BLACK, BTN_EXIT_BACK_POS, BTN_EXIT_BACK_SIZE[0],
                                           BTN_EXIT_BACK_SIZE[1], button_font)
 
-    def check_music_off(self):
+    def get_music_state(self):
         if not self.music_off:
             self.btn_music_on, self.music = button(self.screen, MUSIC_ON_NAME, WHITE, BTN_MUSIC_ON_POS,
                                                    MENU_BTN_SIZE[0], MENU_BTN_SIZE[1], button_font)
@@ -198,12 +193,12 @@ class Settings(Menu):
         mouse_pos = pygame.mouse.get_pos()
         mouse_click = pygame.mouse.get_pressed()
         self._check_music(mouse_pos, mouse_click)
-        self._check_sound_effects(mouse_pos, mouse_click)
+        self._monitor_sound_effect(mouse_pos, mouse_click)
         self._btn_back_check(mouse_pos, mouse_click)
 
-    def _check_sound_effects(self, mouse_pos, mouse_click):
+    def _monitor_sound_effect(self, mouse_pos, mouse_click):
         if self.btn_sound_effects_on.collidepoint(mouse_pos):
-            self.check_sound_effects_on_off()
+            self.check_sound_effects_volume()
             if mouse_click[0] and not self.sound_effect_off:
                 pygame.time.delay(self.delay)
                 self.set_effects_volume(0)
@@ -213,7 +208,7 @@ class Settings(Menu):
                 self.set_effects_volume(1)
                 self.sound_effect_off = False
 
-    def check_sound_effects_on_off(self):
+    def check_sound_effects_volume(self):
         if not self.sound_effect_off:
             button(self.screen, MUSIC_ON_NAME, BLACK, BTN_SOUND_EFFECTS_ON_POS, MENU_BTN_SIZE[0], MENU_BTN_SIZE[1],
                    button_font)
@@ -264,10 +259,6 @@ class Levels(Menu):
         super().__init__(screen, clock)
         self.delay = 250
 
-    def check_chosen_level(self):
-        if self.chosen_level is not None:
-            return self.chosen_level
-
     def _create_buttons(self):
         self.btn_level_1, self.level_1 = button(self.screen, LEVEL_1_NAME, BLACK, BTN_LEVEL_1_POS,
                                                 LEVEL_BTN_SIZE[0], LEVEL_BTN_SIZE[1], button_font)
@@ -285,50 +276,27 @@ class Levels(Menu):
     def _mouse_operations(self):
         mouse_pos = pygame.mouse.get_pos()
         mouse_click = pygame.mouse.get_pressed()
-        chosen_levels = [self._btn_level_1_check(mouse_pos, mouse_click),
-                         self._btn_level_2_check(mouse_pos, mouse_click),
-                         self._btn_level_3_check(mouse_pos, mouse_click),
-                         self._btn_level_4_check(mouse_pos, mouse_click),
-                         self._btn_level_5_check(mouse_pos, mouse_click)]
+        chosen_levels = [
+            self._btns_check(mouse_pos, mouse_click, self.btn_level_1, BTN_LEVEL_1_POS, LEVEL_1_NAME, LEVEL_1),
+            self._btns_check(mouse_pos, mouse_click, self.btn_level_2, BTN_LEVEL_2_POS, LEVEL_2_NAME, LEVEL_2),
+            self._btns_check(mouse_pos, mouse_click, self.btn_level_3, BTN_LEVEL_3_POS, LEVEL_3_NAME, LEVEL_3),
+            self._btns_check(mouse_pos, mouse_click, self.btn_level_4, BTN_LEVEL_4_POS, LEVEL_4_NAME, LEVEL_4),
+            self._btns_check(mouse_pos, mouse_click, self.btn_level_5, BTN_LEVEL_5_POS, LEVEL_5_NAME, LEVEL_5)]
         for el in chosen_levels:
             if el is not None:
                 self.chosen_level = el
         self._btn_back_check(mouse_pos, mouse_click)
 
-    def _btn_level_1_check(self, mouse_pos, mouse_click):
-        if self.btn_level_1.collidepoint(mouse_pos):
-            button(self.screen, LEVEL_1_NAME, WHITE, BTN_LEVEL_1_POS, LEVEL_BTN_SIZE[0],
+    def _btns_check(self, mouse_pos, mouse_click, btn, btn_pos, name, level):
+        if btn.collidepoint(mouse_pos):
+            button(self.screen, name, WHITE, btn_pos, LEVEL_BTN_SIZE[0],
                    LEVEL_BTN_SIZE[1], button_font)
             if mouse_click[0]:
-                return load_level(LEVEL_1)
+                return load_level(level)
 
-    def _btn_level_2_check(self, mouse_pos, mouse_click):
-        if self.btn_level_2.collidepoint(mouse_pos):
-            button(self.screen, LEVEL_2_NAME, WHITE, BTN_LEVEL_2_POS, LEVEL_BTN_SIZE[0],
-                   LEVEL_BTN_SIZE[1], button_font)
-            if mouse_click[0]:
-                return load_level(LEVEL_2)
-
-    def _btn_level_3_check(self, mouse_pos, mouse_click):
-        if self.btn_level_3.collidepoint(mouse_pos):
-            button(self.screen, LEVEL_3_NAME, WHITE, BTN_LEVEL_3_POS, LEVEL_BTN_SIZE[0],
-                   LEVEL_BTN_SIZE[1], button_font)
-            if mouse_click[0]:
-                return load_level(LEVEL_3)
-
-    def _btn_level_4_check(self, mouse_pos, mouse_click):
-        if self.btn_level_4.collidepoint(mouse_pos):
-            button(self.screen, LEVEL_4_NAME, WHITE, BTN_LEVEL_4_POS, LEVEL_BTN_SIZE[0],
-                   LEVEL_BTN_SIZE[1], button_font)
-            if mouse_click[0]:
-                return load_level(LEVEL_4)
-
-    def _btn_level_5_check(self, mouse_pos, mouse_click):
-        if self.btn_level_5.collidepoint(mouse_pos):
-            button(self.screen, LEVEL_5_NAME, WHITE, BTN_LEVEL_5_POS, LEVEL_BTN_SIZE[0],
-                   LEVEL_BTN_SIZE[1], button_font)
-            if mouse_click[0]:
-                return load_level(LEVEL_5)
+    def check_chosen_level(self):
+        if self.chosen_level is not None:
+            return self.chosen_level
 
     def _btn_back_check(self, mouse_pos, mouse_click):
         if self.btn_menu_back.collidepoint(mouse_pos):
