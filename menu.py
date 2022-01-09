@@ -141,7 +141,7 @@ class MainMenu(Menu):
                     self.menu_run = False
 
     def _btn_arcade_check(self, mouse_pos, mouse_click):
-        if self.btn_levels.collidepoint(mouse_pos):
+        if self.btn_arcade.collidepoint(mouse_pos):
             button(self.screen, ARCADE_NAME, WHITE, BTN_ARCADE_POS, MENU_BTN_SIZE[0], MENU_BTN_SIZE[1], button_font)
             if mouse_click[0]:
                 pass
