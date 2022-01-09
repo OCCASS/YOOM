@@ -139,10 +139,6 @@ class Player:
             if self._can_move(self.direction + math.pi / 2, PLAYER_SIZE * 3):
                 self._x += -sin_a * PLAYER_SPEED
                 self._y += cos_a * PLAYER_SPEED
-        if pressed_keys[pygame.K_LEFT]:
-            self.direction -= SENSITIVITY
-        if pressed_keys[pygame.K_RIGHT]:
-            self.direction += SENSITIVITY
 
     def _process_mouse(self):
         if pygame.mouse.get_focused():
