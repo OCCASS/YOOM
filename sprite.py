@@ -1,5 +1,4 @@
-from config import TILE, SPRITE_CHARS, TEXTURES_PATH, STATIC_SPRITES, MOVABLE_SPRITES, WORLD_MAP, SPRITE_SPEED, \
-    SPRITE_HIT_DISTANCE
+from config import *
 from load_image import load_image
 from utils import get_distance, world_pos2cell
 
@@ -68,8 +67,8 @@ class MovableSprite(Sprite):
 
 
 sprites_dict = {
-    '5': MovableSprite(sprite_textures['5'], None, 1, 3, SPRITE_HIT_DISTANCE * 3),
-    '6': MovableSprite(sprite_textures['6'], None, 2, 5, SPRITE_HIT_DISTANCE)
+    '5': MovableSprite(sprite_textures['5'], None, 2, 2, SPRITE_HIT_DISTANCE * 3),
+    '6': MovableSprite(sprite_textures['6'], None, 1, 3, SPRITE_HIT_DISTANCE // 2)
 }
 
 
