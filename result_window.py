@@ -55,7 +55,7 @@ class Win:
             self.lost_frames_count += 1
         color = random.randrange(0, 255)
         button(self.screen, WON, (color, color, color), SENT_POS, SENT_SIZE[0], SENT_SIZE[1], font)
-        show_res(self, total_time, kills_count)
+        show_res(self.screen, total_time, kills_count)
 
 
 class Losing:
