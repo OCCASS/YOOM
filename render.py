@@ -21,8 +21,6 @@ from sprite import MovableSprite
 """
 
 sky_texture = load_image(TEXTURES_PATH, SKY_TEXTURE)
-# wall_textures = {'1': load_image(TEXTURE_FILE, WALL_TEXTURE_1, color_key=None),
-#                  '2': load_image(TEXTURE_FILE, WALL_TEXTURE_2, color_key=None)}
 wall_texture = load_image(TEXTURES_PATH, WALL_TEXTURE_1, color_key=None)
 
 
@@ -64,18 +62,18 @@ class Render:
                 distance = max(distance, MIN_DISTANCE)
                 self._draw_wall(distance, offset, hit_index)
             elif isinstance(hit, SpriteHit):
-                if self.sprites[hit.sprite_index].is_dead:
+                sprite = self.sprites[hit.sprite_index]
+
+                if sprite.is_dead:
                     continue
-
-                if isinstance(self.sprites[hit.sprite_index], MovableSprite):
-                    self.sprites[hit.sprite_index].move_to(self.player.x, self.player.y)
-
-                if self.sprites[hit.sprite_index].check_damage(self.player):
+                if isinstance(sprite, MovableSprite):
+                    self.sprites[hit.sprite_index].update(self.player)
+                if sprite.check_damage(self.player):
                     self.player.damage()
 
-                self._draw_sprite(hit.texture, hit.distance, hit.casted_ray_index)
+                self.draw_sprite(hit.texture, hit.distance, hit.casted_ray_index)
 
-    def _draw_sprite(self, texture, distance, current_ray):
+    def draw_sprite(self, texture, distance, current_ray):
         projection_height = min(PROJECTION_COEFFICIENT / (distance + 10 ** -10), SCREEN_HEIGHT)
         projection_width = projection_height
         sprite_x = current_ray * SCALE - projection_width // 2

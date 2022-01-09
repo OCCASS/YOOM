@@ -1,11 +1,13 @@
 import pygame
 
 from config import *
+from load_image import load_image
 from point import Point
 from ray import Ray
-from ray_casting import sprites_ray_casting
+from ray_casting import sprites_ray_casting, ray_casting
 from sound import SoundEffect, GunSound
 from weapon import Weapon
+from render import Render
 
 """
 Павлов Тимур 26.12.2021. Создан класс Player
@@ -20,6 +22,8 @@ from weapon import Weapon
 
 Павлов Тимур 09.01.2022. Добавлена функция do_shot
 """
+
+explosion_texture = load_image(TEXTURES_PATH, 'explosion/0.gif')
 
 
 class Player:

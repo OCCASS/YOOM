@@ -22,23 +22,24 @@ from weapon import Weapon
 
 
 class Game:
-    def __init__(self, caption=WINDOW_NAME):
-        self.screen = pygame.display.set_mode(SCREEN_SIZE, pygame.DOUBLEBUF)
-        self.screen_map = pygame.Surface((MAP_SIZE[0] * MAP_TILE, MAP_SIZE[1] * MAP_TILE))
-        self.clock = pygame.time.Clock()
-        self._caption = caption
+    def __init__(self):
+        self._screen = pygame.display.set_mode(SCREEN_SIZE, pygame.DOUBLEBUF)
+        self._minimap_screen = pygame.Surface((MAP_SIZE[0] * MAP_TILE, MAP_SIZE[1] * MAP_TILE))
+        self._clock = pygame.time.Clock()
+        self._caption = WINDOW_NAME
         self._is_game_over = False
 
         self._weapons = [
-            Weapon(self.screen, 'Gun1', (500, 450), 12, SHOTGUN, 5),
-            Weapon(self.screen, 'Gun2', (400, 400), 2, PISTOL, 25),
-            Weapon(self.screen, 'Gun3', (350, 300), 10, RIFLE, 10)
+            Weapon(self._screen, 'Gun1', (500, 450), 12, SHOTGUN, 5),
+            Weapon(self._screen, 'Gun2', (400, 400), 2, PISTOL, 25),
+            Weapon(self._screen, 'Gun3', (350, 300), 10, RIFLE, 10)
         ]
-        self.menu = MainMenu(self.screen, self.clock)
-        self.player = Player(TILE * 2 - TILE // 2, TILE * 2 - TILE // 2, self._weapons)
+
+        self._menu = MainMenu(self._screen, self._clock)
+        self._player = Player(TILE * 2 - TILE // 2, TILE * 2 - TILE // 2, self._weapons)
 
     def run(self):
-        self.menu.run()
+        self._menu.run()
         self._init()
         # self.play_theme(THEME_MUSIC)
         self._config()
@@ -46,11 +47,11 @@ class Game:
         self._finish()
 
     def _init(self):
-        self.sprites = create_sprites(self.menu.chosen_level)
-        self.render = Render(self.screen, self.player, self.screen_map, self.sprites)
+        self._sprites = create_sprites(self._menu.chosen_level)
+        self._render = Render(self._screen, self._player, self._minimap_screen, self._sprites)
 
-        create_map(self.menu.chosen_level)
-        create_minimap(self.menu.chosen_level)
+        create_map(self._menu.chosen_level)
+        create_minimap(self._menu.chosen_level)
         pygame.init()
 
     def _config(self):
@@ -60,8 +61,8 @@ class Game:
     def _update(self):
         running = True
         while running:
-            self.screen.fill(SKYBLUE)
-            self.clock.tick(FPS)
+            self._screen.fill(SKYBLUE)
+            self._clock.tick(FPS)
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -70,17 +71,17 @@ class Game:
                     if event.type in [pygame.MOUSEBUTTONDOWN, pygame.KEYDOWN]:
                         running = False
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    self.player.on_mouse_down(event, self.sprites)
+                    self._player.on_mouse_down(event, self._sprites)
 
-            self._is_game_over = is_game_over(self.player, self.sprites)
+            self._is_game_over = is_game_over(self._player, self._sprites)
             if self._is_game_over:
-                show_game_over(self.screen)
+                show_game_over(self._screen)
             else:
-                self.player.update()
-                self.render.render()
-                show_info(self.screen, self.player)
+                self._player.update()
+                self._render.render()
+                show_info(self._screen, self._player)
 
-            pygame.display.set_caption('FPS: ' + str(int(self.clock.get_fps())))
+            pygame.display.set_caption('FPS: ' + str(int(self._clock.get_fps())))
             pygame.display.flip()
 
     @staticmethod

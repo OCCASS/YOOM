@@ -47,6 +47,9 @@ class MovableSprite(Sprite):
     def _get_clean_board():
         return [[0 for _ in range(MAP_SIZE[0])] for _ in range(MAP_SIZE[1])]
 
+    def update(self, player):
+        pass
+
     def move_to(self, to_x, to_y):
         to_x, to_y = world_pos2cell(to_x, to_y)
         from_x, from_y = world_pos2cell(*self.pos)
