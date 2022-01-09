@@ -41,7 +41,7 @@ class Ray:
     def ray_cast(self):
         player_x, player_y = self.origin
         cos_a, sin_a = math.cos(self.direction), math.sin(self.direction)
-        square_x, square_y = world_pos2tile(player_x, player_y)
+        square_x, square_y = world_pos2tile(self.origin.x, self.origin.y)
 
         cos_a = 10 ** -10 if cos_a == 0 else cos_a
         sin_a = 10 ** -10 if sin_a == 0 else sin_a
@@ -57,30 +57,37 @@ class Ray:
 
     @staticmethod
     def vertical_collision(square_x, player_x, player_y, sin_a, cos_a):
-        y_ver, vert_dist, wall_num = 0, 0, '2'
+        y_ver, vert_dist = 0, 0
         x_ver, sign_x = (square_x + TILE, 1) if cos_a >= 0 else (square_x, -1)
+        point, distance = None, None
         for i in range(0, MAX_VERTICAL_RAY_DISTANCE, TILE):
             vert_dist = (x_ver - player_x) / cos_a
             y_ver = player_y + vert_dist * sin_a
             tile_pos = world_pos2tile(x_ver + sign_x, y_ver)
             if tile_pos in WORLD_MAP.keys():
+                point, distance = tile_pos, vert_dist
                 break
             x_ver += sign_x * TILE
 
         offset = y_ver
-        return x_ver, y_ver, vert_dist, offset
+        distance = vert_dist if distance is None else distance
+        point = (x_ver, y_ver) if point is None else point
+        return *point, distance, offset
 
     @staticmethod
     def horizontal_collision(square_y, player_x, player_y, sin_a, cos_a):
-        x_hor, hor_dist, wall_num = 0, 0, '2'
+        x_hor, hor_dist = 0, 0
         y_hor, sign_y = (square_y + TILE, 1) if sin_a >= 0 else (square_y, -1)
+        point, distance = None, None
         for i in range(0, MAX_HORIZONTAL_RAY_DISTANCE, TILE):
             hor_dist = (y_hor - player_y) / sin_a
             x_hor = player_x + hor_dist * cos_a
             tile_pos = world_pos2tile(x_hor, y_hor + sign_y)
             if tile_pos in WORLD_MAP.keys():
+                point, distance = tile_pos, hor_dist
                 break
             y_hor += sign_y * TILE
-
         offset = x_hor
-        return x_hor, y_hor, hor_dist, offset
+        distance = hor_dist if distance is None else distance
+        point = (x_hor, y_hor) if point is None else point
+        return *point, distance, offset
