@@ -18,6 +18,7 @@ from sprite import MovableSprite
 
 Палов Тимур:
 08.01.2022. Создана поддержка отрисовки спрайтов
+09.01.2022. Создана обработка двигающихся спрайтов
 """
 
 sky_texture = load_image(TEXTURES_PATH, SKY_TEXTURE)
@@ -68,7 +69,8 @@ class Render:
                 if isinstance(sprite, MovableSprite):
                     self.sprites[hit.sprite_index].update(self.player)
 
-                self.draw_sprite(hit.texture, hit.distance, hit.casted_ray_index)
+                if hit.distance > TILE:
+                    self.draw_sprite(hit.texture, hit.distance, hit.casted_ray_index)
 
     def draw_sprite(self, texture, distance, current_ray):
         projection_height = min(PROJECTION_COEFFICIENT / (distance + 10 ** -10), SCREEN_HEIGHT)
@@ -80,7 +82,7 @@ class Render:
         self.screen.blit(texture, (sprite_x, sprite_y))
 
     def _draw_wall(self, distance, offset, hit_index):
-        projection_height = min(PROJECTION_COEFFICIENT / (distance + 10 ** -10), SCREEN_HEIGHT * 2)
+        projection_height = min(PROJECTION_COEFFICIENT / (distance + 1 ** -10), SCREEN_HEIGHT * 2)
         wall = wall_texture.subsurface(offset * TEXTURE_SCALE, 0, TEXTURE_SCALE,
                                        TEXTURE_HEIGHT)
         wall = pygame.transform.scale(wall, (SCALE, projection_height))

@@ -2,11 +2,14 @@ import pygame.time
 
 from config import *
 from load_image import load_image
-from utils import get_distance, world_pos2cell
+from point import Point
+from ray import Ray
+from utils import get_distance, world_pos2cell, angle_between_vectors
 
 """
 Павлов Тимур 08.01.2022. Создан класс Sprite и функция create_sprites
-Павлов Тимур 09.01.2022. Создан класс MovableSprite
+Павлов Тимур 09.01.2022. Создан класс MovableSprite, создана функция sprites_update, is_win, улучшен алгоритм поиска 
+    пути и дамага игрока
 """
 
 sprite_textures = {
@@ -47,6 +50,15 @@ class MovableSprite(Sprite):
     def update(self, player):
         self.move_to(player.x, player.y)
 
+    def _get_angel_to_player(self, player):
+        dx, dy = player.x - self.pos[0], player.y - self.pos[1]
+        direction = angle_between_vectors(RIGHT_VECTOR, (dx, dy, 0))
+
+        if player.y < self.pos[1]:
+            direction = 2 * math.pi - direction
+
+        return -direction
+
     def move_to(self, to_x, to_y):
         distance = get_distance(to_x, to_y, *self.pos)
 
@@ -64,7 +76,13 @@ class MovableSprite(Sprite):
         self._delay += pygame.time.get_ticks() / 1000
         distance_to_player = get_distance(*self.pos, player.x, player.y)
 
-        if abs(distance_to_player) <= abs(self.hit_distance) and self._delay >= SPRITE_DAMAGE_DELAY:
+        ray = Ray(Point(*self.pos), self._get_angel_to_player(player), MAX_VIEW_DISTANCE)
+        ray_cast = ray.ray_cast()
+        ray_cast_distance = ray_cast.distance
+
+        if distance_to_player <= self.hit_distance \
+                and distance_to_player <= ray_cast_distance \
+                and self._delay >= SPRITE_DAMAGE_DELAY:
             self._delay = 0
             return True
 

@@ -1,11 +1,13 @@
 import math
 
 import numba
+import numpy
 
 from config import TILE
 
 """
 Павлов Тимур 08.01.2022. Создана функция get_distance, world_pos2cell
+Павлов Тимур 09.01.2022. Создана функция is_game_over, unit_vector, angel_between_vectors
 """
 
 
@@ -22,3 +24,13 @@ def world_pos2cell(x, y):
 def is_game_over(player):
     if player.health <= 0:
         return True
+
+
+def unit_vector(vector):
+    return vector / numpy.linalg.norm(vector)
+
+
+def angle_between_vectors(v1, v2):
+    v1_u = unit_vector(v1)
+    v2_u = unit_vector(v2)
+    return numpy.arccos(numpy.clip(numpy.dot(v1_u, v2_u), -1.0, 1.0))

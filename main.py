@@ -2,14 +2,14 @@ import pygame
 
 from config import *
 from map import create_map, create_minimap
-from menu import MainMenu, show_info
+from menu import MainMenu, show_info, show_game_over
 from player import Player
 from render import Render
 from sound import Music
 from sprite import create_sprites, sprites_update, is_win
+from stats import Stats
 from utils import is_game_over
 from weapon import Weapon
-from result_window import Win, Losing
 
 """
 Павлов Тимур 26.12.2021. Создан класс Game
@@ -19,6 +19,7 @@ from result_window import Win, Losing
 Батталов Арслан 08.01.2022 Добавлена поддержка звуков выстрела
 Павлов Тимур 08.01.2022. Исправлена ошибка анимации оружия
 Батталов Арслан 08.01.2022 Исправлена проблема двойного проигрывания звуков
+Павлов Тимур 09.01.2022. Добавлена проверка окончания игры
 """
 
 
@@ -37,20 +38,19 @@ class Game:
         ]
 
         self._menu = MainMenu(self._screen, self._clock)
-        self._losing = Losing(self._screen, self._clock)
-        self._win = Win(self._screen, self._clock)
 
     def run(self):
         self._menu.run()
         self._init()
-        # self.play_theme(THEME_MUSIC)
+        self.play_theme()
         self._config()
         self._update()
         self._finish()
 
     def _init(self):
         self._sprites = create_sprites(self._menu.chosen_level)
-        self._player = Player(TILE * 2 - TILE // 2, TILE * 2 - TILE // 2, self._weapons, self._sprites)
+        self._stats = Stats()
+        self._player = Player(TILE * 2 - TILE // 2, TILE * 2 - TILE // 2, self._weapons, self._sprites, self._stats)
         self._render = Render(self._screen, self._player, self._minimap_screen, self._sprites)
 
         create_map(self._menu.chosen_level)
@@ -79,9 +79,12 @@ class Game:
             self._is_game_end = is_game_over(self._player) or is_win(self._sprites)
             if self._is_game_end:
                 if is_game_over(self._player):
-                    self._losing.run()
+                    show_game_over(self._screen)
                 elif is_win(self._sprites):
-                    self._win.run()
+                    pass
+
+                print(self._stats.total_time())
+                print(self._stats.get_kills())
             else:
                 self._player.update()
                 self._render.render()
@@ -96,8 +99,8 @@ class Game:
         pygame.quit()
 
     @staticmethod
-    def play_theme(path):
-        theme = Music(path)
+    def play_theme():
+        theme = Music()
         theme.play_music()
 
 

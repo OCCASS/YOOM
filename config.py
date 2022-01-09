@@ -1,4 +1,6 @@
 import math
+from os import listdir
+from os.path import isfile, join
 
 import numpy
 
@@ -8,6 +10,7 @@ import numpy
 28.12.2021. Внесены поправки
 01.01.2021. Добавлены настройки проекции
 08.01.2022. Добавлены настройки проекции
+09.01.2022. Добавлены настройки спрайтов и игрока
 
 Вайман Ангелина:
 28.12.2021. Внесены поправки
@@ -23,6 +26,7 @@ import numpy
 07.01.2022 Добавлены настройки звука оружия
 08.01.2022 Изменены константы максимальной прорисовки
 08.01.2022 Добавлены константы настроек музыки
+08.01.2022 Настройки музыки уровней
 """
 
 # Настройки экрана
@@ -100,6 +104,9 @@ RIFLE = 'sound/rifle.mp3'
 EMPTY_SHOT_SOUND = 'sound/null_ammo.mp3'
 SPRITE_HIT_SOUND = 'sound/hit.mp3'
 WALL_HIT_SOUND = 'sound/wall_hit.mp3'
+MENU_THEME = 'music/menu.mp3'
+MUSIC_FOLDER = 'Levels_music'
+MUSIC_FILES = ['Levels_music/' + file for file in listdir(MUSIC_FOLDER) if isfile(join(MUSIC_FOLDER, file))]
 
 # Настройки оружия
 WEAPON_FILE = 'WeaponSprite/'
@@ -158,4 +165,7 @@ LEVEL_5 = 'level5.txt'
 # Настройки спрайтов
 SPRITE_SPEED = 4
 SPRITE_HIT_DISTANCE = 120
-SPRITE_DAMAGE_DELAY = 30
+SPRITE_DAMAGE_DELAY = 100
+
+# Настройки векторов
+RIGHT_VECTOR = (1, 0, 0)

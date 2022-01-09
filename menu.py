@@ -6,6 +6,7 @@ import pygame
 from config import *
 from load_image import load_image
 from load_level import load_level
+from sound import MenuMusic, SoundEffect
 
 """
 Вайман Ангелина:
@@ -14,7 +15,9 @@ from load_level import load_level
 
 Батталов Арслан:
 08.01.2022. Добавлена наследование классов, добавлен класс Menu
-08.01.2022. Добавлен класс Settings, убран баг музыки 
+08.01.2022. Добавлен класс Settings, убран баг музыки
+08.01.2022. Добавлена поддержка плейлистов
+08.01.2022. Добавлено выключение и включение звуков
 """
 
 pygame.init()
@@ -59,6 +62,8 @@ class Menu:
         self.running = True
         self.chosen_level = None
         self.delta_x = 0
+        self.theme = MenuMusic(MENU_THEME)
+        self.play_theme()
 
     def run(self, delta_x=0):
         self.delta_x = delta_x
@@ -79,6 +84,9 @@ class Menu:
             pygame.display.flip()
             self.clock.tick(20)
 
+    def play_theme(self):
+        self.theme.play_music()
+
     def _draw_background(self):
         self.screen.blit(background, MENU_BACKGROUND_POS,
                          (self.delta_x % SCREEN_WIDTH, HALF_SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -88,6 +96,13 @@ class Menu:
         color = random.randint(LOGO_COLOR[0], LOGO_COLOR[1])
         logo = logo_font.render(LOGO, True, (color, color, color))
         self.screen.blit(logo, LOGO_POS)
+
+    @staticmethod
+    def set_effects_volume(volume):
+        SoundEffect.change_effects_volume(volume)
+
+    def set_music_volume(self, volume):
+        self.theme.change_music_volume(volume)
 
     def _create_buttons(self):
         pass
@@ -199,8 +214,10 @@ class Settings(Menu):
             if mouse_click[0] and not self.music_off:
                 pygame.time.delay(self.delay)
                 self.music_off = True
+                self.set_music_volume(0)
             elif mouse_click[0] and self.music_off:
                 pygame.time.delay(self.delay)
+                self.set_music_volume(0.1)
                 self.music_off = False
 
     def _check_sound_effects(self, mouse_pos, mouse_click):
@@ -213,9 +230,11 @@ class Settings(Menu):
                        button_font)
             if mouse_click[0] and not self.sound_effect_off:
                 pygame.time.delay(self.delay)
+                self.set_effects_volume(0)
                 self.sound_effect_off = True
             elif mouse_click[0] and self.sound_effect_off:
                 pygame.time.delay(self.delay)
+                self.set_effects_volume(1)
                 self.sound_effect_off = False
 
     def _btn_back_check(self, mouse_pos, mouse_click):
