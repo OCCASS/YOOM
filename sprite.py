@@ -100,7 +100,7 @@ class MovableSprite(Sprite):
 
 sprites_dict = {
     '3': MovableSprite(sprite_textures['3']['default'], sprite_textures['3']['dead'], None, speed=2, damage=5,
-                       hit_distance=SPRITE_HIT_DISTANCE),
+                       hit_distance=SPRITE_HIT_DISTANCE * 2),
 }
 
 
