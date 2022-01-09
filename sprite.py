@@ -64,7 +64,18 @@ sprite_textures = {
         'attack': collections.deque(
             [load_image(TEXTURES_PATH, f'soldier/attack/{i}.png') for i in range(SOLDIER_ATTACK_ANIMATION_FRAMES_COUNT)]
         )
-    }
+    },
+    'b': {
+        'default': collections.deque(
+            [load_image(TEXTURES_PATH, f'death_soldier/{i}.png') for i in range(DEATH_SOLDIER_ANIMATION_FRAMES_COUNT)]
+        )
+    },
+    'd': {
+        'default': collections.deque(
+            [load_image(TEXTURES_PATH, f'guitar_doom_guy/{i}.png') for i in
+             range(GUITAR_DOOM_GUY_ANIMATION_FRAMES_COUNT)]
+        )
+    },
 }
 
 
@@ -88,7 +99,8 @@ def sprites_update(sprites, player):
 
 
 class StaticSprite:
-    def __init__(self, animation_list, dead_texture, pos, vertical_scale=1.0, vertical_shift=0.0, destroyed=False):
+    def __init__(self, animation_list, dead_texture, pos, vertical_scale=1.0, vertical_shift=0.0, destroyed=False,
+                 animation_speed=SPRITE_ANIMATION_SPEED):
         self.dead_texture = dead_texture
         self.pos = pos
         self.is_dead = False
@@ -99,6 +111,7 @@ class StaticSprite:
         self._default_animation_list = animation_list.copy()
         self.animation_list = animation_list
         self.animation_count = 0
+        self.animation_speed = animation_speed
 
         self.texture = self.animation_list[0].copy()
         self.default_texture = self.texture.copy()
@@ -120,19 +133,20 @@ class StaticSprite:
 
     def update(self):
         self.animation_count += 1
-        if self.animation_count == SPRITE_ANIMATION_SPEED:
+        if self.animation_count == self.animation_speed:
             self.animation_list.rotate(-1)
             self.animation_count = 0
 
     def copy(self):
         return StaticSprite(self.animation_list, self.dead_texture, self.pos, self.vertical_scale, self.vertical_shift,
-                            self.destroyed)
+                            self.destroyed, animation_speed=self.animation_speed)
 
 
 class MovableSprite(StaticSprite):
     def __init__(self, animation_list, dead_texture, pos, speed, damage, hit_distance, vertical_scale=1.0,
-                 vertical_shift=0.0, attack_animation_list=None):
-        super(MovableSprite, self).__init__(animation_list, dead_texture, pos, vertical_scale, vertical_shift)
+                 vertical_shift=0.0, attack_animation_list=None, animation_speed=SPRITE_ANIMATION_SPEED):
+        super(MovableSprite, self).__init__(animation_list, dead_texture, pos, vertical_scale, vertical_shift,
+                                            animation_speed)
         self.damage = damage
 
         self._speed = speed
@@ -162,7 +176,8 @@ class MovableSprite(StaticSprite):
 
     def copy(self):
         return MovableSprite(self.animation_list, self.dead_texture, self.pos, self._speed, self.damage,
-                             self._hit_distance, self.vertical_scale, self.vertical_shift, self._attack_animation_list)
+                             self._hit_distance, self.vertical_scale, self.vertical_shift, self._attack_animation_list,
+                             self.animation_speed)
 
     def _get_angel_to_player(self, player):
         dx, dy = player.x - self.pos[0], player.y - self.pos[1]
@@ -214,6 +229,8 @@ movable_sprites_dict = {
 
 static_sprites_dict = {
     '5': StaticSprite(sprite_textures['5']['default'], sprite_textures['5']['dead'], None, 0.7, 20),
+    'b': StaticSprite(sprite_textures['b']['default'], None, None),
+    'd': StaticSprite(sprite_textures['d']['default'], None, None, animation_speed=SPRITE_ANIMATION_SPEED / 2),
 }
 
 
