@@ -74,6 +74,9 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self._running = False
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        self.reset()
                 if self._is_game_end:
                     if event.type in [pygame.MOUSEBUTTONDOWN, pygame.KEYDOWN]:
                         self._running = False
