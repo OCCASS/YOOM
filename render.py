@@ -21,6 +21,7 @@ from utils import world_pos2cell
 Палов Тимур:
 08.01.2022. Создана поддержка отрисовки спрайтов
 09.01.2022. Создана обработка двигающихся спрайтов
+09.01.2022. Добавлена анимация спрайтов
 """
 
 sky_texture = load_image(TEXTURES_PATH, SKY_TEXTURE)
@@ -83,9 +84,10 @@ class Render:
             elif isinstance(hit, SpriteHit):
                 sprite = self.sprites[hit.sprite_index]
                 if isinstance(sprite, MovableSprite):
-                    self.sprites[hit.sprite_index].update(self._player)
+                    self.sprites[hit.sprite_index].full_update(self._player)
                 if hit.distance > TILE:
-                    self.draw_sprite(hit.texture, hit.distance, hit.casted_ray_index, sprite.scale)
+                    texture = sprite.get_texture()
+                    self.draw_sprite(texture, hit.distance, hit.casted_ray_index, sprite.scale)
 
     def draw_sprite(self, texture, distance, current_ray, scale):
         distance = max(distance, MIN_DISTANCE)
