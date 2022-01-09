@@ -8,7 +8,8 @@ from config import MUSIC_FILES
 Батталов Арслан 05.01.2022 Добавлен класс Music и SoundEffect
 Батталов Арслан 07.01.2022. Добавлен класс GunSound
 Батталов Арслан 08.01.2022. Добавлен класс MenuMusic
-08.01.2022. Добавлено выключение и включение звуков
+Батталов Арслан 08.01.2022. Добавлено выключение и включение звуков
+
 """
 
 
@@ -33,6 +34,9 @@ class Music:
 
     def change_music_volume(self, volume):
         self.theme.set_volume(volume)
+
+    def return_volume(self):
+        return self.theme.get_volume()
 
 
 class MenuMusic(Music):
@@ -61,6 +65,10 @@ class SoundEffect:
     def change_effects_volume(volume):
         pygame.mixer.Channel(2).set_volume(volume)
         pygame.mixer.Channel(1).set_volume(volume)
+
+    @staticmethod
+    def returm_volume():
+        return pygame.mixer.Channel(1).get_volume(), pygame.mixer.Channel(2).get_volume()
 
 
 class GunSound(SoundEffect):
