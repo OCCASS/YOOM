@@ -23,15 +23,16 @@ from weapon import Weapon
 
 
 class Player:
-    def __init__(self, x, y, weapons, sprites):
+    def __init__(self, x, y, weapons, sprites, stats):
         self._x, self._y = x, y
-        self.direction = 0
-        self.footstep_sound = SoundEffect(FOOTSTEP)
         self.shot = False
         self.current_gun_index = 0
         self.weapons: list[Weapon] = weapons
         self.health = PLAYER_HEALTH
+        self.direction = 0
+        self.footstep_sound = SoundEffect(FOOTSTEP)
         self._sprites = sprites
+        self._stats = stats
 
     def update(self):
         self._process_mouse()
@@ -75,6 +76,7 @@ class Player:
                 if -1 <= int(math.degrees(sprite_hit.angel)) <= 1:
                     self._sprites[sprite_hit.sprite_index].is_dead = True
                     SoundEffect(SPRITE_HIT_SOUND).play_sound()
+                    self._stats.update_kills()
                     break
         else:
             Weapon.empty_fire_sound()
