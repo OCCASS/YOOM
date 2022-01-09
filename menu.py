@@ -3,7 +3,6 @@ import sys
 
 import pygame
 
-from arcade import Arcade
 from config import *
 from load_image import load_image
 from load_level import load_level
