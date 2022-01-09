@@ -47,5 +47,6 @@ def sprites_ray_casting(sprites: list[Sprite], player_pos: Point, player_angel: 
         current_ray_index = CENTER_RAY_INDEX + delta_ray_index
         if 0 <= current_ray_index <= RAYS_AMOUNT - 1:
             distance *= math.cos(HALF_FOV - current_ray_index * DELTA_ANGLE)
-            sprites_hits.append(SpriteHit(sprite_index, distance, delta_angel, current_ray_index, sprite.animation_list))
+            sprites_hits.append(
+                SpriteHit(sprite_index, distance, delta_angel, current_ray_index, sprite.animation_list))
     return sprites_hits

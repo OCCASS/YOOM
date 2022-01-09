@@ -1,7 +1,7 @@
 GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
 G5......3...........4.........5G
 G.AAA......D...D.E...E.....AAA.G
-G.AAA......AAAAA.JJJJJ..4..AAA.G
+G.AAA..6...AAAAA.JJJJJ..4..AAA.G
 G.....FFF..............AAA.....G
 G.BBB......JJJJJ.AAAAA.....AAA.G
 G.CCC......J...J.A.3.A.....AAA.G
