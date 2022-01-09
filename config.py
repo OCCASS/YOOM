@@ -48,7 +48,7 @@ PLAYER_HEALTH = 100
 
 # Карта и настройки карты
 WALL_CHARS = ('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q')
-STATIC_SPRITES = ('5', '6')
+STATIC_SPRITES = ('5',)
 MOVABLE_SPRITES = ('3', '4')
 SPRITE_CHARS = (*STATIC_SPRITES, *MOVABLE_SPRITES)
 TILE = 125

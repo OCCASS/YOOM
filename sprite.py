@@ -33,11 +33,6 @@ sprite_textures = {
             [load_image(TEXTURES_PATH, f'flame/{i}.png') for i in range(FLAME_ANIMATION_FRAMES_COUNT)]),
         'dead': load_image(TEXTURES_PATH, 'flame/dead.png')
     },
-    '6': {
-        'default': collections.deque(
-            [load_image(TEXTURES_PATH, f'barrel/{i}.png') for i in range(BARREL_ANIMATION_FRAME_COUNT)]),
-        'dead': load_image(TEXTURES_PATH, 'barrel/dead.png')
-    }
 }
 
 
@@ -158,7 +153,6 @@ movable_sprites_dict = {
 
 static_sprites_dict = {
     '5': StaticSprite(sprite_textures['5']['default'], sprite_textures['5']['dead'], None, 0.7, 20),
-    '6': StaticSprite(sprite_textures['6']['default'], sprite_textures['6']['dead'], None, 0.5, 20, True)
 }
 
 
