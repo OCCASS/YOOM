@@ -55,7 +55,7 @@ def sprites_update(sprites, player):
     return sprites
 
 
-class Sprite:
+class StaticSprite:
     def __init__(self, animation_list, dead_texture, pos, vertical_scale=1.0, vertical_shift=0.0, destroyed=False):
         self.dead_texture = dead_texture
         self.pos = pos
@@ -92,10 +92,10 @@ class Sprite:
             self._animation_count = 0
 
     def copy(self):
-        return Sprite(self.animation_list, self.dead_texture, self.pos, self.vertical_scale, self.vertical_shift)
+        return StaticSprite(self.animation_list, self.dead_texture, self.pos, self.vertical_scale, self.vertical_shift)
 
 
-class MovableSprite(Sprite):
+class MovableSprite(StaticSprite):
     def __init__(self, animation_list, dead_texture, pos, speed, damage, hit_distance, vertical_scale=1.0,
                  vertical_shift=0.0):
         super(MovableSprite, self).__init__(animation_list, dead_texture, pos, vertical_scale, vertical_shift)
@@ -157,12 +157,12 @@ movable_sprites_dict = {
 }
 
 static_sprites_dict = {
-    '5': Sprite(sprite_textures['5']['default'], sprite_textures['5']['dead'], None, 0.7, 20),
-    '6': Sprite(sprite_textures['6']['default'], sprite_textures['6']['dead'], None, 0.5, 70, True)
+    '5': StaticSprite(sprite_textures['5']['default'], sprite_textures['5']['dead'], None, 0.7, 20),
+    '6': StaticSprite(sprite_textures['6']['default'], sprite_textures['6']['dead'], None, 0.5, 70, True)
 }
 
 
-def create_sprites(world_map) -> list[Sprite]:
+def create_sprites(world_map) -> list[StaticSprite]:
     sprites = []
     for row_index, row in enumerate(world_map):
         for col_index, el in enumerate(row):

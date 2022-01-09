@@ -2,7 +2,7 @@ from config import *
 from hit import SpriteHit
 from point import Point
 from ray import Ray, RayCastHit
-from sprite import Sprite
+from staticsprite import StaticSprite
 from utils import get_distance
 
 """
@@ -33,7 +33,7 @@ def ray_casting(player_pos: Point, player_angle: float) -> (list[RayCastHit], st
     return ray_cast_hits
 
 
-def sprites_ray_casting(sprites: list[Sprite], player_pos: Point, player_angel: float) -> list[SpriteHit]:
+def sprites_ray_casting(sprites: list[StaticSprite], player_pos: Point, player_angel: float) -> list[SpriteHit]:
     sprites_hits = []
     for sprite_index, sprite in enumerate(sprites):
         x, y = sprite.pos
