@@ -36,11 +36,11 @@ class Sprite:
 
 
 class MovableSprite(Sprite):
-    def __init__(self, texture, pos, speed, damage):
+    def __init__(self, texture, pos, speed, damage, hit_distance):
         super(MovableSprite, self).__init__(texture, pos)
         self.speed = speed
         self.damage = damage
-        self.hit_distance = SPRITE_HIT_DISTANCE
+        self.hit_distance = hit_distance
 
     def update(self, player):
         self.move_to(player.x, player.y)
@@ -68,8 +68,8 @@ class MovableSprite(Sprite):
 
 
 sprites_dict = {
-    '5': MovableSprite(sprite_textures['5'], None, 1, 3),
-    '6': MovableSprite(sprite_textures['6'], None, 2, 5)
+    '5': MovableSprite(sprite_textures['5'], None, 1, 3, SPRITE_HIT_DISTANCE * 3),
+    '6': MovableSprite(sprite_textures['6'], None, 2, 5, SPRITE_HIT_DISTANCE)
 }
 
 
