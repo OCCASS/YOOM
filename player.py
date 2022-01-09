@@ -4,7 +4,7 @@ from config import *
 from point import Point
 from ray import Ray
 from ray_casting import sprites_ray_casting
-from sound import SoundEffect
+from sound import SoundEffect, GunSound
 from weapon import Weapon
 
 """
@@ -43,6 +43,18 @@ class Player:
     def draw(self):
         self._shot()
 
+    def set_weapon(self, delta):
+        self.set_shot(False)
+        self.weapons[self.current_gun_index].reset()
+        GunSound.stop_sound()
+
+        if delta == -1:
+            if self.current_gun_index < 0:
+                self.current_gun_index = 2
+
+        self.current_gun_index -= delta
+        self.current_gun_index %= len(self.weapons)
+
     def do_shot(self, sprites):
         if self._can_shot():
             Weapon.fire_sound(self.weapons[self.current_gun_index])
@@ -62,13 +74,13 @@ class Player:
 
         return sprites
 
-    def _can_shot(self):
-        current_weapon = self.weapons[self.current_gun_index]
-        return not self.shot and current_weapon.ammo > 0
-
     def set_shot(self, val):
         if (not val) == self.shot:
             self.shot = val
+
+    def _can_shot(self):
+        current_weapon = self.weapons[self.current_gun_index]
+        return not self.shot and current_weapon.ammo > 0
 
     @property
     def pos(self) -> Point:

@@ -68,28 +68,16 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
                     running = False
-                if event.type == pygame.MOUSEBUTTONDOWN and not self.player.shot and event.button == 1:
-                    self.sprites = self.player.do_shot(self.sprites)
-
                 if self._game_over:
                     if event.type in [pygame.MOUSEBUTTONDOWN, pygame.KEYDOWN]:
                         running = False
-
-                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 4:
-                    GunSound.stop_sound()
-                    self.player.set_shot(False)
-                    self.player.weapons[self.player.current_gun_index].reset()
-                    if self.player.current_gun_index > 0:
-                        self.player.current_gun_index -= 1
-                        self.player.current_gun_index %= len(self.player.weapons)
-                    else:
-                        self.player.current_gun_index = 2
-                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 5:
-                    GunSound.stop_sound()
-                    self.player.weapons[self.player.current_gun_index].reset()
-                    self.player.set_shot(False)
-                    self.player.current_gun_index += 1
-                    self.player.current_gun_index %= len(self.player.weapons)
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if event.button == pygame.BUTTON_LEFT:
+                        self.sprites = self.player.do_shot(self.sprites)
+                    if event.button == pygame.BUTTON_WHEELDOWN:
+                        self.player.set_weapon(-1)
+                    if event.button == pygame.BUTTON_WHEELUP:
+                        self.player.set_weapon(1)
 
             if not self._game_over:
                 self.player.update()
