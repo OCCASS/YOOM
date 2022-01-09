@@ -2,14 +2,14 @@ import random
 
 import pygame
 
-from config import MUSIC_FILES
+from config import *
 
 """
 Батталов Арслан 05.01.2022 Добавлен класс Music и SoundEffect
 Батталов Арслан 07.01.2022. Добавлен класс GunSound
 Батталов Арслан 08.01.2022. Добавлен класс MenuMusic
 Батталов Арслан 08.01.2022. Добавлено выключение и включение звуков
-
+Павлов Тимур 09.01.2022. Создан класс Sounds
 """
 
 
@@ -72,9 +72,39 @@ class SoundEffect:
 
 
 class GunSound(SoundEffect):
-    def play_sound(self):
+    def play_sound(self, channel=2):
         pygame.mixer.Channel(1).play(self.effect)
 
     @staticmethod
     def stop_sound():
         pygame.mixer.Channel(1).stop()
+
+
+class Sounds:
+    @staticmethod
+    def wall_hit(channel=2):
+        SoundEffect(WALL_HIT_SOUND).play_sound(channel)
+
+    @staticmethod
+    def sprite_hit(channel=2):
+        SoundEffect(SPRITE_HIT_SOUND).play_sound(channel)
+
+    @staticmethod
+    def no_ammo(channel=2):
+        SoundEffect(NO_AMMO_SOUND).play_sound(channel)
+
+    @staticmethod
+    def damage(channel=2):
+        SoundEffect(DAMAGE_SOUND).play_sound(channel)
+
+    @staticmethod
+    def dead(channel=2):
+        SoundEffect(DEAD_SOUND).play_sound(channel)
+
+    @staticmethod
+    def get_damage(channel=2):
+        SoundEffect(DO_DAMAGE_SOUND).play_sound(channel)
+
+    @staticmethod
+    def footstep(channel=2):
+        SoundEffect(FOOTSTEP_SOUND).play_sound(channel)
