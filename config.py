@@ -14,6 +14,7 @@ import numpy
 09.01.2022. Добавлены настройки спрайтов и игрока
 09.01.2022. Добавлены новые звуки
 09.01.2022. Добавлены настройки анимации спрайтов
+09.01.2022. Добавлены новые звуки
 
 Вайман Ангелина:
 28.12.2021. Внесены поправки
@@ -45,11 +46,13 @@ SENSITIVITY = 0.005
 MAX_VIEW_DISTANCE = 800
 PLAYER_SIZE = 20
 PLAYER_HEALTH = 100
+SHOOTING_SPREAD = 2
 
 # Карта и настройки карты
 WALL_CHARS = ('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q')
 STATIC_SPRITES = ('5',)
-MOVABLE_SPRITES = ('3', '4')
+MOVABLE_SPRITES = ('3', '4', '6')
+ARCADE_SPAWN_CHAR = '@'
 SPRITE_CHARS = (*STATIC_SPRITES, *MOVABLE_SPRITES)
 TILE = 125
 WORLD_MAP = dict()
@@ -116,16 +119,17 @@ TEXTURE_SCALE = TEXTURE_WIDTH // TILE
 
 # Настройки музыки
 THEME_MUSIC = 'music/theme.mp3'
-FOOTSTEP = 'sound/playerstep.mp3'
+FOOTSTEP_SOUND = 'sound/playerstep.mp3'
 SHOTGUN = 'sound/shotgun.mp3'
 PISTOL = 'sound/pistol.mp3'
 RIFLE = 'sound/rifle.mp3'
-EMPTY_SHOT_SOUND = 'sound/null_ammo.mp3'
+NO_AMMO_SOUND = 'sound/null_ammo.mp3'
 SPRITE_HIT_SOUND = 'sound/hit.mp3'
 WALL_HIT_SOUND = 'sound/wall_hit.mp3'
 MENU_THEME = 'music/menu.mp3'
 DAMAGE_SOUND = 'sound/damage.wav'
 DEAD_SOUND = 'sound/dead.wav'
+DO_DAMAGE_SOUND = 'sound/do_damage.mp3'
 MUSIC_FOLDER = 'Levels_music'
 MUSIC_FILES = [os.path.join(MUSIC_FOLDER, file) for file in listdir(MUSIC_FOLDER) if isfile(join(MUSIC_FOLDER, file))]
 
@@ -177,6 +181,7 @@ BTN_SOUND_EFFECTS_ON_POS = (HALF_SCREEN_WIDTH + 210, 350)
 MUSIC_OFF_NAME = 'off'
 
 # Файлы уровней
+LEVELS_PATH = 'Levels'
 LEVEL_1 = 'level1.txt'
 LEVEL_2 = 'level2.txt'
 LEVEL_3 = 'level3.txt'
@@ -191,6 +196,7 @@ DEVIL_ANIMATION_FRAMES_COUNT = 4
 PIN_ANIMATION_FRAMES_COUNT = 7
 FLAME_ANIMATION_FRAMES_COUNT = 16
 BARREL_ANIMATION_FRAME_COUNT = 13
+DEVIL_YELLOW_ANIMATION_FRAMES_COUNT = 4
 
 # Настройки векторов
 RIGHT_VECTOR = (1, 0, 0)

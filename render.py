@@ -85,9 +85,8 @@ class Render:
                 sprite = self.sprites[hit.sprite_index]
                 if isinstance(sprite, MovableSprite):
                     self.sprites[hit.sprite_index].full_update(self._player)
-                if hit.distance > TILE:
-                    self.draw_sprite(sprite.get_texture(), hit.distance, hit.casted_ray_index, sprite.vertical_scale,
-                                     sprite.vertical_shift)
+                self.draw_sprite(sprite.get_texture(), hit.distance, hit.casted_ray_index, sprite.vertical_scale,
+                                 sprite.vertical_shift)
 
     def draw_sprite(self, texture, distance, current_ray, vertical_scale, vertical_shift):
         distance = max(distance, MIN_DISTANCE)
