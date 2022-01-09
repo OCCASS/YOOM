@@ -1,9 +1,9 @@
 import pygame
 
 from config import *
+from hit import RayCastHit, SpriteHit
 from load_image import load_image
 from ray_casting import ray_casting, sprites_ray_casting
-from hit import RayCastHit, SpriteHit
 from sprite import MovableSprite
 
 """
@@ -69,6 +69,9 @@ class Render:
 
                 if isinstance(self.sprites[hit.sprite_index], MovableSprite):
                     self.sprites[hit.sprite_index].move_to(self.player.x, self.player.y)
+
+                if self.sprites[hit.sprite_index].check_damage(self.player):
+                    self.player.damage()
 
                 self._draw_sprite(hit.texture, hit.distance, hit.casted_ray_index)
 

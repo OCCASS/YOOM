@@ -17,7 +17,6 @@ pygame.init()
 background = load_image(TEXTURES_PATH, MENU_BACKGROUND, color_key=None)
 button_font = pygame.font.Font(FONT, BUTTON_FONT_SIZE)
 logo_font = pygame.font.Font(FONT, LOGO_FONT_SIZE)
-pygame.init()
 
 
 def button(screen, name, color, rect_pos, width, height):
@@ -25,6 +24,13 @@ def button(screen, name, color, rect_pos, width, height):
     btn = pygame.Rect(rect_pos[0], rect_pos[1], width, height)
     screen.blit(text, (rect_pos[0], rect_pos[1]))
     return btn, text
+
+
+def show_info(screen, player):
+    health = 'Health   ' + str(player.health)
+    ammo = 'Ammo   ' + str(player.weapons[player.current_gun_index].ammo)
+    button(screen, health, 'red', (10, SCREEN_HEIGHT - 160), 140, 70)
+    button(screen, ammo, 'blue', (10, SCREEN_HEIGHT - 90), 140, 70)
 
 
 class Menu:

@@ -23,7 +23,10 @@ def is_cell_a_wall(x, y):
         return bool(WALLS_MAP[y][x])
 
 
-def is_game_over(sprites):
+def is_game_over(player, sprites):
+    if player.health == 0:
+        return True
+
     for sprite in sprites:
         if not sprite.is_dead:
             return False

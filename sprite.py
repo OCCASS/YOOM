@@ -1,9 +1,12 @@
+import math
 from copy import deepcopy
 
 from config import TILE, SPRITE_CHARS, MAP, TEXTURES_PATH, STATIC_SPRITES, MOVABLE_SPRITES
 from load_image import load_image
-from utils import world_pos2cell
+from point import Point
+from utils import world_pos2cell, get_distance
 from wave_algorithm import *
+from ray import Ray
 import numpy
 
 """
@@ -24,6 +27,15 @@ class Sprite:
         self.texture = texture
         self.pos = self.x, self.y = list(pos)
         self.is_dead = False
+        self.hit_distance = 100
+
+    def check_damage(self, player):
+        distance_to_player = get_distance(*self.pos, player.x, player.y)
+
+        if distance_to_player <= self.hit_distance:
+            return True
+
+        return False
 
 
 class MovableSprite(Sprite):

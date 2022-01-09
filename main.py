@@ -10,7 +10,7 @@ from sound import Music
 from sprite import create_sprites
 from utils import is_game_over
 from weapon import Weapon, GunSound
-from menu import Menu
+from menu import Menu, show_info
 
 """
 Павлов Тимур 26.12.2021. Создан класс Game
@@ -89,8 +89,9 @@ class Game:
 
             self.player.update()
             self.render.render()
+            show_info(self.screen, self.player)
 
-            if is_game_over(self.sprites):
+            if is_game_over(self.player, self.sprites):
                 print('Game over')
                 running = False
 

@@ -10,7 +10,7 @@ from weapon import Weapon
 """
 Павлов Тимур 26.12.2021. Создан класс Player
 
-Батталов Арслан 03.01.2022. Изменена функция _process_keyboard, добавлены функции find_collison, change_cors
+Батталов Арслан 03.01.2022. Изменена функция _process_keyboard, добавлены функции find_collision, change_cors
 (пока не отлажено)
 
 Батталов Арслан 04.01.2022. Добавлена функция can_move
@@ -30,11 +30,15 @@ class Player:
         self.shot = False
         self.current_gun_index = 0
         self.weapons: list[Weapon] = weapons
+        self.health = 100
 
     def update(self):
         self._process_mouse()
         self._process_keyboard()
         self._play_sound()
+
+    def damage(self):
+        self.health -= 1
 
     def draw(self):
         self._shot()
