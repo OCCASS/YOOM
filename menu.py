@@ -6,6 +6,7 @@ import pygame
 from config import *
 from load_image import load_image
 from load_level import load_level
+from sound import MenuMusic
 
 """
 Вайман Ангелина:
@@ -14,7 +15,8 @@ from load_level import load_level
 
 Батталов Арслан:
 08.01.2022. Добавлена наследование классов, добавлен класс Menu
-08.01.2022. Добавлен класс Settings, убран баг музыки 
+08.01.2022. Добавлен класс Settings, убран баг музыки
+08.01.2022. Добавлена поддержка плейлистов
 """
 
 pygame.init()
@@ -59,6 +61,8 @@ class Menu:
         self.running = True
         self.chosen_level = None
         self.delta_x = 0
+        self.theme = MenuMusic(MENU_THEME)
+        self.play_theme()
 
     def run(self, delta_x=0):
         self.delta_x = delta_x
@@ -77,6 +81,9 @@ class Menu:
                 return self.chosen_level
             pygame.display.flip()
             self.clock.tick(20)
+
+    def play_theme(self):
+        self.theme.play_music()
 
     def _draw_background(self):
         self.screen.blit(background, MENU_BACKGROUND_POS,

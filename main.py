@@ -40,7 +40,7 @@ class Game:
     def run(self):
         self._menu.run()
         self._init()
-        # self.play_theme(THEME_MUSIC)
+        self.play_theme()
         self._config()
         self._update()
         self._finish()
@@ -93,8 +93,8 @@ class Game:
         pygame.quit()
 
     @staticmethod
-    def play_theme(path):
-        theme = Music(path)
+    def play_theme():
+        theme = Music()
         theme.play_music()
 
 

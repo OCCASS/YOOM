@@ -1,6 +1,7 @@
 import math
-
 import numpy
+from os import listdir
+from os.path import isfile, join
 
 """
 Павлов Тимур:
@@ -23,6 +24,7 @@ import numpy
 07.01.2022 Добавлены настройки звука оружия
 08.01.2022 Изменены константы максимальной прорисовки
 08.01.2022 Добавлены константы настроек музыки
+08.01.2022 Настройки музыки уровней
 """
 
 # Настройки экрана
@@ -100,6 +102,9 @@ RIFLE = 'sound/rifle.mp3'
 EMPTY_SHOT_SOUND = 'sound/null_ammo.mp3'
 SPRITE_HIT_SOUND = 'sound/hit.mp3'
 WALL_HIT_SOUND = 'sound/wall_hit.mp3'
+MENU_THEME = 'music/menu.mp3'
+MUSIC_FOLDER = 'Levels_music'
+MUSIC_FILES = ['Levels_music/' + file for file in listdir(MUSIC_FOLDER) if isfile(join(MUSIC_FOLDER, file))]
 
 # Настройки оружия
 WEAPON_FILE = 'WeaponSprite/'
