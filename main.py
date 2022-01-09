@@ -40,7 +40,7 @@ class Game:
         self.render = Render(self.screen, self.player, self.screen_map, self.sprites)
         self.caption = caption
         self.menu = MainMenu(self.screen, self.clock)
-        self._game_over = False
+        self.is_game_over = False
 
     def run(self):
         self.menu.run()
@@ -68,7 +68,7 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
                     running = False
-                if self._game_over:
+                if self.is_game_over:
                     if event.type in [pygame.MOUSEBUTTONDOWN, pygame.KEYDOWN]:
                         running = False
                 if event.type == pygame.MOUSEBUTTONDOWN:
@@ -79,14 +79,14 @@ class Game:
                     if event.button == pygame.BUTTON_WHEELUP:
                         self.player.set_weapon(1)
 
-            if not self._game_over:
+            self.is_game_over = is_game_over(self.player, self.sprites)
+            if not self.is_game_over:
                 self.player.update()
                 self.render.render()
                 show_info(self.screen, self.player)
 
-            if is_game_over(self.player, self.sprites):
+            if self.is_game_over:
                 show_game_over(self.screen)
-                self._game_over = True
 
             pygame.display.set_caption('FPS: ' + str(int(self.clock.get_fps())))
             pygame.display.flip()
