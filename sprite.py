@@ -148,7 +148,7 @@ def create_sprites(world_map) -> list[Sprite]:
                 x, y = col_index * TILE + TILE // 2, row_index * TILE + TILE // 2
                 texture = sprite_textures[el]
                 if el in STATIC_SPRITES:
-                    sprite = Sprite(texture['default'], texture['dead'], (x, y), 0.7)
+                    sprite = Sprite(texture['default'], texture['dead'], (x, y))
                     sprite.reset()
                     sprites.append(sprite)
                 elif el in MOVABLE_SPRITES:
