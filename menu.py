@@ -116,6 +116,8 @@ class MainMenu(Menu):
         self.settings_class = Settings(self.screen, self.clock)
 
     def _create_buttons(self):
+        self.btn_story, self.story = button(self.screen, BTN_STORY_NAME, BLACK, BTN_STORY_POS, BTN_EXIT_BACK_SIZE[0],
+                                            BTN_EXIT_BACK_SIZE[1], button_font)
         self.btn_levels, self.levels = button(self.screen, LEVELS_NAME, BLACK, BTN_LEVELS_POS,
                                               MENU_BTN_SIZE[0], MENU_BTN_SIZE[1], button_font)
         self.btn_arcade, self.arcade = button(self.screen, ARCADE_NAME, BLACK, BTN_ARCADE_POS,
@@ -128,10 +130,18 @@ class MainMenu(Menu):
     def _mouse_operations(self):
         mouse_pos = pygame.mouse.get_pos()
         mouse_click = pygame.mouse.get_pressed()
+        self._btn_story_check(mouse_pos, mouse_click)
         self._btn_levels_check(mouse_pos, mouse_click)
         self._btn_arcade_check(mouse_pos, mouse_click)
         self._btn_settings_check(mouse_pos, mouse_click)
         self._btn_exit_check(mouse_pos, mouse_click)
+
+    def _btn_story_check(self, mouse_pos, mouse_click):
+        if self.btn_story.collidepoint(mouse_pos):
+            button(self.screen, BTN_STORY_NAME, WHITE, BTN_STORY_POS, BTN_EXIT_BACK_SIZE[0], BTN_EXIT_BACK_SIZE[1],
+                   button_font)
+            if mouse_click[0]:
+                pass
 
     def _btn_levels_check(self, mouse_pos, mouse_click):
         if self.btn_levels.collidepoint(mouse_pos):
