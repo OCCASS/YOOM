@@ -123,8 +123,6 @@ class MainMenu(Menu):
     def _create_buttons(self):
         self.btn_levels, self.levels = button(self.screen, LEVELS_NAME, BLACK, BTN_LEVELS_POS,
                                               MENU_BTN_SIZE[0], MENU_BTN_SIZE[1], button_font)
-        # self.btn_arcade, self.arcade = button(self.screen, ARCADE_NAME, BLACK, BTN_ARCADE_POS,
-        #                                       MENU_BTN_SIZE[0], MENU_BTN_SIZE[1], button_font)
         self.btn_settings, self.settings = button(self.screen, SETTINGS_NAME, BLACK, BTN_SETTINGS_POS,
                                                   MENU_BTN_SIZE[0], MENU_BTN_SIZE[1], button_font)
         self.btn_exit, self.exit = button(self.screen, EXIT_NAME, BLACK, BTN_EXIT_BACK_POS, BTN_EXIT_BACK_SIZE[0],
