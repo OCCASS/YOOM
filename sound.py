@@ -67,7 +67,7 @@ class SoundEffect:
         pygame.mixer.Channel(1).set_volume(volume)
 
     @staticmethod
-    def returm_volume():
+    def return_volume():
         return pygame.mixer.Channel(1).get_volume(), pygame.mixer.Channel(2).get_volume()
 
 

@@ -6,7 +6,7 @@ import pygame
 from config import *
 from load_image import load_image
 from load_level import load_level
-from sound import MenuMusic, SoundEffect
+from sound import MenuMusic, SoundEffect, Music
 
 """
 Вайман Ангелина:
@@ -162,8 +162,14 @@ class MainMenu(Menu):
 class Settings(Menu):
     def __init__(self, screen, clock):
         super().__init__(screen, clock)
-        self.music_off = False
-        self.sound_effect_off = False
+        if self.theme.return_volume() == 0:
+            self.music_off = True
+        else:
+            self.music_off = False
+        if SoundEffect.return_volume() == (0, 0):
+            self.sound_effect_off = True
+        else:
+            self.sound_effect_off = False
         self.delay = 100
 
     def _create_buttons(self):
