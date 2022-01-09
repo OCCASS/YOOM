@@ -1,3 +1,5 @@
+import pygame.time
+
 from config import *
 from load_image import load_image
 from utils import get_distance, world_pos2cell
@@ -40,6 +42,8 @@ class MovableSprite(Sprite):
         self.speed = speed
         self.damage = damage
         self.hit_distance = hit_distance
+        self._damage_delay = 10
+        self._delay = 0
 
     def update(self, player):
         self.move_to(player.x, player.y)
@@ -47,7 +51,7 @@ class MovableSprite(Sprite):
     def move_to(self, to_x, to_y):
         distance = get_distance(to_x, to_y, *self.pos)
 
-        if abs(distance) > TILE:
+        if abs(distance) > TILE * 2:
             dx, dy = self.pos[0] - to_x, self.pos[1] - to_y
             move_coefficient_x, move_coefficient_y = 1 if dx < 0 else -1, 1 if dy < 0 else -1
             next_x = self.pos[0] + move_coefficient_x * self.speed
@@ -58,9 +62,11 @@ class MovableSprite(Sprite):
                 self.pos = [next_x, next_y]
 
     def check_damage(self, player):
+        self._delay += pygame.time.get_ticks() / 1000
         distance_to_player = get_distance(*self.pos, player.x, player.y)
 
-        if abs(distance_to_player) <= abs(self.hit_distance):
+        if abs(distance_to_player) <= abs(self.hit_distance) and self._delay >= self._damage_delay:
+            self._delay = 0
             return True
 
         return False
