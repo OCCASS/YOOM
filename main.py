@@ -88,9 +88,10 @@ class Game:
                 if is_game_over(self._player):
                     self._player.dead()
                     self._losing.run(total_time, kills_count)
+                    self.reset()
                 elif is_win(self._sprites):
                     self._win.run(total_time, kills_count)
-                self.reset()
+                    self.reset()
             else:
                 self._player.update()
                 self._render.render()

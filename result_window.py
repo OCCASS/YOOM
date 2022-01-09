@@ -32,12 +32,7 @@ class EndMenu:
         self.lost_frames_count = 0
         self.running = True
         self.animation_list = collections.deque()
-
-    @staticmethod
-    def _load_picture(pictures_ammount):
-        animation_list = [pygame.transform.scale(load_image(TEXTURES_PATH, f'win/{i}.gif'), PICTURE_SIZE) for i in
-                          range(pictures_ammount)]
-        return collections.deque(animation_list)
+        self.end_message = str()
 
     def run(self, total_time, kills_count):
         pygame.mouse.set_visible(True)
@@ -64,7 +59,7 @@ class EndMenu:
             self.animation_count = 0
             self.lost_frames_count += 1
         color = random.randrange(0, 255)
-        button(self.screen, WON, (color, color, color), SENT_POS, SENT_SIZE[0], SENT_SIZE[1], font)
+        button(self.screen, self.end_message, (color, color, color), SENT_POS, SENT_SIZE[0], SENT_SIZE[1], font)
         show_res(self.screen, total_time, kills_count)
 
     def back_to_menu(self):
@@ -84,9 +79,23 @@ class Win(EndMenu):
     def __init__(self, screen, clock):
         super().__init__(screen, clock)
         self.animation_list = self._load_picture(SKELETON_AMOUNT)
+        self.end_message = WON
+
+    @staticmethod
+    def _load_picture(pictures_amount):
+        animation_list = [pygame.transform.scale(load_image(TEXTURES_PATH, f'win/{i}.gif'), PICTURE_SIZE) for i in
+                          range(pictures_amount)]
+        return collections.deque(animation_list)
 
 
 class Losing(EndMenu):
     def __init__(self, screen, clock):
         super().__init__(screen, clock)
         self.animation_list = self._load_picture(SKULL_AMOUNT)
+        self.end_message = LOSE
+
+    @staticmethod
+    def _load_picture(pictures_amount):
+        animation_list = [pygame.transform.scale(load_image(TEXTURES_PATH, f'losing/{i}.gif'), PICTURE_SIZE) for i in
+                          range(pictures_amount)]
+        return collections.deque(animation_list)
