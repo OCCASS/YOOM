@@ -16,6 +16,7 @@ from menu import button
 
 font = pygame.font.Font(FONT, 200)
 font_res = pygame.font.Font(FONT, 75)
+font_back = pygame.font.Font(FONT, 30)
 
 
 def show_res(screen, time, kills):
@@ -39,15 +40,17 @@ class EndMenu:
         return collections.deque(animation_list)
 
     def run(self, total_time, kills_count):
+        pygame.mouse.set_visible(True)
         while self.running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.display.quit()
                     sys.exit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    self.running = False
+                    pass
             self.screen.fill(BLACK)
             self._draw(total_time, kills_count)
+            self.back_to_menu()
 
             pygame.display.flip()
             self.clock.tick(20)
@@ -63,6 +66,18 @@ class EndMenu:
         color = random.randrange(0, 255)
         button(self.screen, WON, (color, color, color), SENT_POS, SENT_SIZE[0], SENT_SIZE[1], font)
         show_res(self.screen, total_time, kills_count)
+
+    def back_to_menu(self):
+        self.btn_back, self.back = button(self.screen, BACK_TO_MENU, WHITE, BACK_TO_MENU_POS, BACK_TO_MENU_SIZE[0],
+                                          BACK_TO_MENU_SIZE[1],
+                                          font_back)
+        mouse_pos = pygame.mouse.get_pos()
+        mouse_click = pygame.mouse.get_pressed()
+        if self.btn_back.collidepoint(mouse_pos):
+            button(self.screen, BACK_TO_MENU, RED, BACK_TO_MENU_POS, BACK_TO_MENU_SIZE[0], BACK_TO_MENU_SIZE[1],
+                   font_back)
+            if mouse_click[0]:
+                self.running = False
 
 
 class Win(EndMenu):
