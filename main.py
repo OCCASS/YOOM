@@ -6,7 +6,7 @@ from menu import MainMenu, show_info, show_game_over
 from player import Player
 from render import Render
 from sound import Music
-from sprite import create_sprites
+from sprite import create_sprites, sprites_update
 from utils import is_game_over
 from weapon import Weapon
 
@@ -36,7 +36,6 @@ class Game:
         ]
 
         self._menu = MainMenu(self._screen, self._clock)
-        self._player = Player(TILE * 2 - TILE // 2, TILE * 2 - TILE // 2, self._weapons)
 
     def run(self):
         self._menu.run()
@@ -48,6 +47,7 @@ class Game:
 
     def _init(self):
         self._sprites = create_sprites(self._menu.chosen_level)
+        self._player = Player(TILE * 2 - TILE // 2, TILE * 2 - TILE // 2, self._weapons, self._sprites)
         self._render = Render(self._screen, self._player, self._minimap_screen, self._sprites)
 
         create_map(self._menu.chosen_level)
@@ -71,7 +71,7 @@ class Game:
                     if event.type in [pygame.MOUSEBUTTONDOWN, pygame.KEYDOWN]:
                         running = False
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    self._player.on_mouse_down(event, self._sprites)
+                    self._player.on_mouse_down(event)
 
             self._is_game_over = is_game_over(self._player, self._sprites)
             if self._is_game_over:
@@ -79,6 +79,7 @@ class Game:
             else:
                 self._player.update()
                 self._render.render()
+                sprites_update(self._sprites, self._player)
                 show_info(self._screen, self._player)
 
             pygame.display.set_caption('FPS: ' + str(int(self._clock.get_fps())))

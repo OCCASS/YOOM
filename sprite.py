@@ -1,4 +1,5 @@
-from config import TILE, SPRITE_CHARS, TEXTURES_PATH, STATIC_SPRITES, MOVABLE_SPRITES, WORLD_MAP
+from config import TILE, SPRITE_CHARS, TEXTURES_PATH, STATIC_SPRITES, MOVABLE_SPRITES, WORLD_MAP, SPRITE_SPEED, \
+    SPRITE_HIT_DISTANCE
 from load_image import load_image
 from utils import get_distance, world_pos2cell
 
@@ -12,7 +13,18 @@ sprite_textures = {
     '4': load_image(TEXTURES_PATH, 'barrel.png'),
     '5': load_image(TEXTURES_PATH, 'enemy.png')
 }
-sprite_speed = 1
+
+
+def sprites_update(sprites, player):
+    for i in range(len(sprites)):
+        sprite = sprites[i]
+        if isinstance(sprite, MovableSprite):
+            sprites[i].move_to(player.x, player.y)
+
+            if sprite.check_damage(player):
+                player.damage(sprite.damage)
+
+    return sprites
 
 
 class Sprite:
@@ -20,21 +32,14 @@ class Sprite:
         self.texture = texture
         self.pos = self.x, self.y = list(pos)
         self.is_dead = False
-        self.hit_distance = 70
-
-    def check_damage(self, player):
-        distance_to_player = get_distance(*self.pos, player.x, player.y)
-
-        if distance_to_player <= self.hit_distance:
-            return True
-
-        return False
 
 
 class MovableSprite(Sprite):
-    def __init__(self, texture, pos, speed):
+    def __init__(self, texture, pos, speed, damage):
         super(MovableSprite, self).__init__(texture, pos)
         self.speed = speed
+        self.damage = damage
+        self.hit_distance = SPRITE_HIT_DISTANCE
 
     def update(self, player):
         self.move_to(player.x, player.y)
@@ -52,6 +57,14 @@ class MovableSprite(Sprite):
             if (cell_x * TILE, cell_y * TILE) not in WORLD_MAP:
                 self.pos = [next_x, next_y]
 
+    def check_damage(self, player):
+        distance_to_player = get_distance(*self.pos, player.x, player.y)
+
+        if abs(distance_to_player) <= abs(self.hit_distance):
+            return True
+
+        return False
+
 
 def create_sprites(world_map) -> list[Sprite]:
     sprites = []
@@ -66,7 +79,7 @@ def create_sprites(world_map) -> list[Sprite]:
                     sprite = Sprite(texture, (x, y))
                     sprites.append(sprite)
                 elif el in MOVABLE_SPRITES:
-                    sprite = MovableSprite(texture, (x, y), sprite_speed)
+                    sprite = MovableSprite(texture, (x, y), SPRITE_SPEED, 1)
                     sprites.append(sprite)
 
     return sprites

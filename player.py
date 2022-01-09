@@ -5,6 +5,7 @@ from point import Point
 from ray import Ray
 from ray_casting import sprites_ray_casting
 from sound import SoundEffect, GunSound
+from sprite import MovableSprite
 from weapon import Weapon
 
 """
@@ -23,22 +24,23 @@ from weapon import Weapon
 
 
 class Player:
-    def __init__(self, x, y, weapons):
+    def __init__(self, x, y, weapons, sprites):
         self._x, self._y = x, y
         self.direction = 0
         self.footstep_sound = SoundEffect(FOOTSTEP)
         self.shot = False
         self.current_gun_index = 0
         self.weapons: list[Weapon] = weapons
-        self.health = 10
+        self.health = PLAYER_HEALTH
+        self._sprites = sprites
 
     def update(self):
         self._process_mouse()
         self._process_keyboard()
         self._play_sound()
 
-    def damage(self):
-        self.health -= 1
+    def damage(self, val=1):
+        self.health -= val
 
     def draw(self):
         self._shot()
@@ -55,24 +57,24 @@ class Player:
         self.current_gun_index -= delta
         self.current_gun_index %= len(self.weapons)
 
-    def on_mouse_down(self, event, sprites):
+    def on_mouse_down(self, event):
         if event.button == pygame.BUTTON_LEFT:
-            self.do_shot(sprites)
+            self.do_shot()
         if event.button == pygame.BUTTON_WHEELDOWN:
             self.set_weapon(-1)
         if event.button == pygame.BUTTON_WHEELUP:
             self.set_weapon(1)
 
-    def do_shot(self, sprites):
+    def do_shot(self):
         if self._can_shot():
             Weapon.fire_sound(self.weapons[self.current_gun_index])
             self.set_shot(True)
             self.weapons[self.current_gun_index].shot()
 
-            all_casted_sprites = sprites_ray_casting(sprites, self.pos, self.direction)
+            all_casted_sprites = sprites_ray_casting(self._sprites, self.pos, self.direction)
             for sprite_hit in all_casted_sprites:
                 if int(math.degrees(sprite_hit.angel)) == 0:
-                    sprites[sprite_hit.sprite_index].is_dead = True
+                    self._sprites[sprite_hit.sprite_index].is_dead = True
                     SoundEffect(SPRITE_HIT_SOUND).play_sound()
                     break
             else:
@@ -80,7 +82,7 @@ class Player:
         else:
             Weapon.empty_fire_sound()
 
-        return sprites
+        return self._sprites
 
     def set_shot(self, val):
         if (not val) == self.shot:

@@ -63,13 +63,10 @@ class Render:
                 self._draw_wall(distance, offset, hit_index)
             elif isinstance(hit, SpriteHit):
                 sprite = self.sprites[hit.sprite_index]
-
                 if sprite.is_dead:
                     continue
                 if isinstance(sprite, MovableSprite):
                     self.sprites[hit.sprite_index].update(self.player)
-                if sprite.check_damage(self.player):
-                    self.player.damage()
 
                 self.draw_sprite(hit.texture, hit.distance, hit.casted_ray_index)
 

@@ -1,5 +1,4 @@
 import math
-from typing import List
 
 import numpy
 
@@ -36,6 +35,7 @@ PLAYER_SPEED = 5
 SENSITIVITY = 0.005
 MAX_VIEW_DISTANCE = 800
 PLAYER_SIZE = 20
+PLAYER_HEALTH = 100
 
 # Карта и настройки карты
 WALL_CHARS = ('1', '2')
@@ -145,3 +145,7 @@ LEVEL_4 = 'level4.txt'
 LEVEL_5 = 'level5.txt'
 MENU_BTN_SIZE = (360, 100)
 LEVEL_BTN_SIZE = (340, 50)
+
+# Настройки спрайтов
+SPRITE_SPEED = 4
+SPRITE_HIT_DISTANCE = 150
