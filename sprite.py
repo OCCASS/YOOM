@@ -51,7 +51,7 @@ class MovableSprite(Sprite):
     def move_to(self, to_x, to_y):
         distance = get_distance(to_x, to_y, *self.pos)
 
-        if abs(distance) > TILE:
+        if abs(distance) > TILE * 2:
             dx, dy = self.pos[0] - to_x, self.pos[1] - to_y
             move_coefficient_x, move_coefficient_y = 1 if dx < 0 else -1, 1 if dy < 0 else -1
             next_x = self.pos[0] + move_coefficient_x * self.speed
