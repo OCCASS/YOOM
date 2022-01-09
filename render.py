@@ -26,7 +26,7 @@ from utils import world_pos2cell
 sky_texture = load_image(TEXTURES_PATH, SKY_TEXTURE)
 wall_textures = {
     '.': load_image(TEXTURES_PATH, STONE_WALL, color_key=None),
-    'A': load_image(TEXTURES_PATH, BASIC_WALL, color_key=None),
+    'A': load_image(TEXTURES_PATH, STONE_WALL, color_key=None),
     'B': load_image(TEXTURES_PATH, COMPUTER_1, color_key=None),
     'C': load_image(TEXTURES_PATH, COMPUTER_2, color_key=None),
     'D': load_image(TEXTURES_PATH, FACE_WALL_1, color_key=None),
