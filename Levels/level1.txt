@@ -4,7 +4,7 @@ G.AAA......D...D.E...E.....AAA.G
 G.AAA......AAAAA.JJJJJ.....AAA.G
 G.....FFF..............AAA.....G
 G.BBB......JJJJJ.AAAAA.....AAA.G
-G.CCC......J...J.A...A.....AAA.G
+G.CCC......J...J.A.3.A.....AAA.G
 G..............................G
 G.PPPPP..................PPPPP.G
 G.PPPPP..................PPPPP.G
@@ -15,10 +15,10 @@ G..JJJJJ......OOOOO......PPPPP.G
 G..JJJJJ.................PPPPP.G
 G..JJJJJ.................PPPPP.G
 G..............................G
-G.BBB......A.3.A.1.4.1.....AAA.G
+G.BBB......A.3.A.1...1.....AAA.G
 G.CCC......AAAAA.11111.....AAA.G
 G.....AAA..............AAA.....G
 G.JJJ......AAAAA.AAAAA.....AAA.G
 G.JJJ......A...A.A...A.....AAA.G
-G.............................5G
+G..............................G
 GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG

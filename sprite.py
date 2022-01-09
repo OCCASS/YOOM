@@ -14,10 +14,10 @@ from utils import get_distance, world_pos2cell, angle_between_vectors
 """
 
 sprite_textures = {
-    '3': load_image(TEXTURES_PATH, 'plant.png'),
-    '4': load_image(TEXTURES_PATH, 'barrel.png'),
-    '5': load_image(TEXTURES_PATH, 'enemy.png'),
-    '6': load_image(TEXTURES_PATH, 'devil.png')
+    '3': {
+        'default': load_image(TEXTURES_PATH, 'devil/default.png'),
+        'dead': load_image(TEXTURES_PATH, 'devil/dead.png')
+    }
 }
 
 
@@ -35,15 +35,25 @@ def sprites_update(sprites, player):
 
 
 class Sprite:
-    def __init__(self, texture, pos):
+    def __init__(self, texture, dead_texture, pos):
         self.texture = texture
+        self.default_texture = self.texture.copy()
+        self.dead_texture = dead_texture
         self.pos = pos
         self.is_dead = False
 
+    def kill(self):
+        self.is_dead = True
+        self.texture = self.dead_texture.copy()
+
+    def reset(self):
+        self.is_dead = False
+        self.texture = self.default_texture.copy()
+
 
 class MovableSprite(Sprite):
-    def __init__(self, texture, pos, speed, damage, hit_distance):
-        super(MovableSprite, self).__init__(texture, pos)
+    def __init__(self, texture, dead_texture, pos, speed, damage, hit_distance):
+        super(MovableSprite, self).__init__(texture, dead_texture, pos)
         self.speed = speed
         self.damage = damage
         self.hit_distance = hit_distance
@@ -85,8 +95,8 @@ class MovableSprite(Sprite):
 
 
 sprites_dict = {
-    '5': MovableSprite(sprite_textures['5'], None, speed=2, damage=2, hit_distance=SPRITE_HIT_DISTANCE * 3),
-    '6': MovableSprite(sprite_textures['6'], None, speed=1, damage=3, hit_distance=SPRITE_HIT_DISTANCE // 2)
+    '3': MovableSprite(sprite_textures['3']['default'], sprite_textures['3']['dead'], None, speed=2, damage=2,
+                       hit_distance=SPRITE_HIT_DISTANCE * 3),
 }
 
 
@@ -98,13 +108,13 @@ def create_sprites(world_map) -> list[Sprite]:
                 x, y = col_index * TILE + TILE // 2, row_index * TILE + TILE // 2
                 texture = sprite_textures[el]
                 if el in STATIC_SPRITES:
-                    sprite = Sprite(texture, (x, y))
-                    sprite.is_dead = False
+                    sprite = Sprite(texture['default'], texture['dead'], (x, y))
+                    sprite.reset()
                     sprites.append(sprite)
                 elif el in MOVABLE_SPRITES:
                     sprite = sprites_dict[el]
                     sprite.pos = (x, y)
-                    sprite.is_dead = False
+                    sprite.reset()
                     sprites.append(sprite)
     return sprites
 
