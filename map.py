@@ -16,6 +16,7 @@ from config import *
 
 
 def create_map(map_):
+    WORLD_MAP.clear()
     for row_index, row in enumerate(map_):
         for col_index, el in enumerate(row):
             if el in WALL_CHARS:
@@ -24,6 +25,7 @@ def create_map(map_):
 
 
 def create_minimap(map_):
+    MINI_MAP.clear()
     for row_index, row in enumerate(map_):
         for col_index, el in enumerate(row):
             if el in WALL_CHARS:
