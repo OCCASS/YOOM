@@ -51,7 +51,8 @@ SHOOTING_SPREAD = 2
 # Карта и настройки карты
 WALL_CHARS = ('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q')
 STATIC_SPRITES = ('5',)
-MOVABLE_SPRITES = ('3', '4')
+MOVABLE_SPRITES = ('3', '4', '6')
+ARCADE_SPAWN_CHAR = '@'
 SPRITE_CHARS = (*STATIC_SPRITES, *MOVABLE_SPRITES)
 TILE = 125
 WORLD_MAP = dict()
@@ -180,6 +181,7 @@ BTN_SOUND_EFFECTS_ON_POS = (HALF_SCREEN_WIDTH + 210, 350)
 MUSIC_OFF_NAME = 'off'
 
 # Файлы уровней
+LEVELS_PATH = 'Levels'
 LEVEL_1 = 'level1.txt'
 LEVEL_2 = 'level2.txt'
 LEVEL_3 = 'level3.txt'
@@ -194,6 +196,7 @@ DEVIL_ANIMATION_FRAMES_COUNT = 4
 PIN_ANIMATION_FRAMES_COUNT = 7
 FLAME_ANIMATION_FRAMES_COUNT = 16
 BARREL_ANIMATION_FRAME_COUNT = 13
+DEVIL_YELLOW_ANIMATION_FRAMES_COUNT = 4
 
 # Настройки векторов
 RIGHT_VECTOR = (1, 0, 0)

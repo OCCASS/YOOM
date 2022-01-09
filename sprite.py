@@ -33,6 +33,11 @@ sprite_textures = {
             [load_image(TEXTURES_PATH, f'flame/{i}.png') for i in range(FLAME_ANIMATION_FRAMES_COUNT)]),
         'dead': load_image(TEXTURES_PATH, 'flame/dead.png')
     },
+    '6': {
+        'default': collections.deque(
+            [load_image(TEXTURES_PATH, f'devil_yellow/{i}.png') for i in range(DEVIL_YELLOW_ANIMATION_FRAMES_COUNT)]),
+        'dead': load_image(TEXTURES_PATH, 'devil_yellow/dead.png')
+    }
 }
 
 
@@ -149,7 +154,9 @@ movable_sprites_dict = {
     '3': MovableSprite(sprite_textures['3']['default'], sprite_textures['3']['dead'], None, speed=2, damage=5,
                        hit_distance=SPRITE_HIT_DISTANCE * 2),
     '4': MovableSprite(sprite_textures['4']['default'], sprite_textures['4']['dead'], None, speed=1, damage=3,
-                       hit_distance=SPRITE_HIT_DISTANCE * 5, vertical_scale=.5)
+                       hit_distance=SPRITE_HIT_DISTANCE * 4, vertical_scale=.5),
+    '6': MovableSprite(sprite_textures['6']['default'], sprite_textures['6']['dead'], None, speed=1, damage=5,
+                       hit_distance=SPRITE_HIT_DISTANCE * 4)
 }
 
 static_sprites_dict = {
