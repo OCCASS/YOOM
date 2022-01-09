@@ -10,7 +10,7 @@ from sound import Music
 from sprite import create_sprites
 from utils import is_game_over
 from weapon import Weapon, GunSound
-from menu import Menu, show_info
+from menu import MainMenu, show_info
 
 """
 Павлов Тимур 26.12.2021. Создан класс Game
@@ -41,7 +41,7 @@ class Game:
         self.sprites = create_sprites()
         self.render = Render(self.screen, self.player, self.screen_map, self.sprites)
         self.caption = caption
-        self.menu = Menu(self.screen, self.clock)
+        self.menu = MainMenu(self.screen, self.clock)
 
     def run(self):
         self.menu.run()
