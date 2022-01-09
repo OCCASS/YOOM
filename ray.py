@@ -45,7 +45,6 @@ class Ray:
         player_x, player_y = self.origin
         cos_a, sin_a = math.cos(self.direction), math.sin(self.direction)
         square_x, square_y = self._check_map(player_x, player_y)
-
         cos_a = 10 ** -10 if cos_a == 0 else cos_a
         sin_a = 10 ** -10 if sin_a == 0 else sin_a
 
@@ -53,7 +52,6 @@ class Ray:
                                                                       cos_a)
         x_hor, y_hor, hor_dist, hor_offset = self.horizontal_collision(square_y, player_x, player_y, sin_a,
                                                                        cos_a)
-
         if hor_dist > vert_dist:
             return RayCastHit(vert_dist, (x_ver, y_ver), self.direction, ver_offset)
         return RayCastHit(hor_dist, (x_hor, y_hor), self.direction, hor_offset)

@@ -44,12 +44,10 @@ class Weapon:
             self._shot_animation_count = 0
             self._lost_frames_count += 1
             return True
-
         if self._lost_frames_count == len(self._animation_list):
             self._lost_frames_count = 0
             self.static_animation()
             return False
-
         return True
 
     def reset(self):
