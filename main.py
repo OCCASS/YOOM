@@ -31,9 +31,9 @@ class Game:
         self.clock = pygame.time.Clock()
 
         self.weapons = [
-            Weapon(self.screen, 'Gun1', (500, 450), 12, SHOTGUN, 20),
-            Weapon(self.screen, 'Gun2', (400, 400), 2, PISTOL, 10),
-            Weapon(self.screen, 'Gun3', (350, 300), 10, RIFLE, 15)
+            Weapon(self.screen, 'Gun1', (500, 450), 12, SHOTGUN, 5),
+            Weapon(self.screen, 'Gun2', (400, 400), 2, PISTOL, 25),
+            Weapon(self.screen, 'Gun3', (350, 300), 10, RIFLE, 10)
         ]
         self.player = Player(TILE * 2 - TILE // 2, TILE * 2 - TILE // 2, self.weapons)
         self.sprites = create_sprites()

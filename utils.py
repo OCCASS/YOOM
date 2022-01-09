@@ -24,7 +24,7 @@ def is_cell_a_wall(x, y):
 
 
 def is_game_over(player, sprites):
-    if player.health == 0:
+    if player.health <= 0:
         return True
 
     for sprite in sprites:
