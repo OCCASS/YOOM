@@ -85,12 +85,12 @@ class Render:
                 if isinstance(sprite, MovableSprite):
                     self.sprites[hit.sprite_index].update(self._player)
                 if hit.distance > TILE:
-                    self.draw_sprite(hit.texture, hit.distance, hit.casted_ray_index)
+                    self.draw_sprite(hit.texture, hit.distance, hit.casted_ray_index, sprite.scale)
 
-    def draw_sprite(self, texture, distance, current_ray):
+    def draw_sprite(self, texture, distance, current_ray, scale):
         distance = max(distance, MIN_DISTANCE)
-        projection_height = min(PROJECTION_COEFFICIENT / distance, SCREEN_HEIGHT)
-        projection_width = projection_height
+        projection_height = min(PROJECTION_COEFFICIENT / distance, SCREEN_HEIGHT) * scale
+        projection_width = projection_height * scale
         sprite_x = current_ray * SCALE - projection_width // 2
         sprite_y = HALF_SCREEN_HEIGHT - projection_height // 2
 
