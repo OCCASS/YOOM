@@ -6,7 +6,7 @@ import pygame
 from config import *
 from load_image import load_image
 from load_level import load_level
-from sound import MenuMusic, SoundEffect, Music
+from sound import MenuMusic, SoundEffect
 
 """
 Вайман Ангелина:
@@ -41,18 +41,6 @@ def show_info(screen, player):
     button(screen, ammo, BLUE, (10, SCREEN_HEIGHT - 90), 140, 70, button_font)
 
 
-# def show_game_over(screen):
-#     width, height = 100, 30
-#     button(screen, 'GAME OVER', 'yellow', (HALF_SCREEN_WIDTH - width // 2, HALF_SCREEN_HEIGHT - height // 2), width,
-#            height)
-#
-#
-# def show_win(screen):
-#     width, height = 100, 30
-#     button(screen, 'YOU WIN!', 'yellow', (HALF_SCREEN_WIDTH - width // 2, HALF_SCREEN_HEIGHT - height // 2), width,
-#            height)
-
-
 class Menu:
     def __init__(self, screen, clock):
         self.x = 0
@@ -75,14 +63,17 @@ class Menu:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
-            self._draw_background()
-            self._logo()
-            self._create_buttons()
-            self._mouse_operations()
+            self.operations()
             if self.chosen_level is not None:
                 return self.chosen_level
             pygame.display.flip()
             self.clock.tick(20)
+
+    def operations(self):
+        self._draw_background()
+        self._logo()
+        self._create_buttons()
+        self._mouse_operations()
 
     def play_theme(self):
         self.theme.play_music()
@@ -175,6 +166,12 @@ class Settings(Menu):
     def _create_buttons(self):
         self.btn_music, self.music = button(self.screen, MUSIC_NAME, BLACK, BTN_MUSIC_POS, MENU_BTN_SIZE[0],
                                             MENU_BTN_SIZE[1], button_font)
+        self.check_music_off()
+        self.check_sound_effect()
+        self.btn_back, self.back = button(self.screen, BACK_NAME, BLACK, BTN_EXIT_BACK_POS, BTN_EXIT_BACK_SIZE[0],
+                                          BTN_EXIT_BACK_SIZE[1], button_font)
+
+    def check_music_off(self):
         if not self.music_off:
             self.btn_music_on, self.music = button(self.screen, MUSIC_ON_NAME, WHITE, BTN_MUSIC_ON_POS,
                                                    MENU_BTN_SIZE[0], MENU_BTN_SIZE[1], button_font)
@@ -184,16 +181,6 @@ class Settings(Menu):
         self.btn_sound_effects, self.sound_effects = button(self.screen, SOUND_EFFECTS_NAME, BLACK,
                                                             BTN_SOUND_EFFECTS_POS, MENU_BTN_SIZE[0], MENU_BTN_SIZE[1],
                                                             button_font)
-        if not self.sound_effect_off:
-            self.btn_sound_effects_on, self.sound_effects_on = button(self.screen, MUSIC_ON_NAME, WHITE,
-                                                                      BTN_SOUND_EFFECTS_ON_POS, MENU_BTN_SIZE[0],
-                                                                      MENU_BTN_SIZE[1], button_font)
-        else:
-            self.btn_sound_effects_on, self.sound_effects_on = button(self.screen, MUSIC_OFF_NAME, WHITE,
-                                                                      BTN_SOUND_EFFECTS_ON_POS, MENU_BTN_SIZE[0],
-                                                                      MENU_BTN_SIZE[1], button_font)
-        self.btn_back, self.back = button(self.screen, BACK_NAME, BLACK, BTN_EXIT_BACK_POS, BTN_EXIT_BACK_SIZE[0],
-                                          BTN_EXIT_BACK_SIZE[1], button_font)
 
     def _mouse_operations(self):
         mouse_pos = pygame.mouse.get_pos()
@@ -202,31 +189,9 @@ class Settings(Menu):
         self._check_sound_effects(mouse_pos, mouse_click)
         self._btn_back_check(mouse_pos, mouse_click)
 
-    def _check_music(self, mouse_pos, mouse_click):
-        if self.btn_music_on.collidepoint(mouse_pos):
-            if not self.music_off:
-                button(self.screen, MUSIC_ON_NAME, BLACK, BTN_MUSIC_ON_POS, MENU_BTN_SIZE[0], MENU_BTN_SIZE[1],
-                       button_font)
-            else:
-                button(self.screen, MUSIC_OFF_NAME, BLACK, BTN_MUSIC_ON_POS, MENU_BTN_SIZE[0], MENU_BTN_SIZE[1],
-                       button_font)
-            if mouse_click[0] and not self.music_off:
-                pygame.time.delay(self.delay)
-                self.music_off = True
-                self.set_music_volume(0)
-            elif mouse_click[0] and self.music_off:
-                pygame.time.delay(self.delay)
-                self.set_music_volume(0.1)
-                self.music_off = False
-
     def _check_sound_effects(self, mouse_pos, mouse_click):
         if self.btn_sound_effects_on.collidepoint(mouse_pos):
-            if not self.sound_effect_off:
-                button(self.screen, MUSIC_ON_NAME, BLACK, BTN_SOUND_EFFECTS_ON_POS, MENU_BTN_SIZE[0], MENU_BTN_SIZE[1],
-                       button_font)
-            else:
-                button(self.screen, MUSIC_OFF_NAME, BLACK, BTN_SOUND_EFFECTS_ON_POS, MENU_BTN_SIZE[0], MENU_BTN_SIZE[1],
-                       button_font)
+            self.check_sound_effects_on_off()
             if mouse_click[0] and not self.sound_effect_off:
                 pygame.time.delay(self.delay)
                 self.set_effects_volume(0)
@@ -236,12 +201,50 @@ class Settings(Menu):
                 self.set_effects_volume(1)
                 self.sound_effect_off = False
 
+    def check_sound_effects_on_off(self):
+        if not self.sound_effect_off:
+            button(self.screen, MUSIC_ON_NAME, BLACK, BTN_SOUND_EFFECTS_ON_POS, MENU_BTN_SIZE[0], MENU_BTN_SIZE[1],
+                   button_font)
+        else:
+            button(self.screen, MUSIC_OFF_NAME, BLACK, BTN_SOUND_EFFECTS_ON_POS, MENU_BTN_SIZE[0], MENU_BTN_SIZE[1],
+                   button_font)
+
     def _btn_back_check(self, mouse_pos, mouse_click):
         if self.btn_back.collidepoint(mouse_pos):
             button(self.screen, BACK_NAME, WHITE, BTN_EXIT_BACK_POS, BTN_EXIT_BACK_SIZE[0],
                    BTN_EXIT_BACK_SIZE[1], button_font)
             if mouse_click[0]:
                 self.running = False
+
+    def check_sound_effect(self):
+        if not self.sound_effect_off:
+            self.btn_sound_effects_on, self.sound_effects_on = button(self.screen, MUSIC_ON_NAME, WHITE,
+                                                                      BTN_SOUND_EFFECTS_ON_POS, MENU_BTN_SIZE[0],
+                                                                      MENU_BTN_SIZE[1], button_font)
+        else:
+            self.btn_sound_effects_on, self.sound_effects_on = button(self.screen, MUSIC_OFF_NAME, WHITE,
+                                                                      BTN_SOUND_EFFECTS_ON_POS, MENU_BTN_SIZE[0],
+                                                                      MENU_BTN_SIZE[1], button_font)
+
+    def _check_music(self, mouse_pos, mouse_click):
+        if self.btn_music_on.collidepoint(mouse_pos):
+            self.check_music_on_off()
+            if mouse_click[0] and not self.music_off:
+                pygame.time.delay(self.delay)
+                self.music_off = True
+                self.set_music_volume(0)
+            elif mouse_click[0] and self.music_off:
+                pygame.time.delay(self.delay)
+                self.set_music_volume(0.1)
+                self.music_off = False
+
+    def check_music_on_off(self):
+        if not self.music_off:
+            button(self.screen, MUSIC_ON_NAME, BLACK, BTN_MUSIC_ON_POS, MENU_BTN_SIZE[0], MENU_BTN_SIZE[1],
+                   button_font)
+        else:
+            button(self.screen, MUSIC_OFF_NAME, BLACK, BTN_MUSIC_ON_POS, MENU_BTN_SIZE[0], MENU_BTN_SIZE[1],
+                   button_font)
 
 
 class Levels(Menu):
