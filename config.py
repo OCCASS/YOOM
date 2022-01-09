@@ -14,6 +14,7 @@ import numpy
 09.01.2022. Добавлены настройки спрайтов и игрока
 09.01.2022. Добавлены новые звуки
 09.01.2022. Добавлены настройки анимации спрайтов
+09.01.2022. Добавлены новые звуки
 
 Вайман Ангелина:
 28.12.2021. Внесены поправки
@@ -117,11 +118,11 @@ TEXTURE_SCALE = TEXTURE_WIDTH // TILE
 
 # Настройки музыки
 THEME_MUSIC = 'music/theme.mp3'
-FOOTSTEP = 'sound/playerstep.mp3'
+FOOTSTEP_SOUND = 'sound/playerstep.mp3'
 SHOTGUN = 'sound/shotgun.mp3'
 PISTOL = 'sound/pistol.mp3'
 RIFLE = 'sound/rifle.mp3'
-EMPTY_SHOT_SOUND = 'sound/null_ammo.mp3'
+NO_AMMO_SOUND = 'sound/null_ammo.mp3'
 SPRITE_HIT_SOUND = 'sound/hit.mp3'
 WALL_HIT_SOUND = 'sound/wall_hit.mp3'
 MENU_THEME = 'music/menu.mp3'

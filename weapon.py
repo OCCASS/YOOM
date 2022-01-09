@@ -61,11 +61,6 @@ class Weapon:
     def fire_sound(self):
         self._sound.play_sound()
 
-    @staticmethod
-    def empty_fire_sound():
-        empty_shot_sound = GunSound(EMPTY_SHOT_SOUND)
-        empty_shot_sound.play_sound()
-
     def shot(self):
         self.ammo -= 1
 
