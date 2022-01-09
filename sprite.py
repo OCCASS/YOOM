@@ -42,7 +42,6 @@ class MovableSprite(Sprite):
         self.speed = speed
         self.damage = damage
         self.hit_distance = hit_distance
-        self._damage_delay = 10
         self._delay = 0
 
     def update(self, player):
@@ -65,7 +64,7 @@ class MovableSprite(Sprite):
         self._delay += pygame.time.get_ticks() / 1000
         distance_to_player = get_distance(*self.pos, player.x, player.y)
 
-        if abs(distance_to_player) <= abs(self.hit_distance) and self._delay >= self._damage_delay:
+        if abs(distance_to_player) <= abs(self.hit_distance) and self._delay >= SPRITE_DAMAGE_DELAY:
             self._delay = 0
             return True
 
