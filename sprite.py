@@ -45,6 +45,7 @@ def sprites_update(sprites, player):
 
             if sprite.check_damage(player):
                 SoundEffect(DAMAGE_SOUND).play_sound()
+                SoundEffect(DO_DAMAGE_SOUND).play_sound(3)
                 player.damage(sprite.damage)
 
     return sprites
