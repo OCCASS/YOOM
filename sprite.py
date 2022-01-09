@@ -21,7 +21,7 @@ sprite_textures = {
     '4': {
         'default': load_image(TEXTURES_PATH, 'solider/default.png'),
         'dead': load_image(TEXTURES_PATH, 'solider/dead.png')
-    }
+    },
 }
 
 
