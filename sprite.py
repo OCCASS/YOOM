@@ -71,7 +71,6 @@ class MovableSprite(Sprite):
                 self.pos = [next_x, next_y]
 
     def check_damage(self, player):
-        self._delay += pygame.time.get_ticks() / 1000
         distance_to_player = get_distance(*self.pos, player.x, player.y)
         ray = Ray(Point(*self.pos), self._get_angel_to_player(player), MAX_VIEW_DISTANCE)
         ray_cast = ray.ray_cast()
