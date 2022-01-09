@@ -17,6 +17,10 @@ sprite_textures = {
     '3': {
         'default': load_image(TEXTURES_PATH, 'devil/default.png'),
         'dead': load_image(TEXTURES_PATH, 'devil/dead.png')
+    },
+    '4': {
+        'default': load_image(TEXTURES_PATH, 'solider/default.png'),
+        'dead': load_image(TEXTURES_PATH, 'solider/dead.png')
     }
 }
 
@@ -75,7 +79,7 @@ class MovableSprite(Sprite):
 
     def move_to(self, to_x, to_y):
         distance = get_distance(to_x, to_y, *self.pos)
-        if abs(distance) > TILE * 2:
+        if abs(distance) > TILE * 2 and not self.is_dead:
             dx, dy = self.pos[0] - to_x, self.pos[1] - to_y
             move_coefficient_x, move_coefficient_y = 1 if dx < 0 else -1, 1 if dy < 0 else -1
             next_x = self.pos[0] + move_coefficient_x * self.speed
@@ -92,7 +96,7 @@ class MovableSprite(Sprite):
         ray_cast_distance = ray_cast.distance
         if distance_to_player <= self.hit_distance \
                 and distance_to_player <= ray_cast_distance \
-                and self._delay >= SPRITE_DAMAGE_DELAY:
+                and self._delay >= SPRITE_DAMAGE_DELAY and not self.is_dead:
             self._delay = 0
             return True
         return False
@@ -101,6 +105,8 @@ class MovableSprite(Sprite):
 sprites_dict = {
     '3': MovableSprite(sprite_textures['3']['default'], sprite_textures['3']['dead'], None, speed=2, damage=5,
                        hit_distance=SPRITE_HIT_DISTANCE * 2),
+    '4': MovableSprite(sprite_textures['4']['default'], sprite_textures['4']['dead'], None, speed=1, damage=3,
+                       hit_distance=SPRITE_HIT_DISTANCE * 5)
 }
 
 
