@@ -56,6 +56,14 @@ sprite_textures = {
         'dead': load_image(TEXTURES_PATH, 'imp/dead.png'),
         'attack': collections.deque(
             [load_image(TEXTURES_PATH, f'imp/attack/{i}.png') for i in range(IMP_ATTACK_ANIMATION_FRAMES_COUNT)])
+    },
+    'a': {
+        'default': collections.deque(
+            [load_image(TEXTURES_PATH, f'soldier/{i}.png') for i in range(SOLDIER_ANIMATION_FRAMES_COUNT)]),
+        'dead': load_image(TEXTURES_PATH, f'soldier/dead.png'),
+        'attack': collections.deque(
+            [load_image(TEXTURES_PATH, f'soldier/attack/{i}.png') for i in range(SOLDIER_ATTACK_ANIMATION_FRAMES_COUNT)]
+        )
     }
 }
 
@@ -214,7 +222,9 @@ movable_sprites_dict = {
     '8': MovableSprite(sprite_textures['8']['default'], sprite_textures['8']['dead'], None, speed=2, damage=5,
                        hit_distance=SPRITE_HIT_DISTANCE * 1.5, vertical_scale=2),
     '9': MovableSprite(sprite_textures['9']['default'], sprite_textures['9']['dead'], None, speed=2, damage=5,
-                       hit_distance=SPRITE_HIT_DISTANCE * 1.5, attack_animation_list=sprite_textures['9']['attack'])
+                       hit_distance=SPRITE_HIT_DISTANCE * 1.5, attack_animation_list=sprite_textures['9']['attack']),
+    'a': MovableSprite(sprite_textures['a']['default'], sprite_textures['a']['dead'], None, speed=1, damage=6,
+                       hit_distance=SPRITE_HIT_DISTANCE * 5, attack_animation_list=sprite_textures['a']['attack'])
 }
 
 static_sprites_dict = {

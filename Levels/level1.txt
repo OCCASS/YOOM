@@ -1,5 +1,5 @@
 GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
-G5......9..6........4.........5G
+G.......a..6........4.........5G
 G.AAA......D...D.E...E.....AAA.G
 G.AAA......AAAAA.JJJJJ..4..AAA.G
 G.....FFF..............AAA.....G
