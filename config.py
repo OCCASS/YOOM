@@ -22,6 +22,7 @@ import numpy
 05.01.2022 Добавлены настройки музыки
 07.01.2022 Добавлены настройки звука оружия
 08.01.2022 Изменены константы максимальной прорисовки
+08.01.2022 Добавлены константы настроек музыки
 """
 
 # Настройки экрана
@@ -108,6 +109,8 @@ WEAPON_SIZE = (400, 260)
 ANIMATION_SPEED = 6
 
 # Настройки меню
+MENU_BTN_SIZE = (360, 100)
+LEVEL_BTN_SIZE = (340, 50)
 MENU_BACKGROUND = 'StartWindow.jpg'
 MENU_BACKGROUND_POS = (0, 0)
 FONT = 'font.ttf'
@@ -136,6 +139,14 @@ BTN_LEVEL_2_POS = (HALF_SCREEN_WIDTH - 140, 270)
 BTN_LEVEL_3_POS = (HALF_SCREEN_WIDTH - 140, 340)
 BTN_LEVEL_4_POS = (HALF_SCREEN_WIDTH - 140, 410)
 BTN_LEVEL_5_POS = (HALF_SCREEN_WIDTH - 140, 480)
+BTN_MUSIC_POS = (HALF_SCREEN_WIDTH - 140, 250)
+MUSIC_NAME = 'music'
+MUSIC_ON_NAME = 'on'
+BTN_MUSIC_ON_POS = (HALF_SCREEN_WIDTH + 100, 250)
+SOUND_EFFECTS_NAME = 'sound effects'
+BTN_SOUND_EFFECTS_POS = (HALF_SCREEN_WIDTH - 320, 350)
+BTN_SOUND_EFFECTS_ON_POS = (HALF_SCREEN_WIDTH + 210, 350)
+MUSIC_OFF_NAME = 'off'
 
 # Файлы уровней
 LEVEL_1 = 'level1.txt'
@@ -143,8 +154,6 @@ LEVEL_2 = 'level2.txt'
 LEVEL_3 = 'level3.txt'
 LEVEL_4 = 'level4.txt'
 LEVEL_5 = 'level5.txt'
-MENU_BTN_SIZE = (360, 100)
-LEVEL_BTN_SIZE = (340, 50)
 
 # Настройки спрайтов
 SPRITE_SPEED = 4
