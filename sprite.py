@@ -144,7 +144,8 @@ class StaticSprite:
 
 class MovableSprite(StaticSprite):
     def __init__(self, animation_list, dead_texture, pos, speed, damage, hit_distance, vertical_scale=1.0,
-                 vertical_shift=0.0, attack_animation_list=None, animation_speed=SPRITE_ANIMATION_SPEED):
+                 vertical_shift=0.0, attack_animation_list=None, death_animation_list=None,
+                 animation_speed=SPRITE_ANIMATION_SPEED):
         super(MovableSprite, self).__init__(animation_list, dead_texture, pos, vertical_scale, vertical_shift,
                                             animation_speed)
         self.damage = damage
