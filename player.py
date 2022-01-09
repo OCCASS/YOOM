@@ -86,7 +86,6 @@ class Player:
         current_weapon = self.weapons[self.current_gun_index]
         if current_weapon.ammo <= 0:
             Weapon.empty_fire_sound()
-        return self._sprites
 
     def set_shot(self, val):
         if (not val) == self.shot:

@@ -62,6 +62,10 @@ class MovableSprite(Sprite):
     def update(self, player):
         self.move_to(player.x, player.y)
 
+    def copy(self):
+        return MovableSprite(self.default_texture, self.dead_texture, self.pos, self.speed, self.damage,
+                             self.hit_distance)
+
     def _get_angel_to_player(self, player):
         dx, dy = player.x - self.pos[0], player.y - self.pos[1]
         direction = angle_between_vectors(RIGHT_VECTOR, (dx, dy, 0))
@@ -112,7 +116,7 @@ def create_sprites(world_map) -> list[Sprite]:
                     sprite.reset()
                     sprites.append(sprite)
                 elif el in MOVABLE_SPRITES:
-                    sprite = sprites_dict[el]
+                    sprite = sprites_dict[el].copy()
                     sprite.pos = (x, y)
                     sprite.reset()
                     sprites.append(sprite)
