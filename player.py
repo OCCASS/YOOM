@@ -78,7 +78,9 @@ class Player:
                     SoundEffect(SPRITE_HIT_SOUND).play_sound()
                     self._stats.update_kills()
                     break
-        else:
+
+        current_weapon = self.weapons[self.current_gun_index]
+        if current_weapon.ammo <= 0:
             Weapon.empty_fire_sound()
 
         return self._sprites
