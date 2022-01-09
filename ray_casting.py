@@ -2,7 +2,7 @@ from config import *
 from hit import SpriteHit
 from point import Point
 from ray import Ray, RayCastHit
-from staticsprite import StaticSprite
+from sprite import StaticSprite
 from utils import get_distance
 
 """

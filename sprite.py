@@ -158,7 +158,7 @@ movable_sprites_dict = {
 
 static_sprites_dict = {
     '5': StaticSprite(sprite_textures['5']['default'], sprite_textures['5']['dead'], None, 0.7, 20),
-    '6': StaticSprite(sprite_textures['6']['default'], sprite_textures['6']['dead'], None, 0.5, 70, True)
+    '6': StaticSprite(sprite_textures['6']['default'], sprite_textures['6']['dead'], None, 0.5, 20, True)
 }
 
 

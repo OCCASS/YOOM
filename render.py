@@ -4,7 +4,7 @@ from config import *
 from hit import RayCastHit, SpriteHit
 from load_image import load_image
 from ray_casting import ray_casting, sprites_ray_casting
-from staticsprite import MovableSprite
+from sprite import MovableSprite
 from utils import world_pos2cell
 
 """
