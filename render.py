@@ -82,8 +82,6 @@ class Render:
                 self._draw_wall(distance, offset, hit_index, hit.point)
             elif isinstance(hit, SpriteHit):
                 sprite = self.sprites[hit.sprite_index]
-                if sprite.is_dead:
-                    continue
                 if isinstance(sprite, MovableSprite):
                     self.sprites[hit.sprite_index].update(self._player)
                 if hit.distance > TILE:

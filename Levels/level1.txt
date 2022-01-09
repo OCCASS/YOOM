@@ -15,7 +15,7 @@ G..JJJJJ......OOOOO......PPPPP.G
 G..JJJJJ.................PPPPP.G
 G..JJJJJ.................PPPPP.G
 G..............................G
-G.BBB......A.3.A.1...1.....AAA.G
+G.BBB......A.3.A.1.4.1.....AAA.G
 G.CCC......AAAAA.11111.....AAA.G
 G.....AAA..............AAA.....G
 G.JJJ......AAAAA.AAAAA.....AAA.G

@@ -48,7 +48,7 @@ PLAYER_HEALTH = 100
 # Карта и настройки карты
 WALL_CHARS = ('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q')
 STATIC_SPRITES = tuple()
-MOVABLE_SPRITES = ('3',)
+MOVABLE_SPRITES = ('3', '4')
 SPRITE_CHARS = (*STATIC_SPRITES, *MOVABLE_SPRITES)
 TILE = 125
 WORLD_MAP = dict()
@@ -185,7 +185,7 @@ LEVEL_5 = 'level5.txt'
 # Настройки спрайтов
 SPRITE_SPEED = 4
 SPRITE_HIT_DISTANCE = 120
-SPRITE_DAMAGE_DELAY = 100
+SPRITE_DAMAGE_DELAY = 300
 
 # Настройки векторов
 RIGHT_VECTOR = (1, 0, 0)
@@ -206,9 +206,6 @@ TIME_SIZE = (250, 70)
 KILLS_NAME = "KILLS   "
 KILLS_POS = (10, 500)
 SEC = 'S'
-BACK_TO_MENU = 'back to menu'
-BACK_TO_MENU_POS = (10, 1)
-BACK_TO_MENU_SIZE = (190, 50)
 BACK_TO_MENU = 'back to menu'
 BACK_TO_MENU_POS = (10, 1)
 BACK_TO_MENU_SIZE = (190, 50)
