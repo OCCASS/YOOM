@@ -44,8 +44,7 @@ STATIC_SPRITES = ('3', '4')
 MOVABLE_SPRITES = ('5',)
 TILE = 125
 WORLD_MAP = {}
-MAP_SIZE = numpy.array([32, 23])
-WALLS_MAP = None
+MAP_SIZE = numpy.array([32, 24])
 
 # Настройки ray casting
 FOV = math.pi / 3

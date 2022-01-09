@@ -1,9 +1,6 @@
-from copy import deepcopy
-
-from config import TILE, SPRITE_CHARS, TEXTURES_PATH, STATIC_SPRITES, MOVABLE_SPRITES
+from config import TILE, SPRITE_CHARS, TEXTURES_PATH, STATIC_SPRITES, MOVABLE_SPRITES, WORLD_MAP
 from load_image import load_image
-from utils import world_pos2cell, get_distance
-from wave_algorithm import *
+from utils import get_distance, world_pos2cell
 
 """
 Павлов Тимур 08.01.2022. Создан класс Sprite и функция create_sprites
@@ -15,7 +12,7 @@ sprite_textures = {
     '4': load_image(TEXTURES_PATH, 'barrel.png'),
     '5': load_image(TEXTURES_PATH, 'enemy.png')
 }
-sprite_speed = 5
+sprite_speed = 1
 
 
 class Sprite:
@@ -39,72 +36,21 @@ class MovableSprite(Sprite):
         super(MovableSprite, self).__init__(texture, pos)
         self.speed = speed
 
-        self._route = []
-        self._previous_to_x, self._previous_to_y = -1, -1
-        self._move_x_coefficient, self._move_y_coefficient = 0, 0
-
-    @staticmethod
-    def _get_clean_board():
-        return [[0 for _ in range(MAP_SIZE[0])] for _ in range(MAP_SIZE[1])]
-
     def update(self, player):
-        pass
+        self.move_to(player.x, player.y)
 
     def move_to(self, to_x, to_y):
-        to_x, to_y = world_pos2cell(to_x, to_y)
-        from_x, from_y = world_pos2cell(*self.pos)
+        distance = get_distance(to_x, to_y, *self.pos)
 
-        if self._previous_to_x != to_x or self._previous_to_y != to_y:
-            self._route = numpy.array([])
+        if abs(distance) > TILE:
+            dx, dy = self.pos[0] - to_x, self.pos[1] - to_y
+            move_coefficient_x, move_coefficient_y = 1 if dx < 0 else -1, 1 if dy < 0 else -1
+            next_x = self.pos[0] + move_coefficient_x * self.speed
+            next_y = self.pos[1] + move_coefficient_y * self.speed
 
-        # If not route, create new route
-        if self._route is None or numpy.array_equal(self._route, numpy.array([])):
-            wave_map = self._get_wave_map(from_x, from_y, to_x, to_y)
-            self._previous_to_x, self._previous_to_y = to_x, to_y
-
-            if wave_map is not None:
-                self._route = deepcopy(get_route_to_point(wave_map, to_x, to_y))
-                self._set_move_coefficient()
-            else:
-                return
-
-        # If route calculated update sprite pos
-        if self._route is not None and not numpy.array_equal(self._route, numpy.array([])):
-            to_cell_x, to_cell_y = self._route[0]
-            to_tile_x, to_tile_y = to_cell_x * TILE, to_cell_y * TILE
-
-            if from_x == to_tile_x and from_y == to_tile_y:
-                self._set_move_coefficient()
-                self._route = self._route[1:]
-            else:
-                self.pos[0] += self._move_x_coefficient * self.speed
-                self.pos[1] += self._move_y_coefficient * self.speed
-
-    def _get_wave_map(self, x0, y0, x1, y1):
-        wave_map = self._get_clean_board()
-        wave_map[y0][x0] = 1
-
-        current_step = 1
-        while wave_map[y1][x1] == 0:
-            if wave_map is not None:
-                previous_wave_map = wave_map.copy()
-                wave_map = next_step(numpy.array(wave_map), current_step)
-
-                if numpy.array_equal(previous_wave_map, wave_map):
-                    return
-
-                current_step += 1
-            else:
-                break
-
-        return wave_map
-
-    def _set_move_coefficient(self):
-        if len(self._route) > 1:
-            self._move_x_coefficient = self._route[1][0] - self._route[0][0]
-            self._move_y_coefficient = self._route[1][1] - self._route[0][1]
-        else:
-            self._move_x_coefficient, self._move_y_coefficient = 0, 0
+            cell_x, cell_y = world_pos2cell(next_x, next_y)
+            if (cell_x * TILE, cell_y * TILE) not in WORLD_MAP:
+                self.pos = [next_x, next_y]
 
 
 def create_sprites(world_map) -> list[Sprite]:
