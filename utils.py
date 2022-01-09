@@ -19,12 +19,6 @@ def world_pos2cell(x, y):
     return int(x // TILE), int(y // TILE)
 
 
-def is_game_over(player, sprites):
+def is_game_over(player):
     if player.health <= 0:
         return True
-
-    for sprite in sprites:
-        if not sprite.is_dead:
-            return False
-
-    return True

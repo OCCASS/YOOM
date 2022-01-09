@@ -2,11 +2,11 @@ import pygame
 
 from config import *
 from map import create_map, create_minimap
-from menu import MainMenu, show_info, show_game_over
+from menu import MainMenu, show_info, show_game_over, show_win
 from player import Player
 from render import Render
 from sound import Music
-from sprite import create_sprites, sprites_update
+from sprite import create_sprites, sprites_update, is_win
 from utils import is_game_over
 from weapon import Weapon
 
@@ -27,7 +27,7 @@ class Game:
         self._minimap_screen = pygame.Surface((MAP_SIZE[0] * MAP_TILE, MAP_SIZE[1] * MAP_TILE))
         self._clock = pygame.time.Clock()
         self._caption = WINDOW_NAME
-        self._is_game_over = False
+        self._is_game_end = False
 
         self._weapons = [
             Weapon(self._screen, 'Gun1', (500, 450), 12, SHOTGUN, 5),
@@ -67,15 +67,18 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
-                if self._is_game_over:
+                if self._is_game_end:
                     if event.type in [pygame.MOUSEBUTTONDOWN, pygame.KEYDOWN]:
                         running = False
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     self._player.on_mouse_down(event)
 
-            self._is_game_over = is_game_over(self._player, self._sprites)
-            if self._is_game_over:
-                show_game_over(self._screen)
+            self._is_game_end = is_game_over(self._player) or is_win(self._sprites)
+            if self._is_game_end:
+                if is_game_over(self._player):
+                    show_game_over(self._screen)
+                elif is_win(self._sprites):
+                    show_win(self._screen)
             else:
                 self._player.update()
                 self._render.render()

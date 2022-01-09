@@ -43,6 +43,12 @@ def show_game_over(screen):
            height)
 
 
+def show_win(screen):
+    width, height = 100, 30
+    button(screen, 'YOU WIN!', 'yellow', (HALF_SCREEN_WIDTH - width // 2, HALF_SCREEN_HEIGHT - height // 2), width,
+           height)
+
+
 class Menu:
     def __init__(self, screen, clock):
         self.x = 0

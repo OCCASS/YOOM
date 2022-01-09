@@ -39,9 +39,9 @@ PLAYER_HEALTH = 100
 
 # Карта и настройки карты
 WALL_CHARS = ('1', '2')
-SPRITE_CHARS = ('3', '4', '5')
 STATIC_SPRITES = ('3', '4')
-MOVABLE_SPRITES = ('5',)
+MOVABLE_SPRITES = ('5', '6')
+SPRITE_CHARS = (*STATIC_SPRITES, *MOVABLE_SPRITES)
 TILE = 125
 WORLD_MAP = {}
 MAP_SIZE = numpy.array([32, 24])
@@ -148,4 +148,4 @@ LEVEL_BTN_SIZE = (340, 50)
 
 # Настройки спрайтов
 SPRITE_SPEED = 4
-SPRITE_HIT_DISTANCE = 150
+SPRITE_HIT_DISTANCE = 120

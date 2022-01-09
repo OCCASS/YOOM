@@ -11,7 +11,8 @@ from utils import get_distance, world_pos2cell
 sprite_textures = {
     '3': load_image(TEXTURES_PATH, 'plant.png'),
     '4': load_image(TEXTURES_PATH, 'barrel.png'),
-    '5': load_image(TEXTURES_PATH, 'enemy.png')
+    '5': load_image(TEXTURES_PATH, 'enemy.png'),
+    '6': load_image(TEXTURES_PATH, 'devil.png')
 }
 
 
@@ -30,7 +31,7 @@ def sprites_update(sprites, player):
 class Sprite:
     def __init__(self, texture, pos):
         self.texture = texture
-        self.pos = self.x, self.y = list(pos)
+        self.pos = pos
         self.is_dead = False
 
 
@@ -66,6 +67,12 @@ class MovableSprite(Sprite):
         return False
 
 
+sprites_dict = {
+    '5': MovableSprite(sprite_textures['5'], None, 1, 3),
+    '6': MovableSprite(sprite_textures['6'], None, 2, 5)
+}
+
+
 def create_sprites(world_map) -> list[Sprite]:
     sprites = []
 
@@ -79,7 +86,17 @@ def create_sprites(world_map) -> list[Sprite]:
                     sprite = Sprite(texture, (x, y))
                     sprites.append(sprite)
                 elif el in MOVABLE_SPRITES:
-                    sprite = MovableSprite(texture, (x, y), SPRITE_SPEED, 1)
+                    sprite = sprites_dict[el]
+                    sprite.pos = (x, y)
                     sprites.append(sprite)
 
     return sprites
+
+
+def is_win(sprites):
+    for sprite in sprites:
+        if isinstance(sprite, MovableSprite):
+            if not sprite.is_dead:
+                return False
+
+    return True
