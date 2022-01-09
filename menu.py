@@ -33,6 +33,12 @@ def show_info(screen, player):
     button(screen, ammo, 'blue', (10, SCREEN_HEIGHT - 90), 140, 70)
 
 
+def show_game_over(screen):
+    width, height = 100, 30
+    button(screen, 'GAME OVER', 'yellow', (HALF_SCREEN_WIDTH - width // 2, HALF_SCREEN_HEIGHT - height // 2), width,
+           height)
+
+
 class Menu:
     def __init__(self, screen, clock):
         self.x = 0

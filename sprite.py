@@ -27,7 +27,7 @@ class Sprite:
         self.texture = texture
         self.pos = self.x, self.y = list(pos)
         self.is_dead = False
-        self.hit_distance = 100
+        self.hit_distance = 70
 
     def check_damage(self, player):
         distance_to_player = get_distance(*self.pos, player.x, player.y)

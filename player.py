@@ -30,7 +30,7 @@ class Player:
         self.shot = False
         self.current_gun_index = 0
         self.weapons: list[Weapon] = weapons
-        self.health = 100
+        self.health = 10
 
     def update(self):
         self._process_mouse()

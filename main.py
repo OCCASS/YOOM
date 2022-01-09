@@ -1,5 +1,3 @@
-import os
-
 import pygame
 
 from config import *
@@ -10,7 +8,7 @@ from sound import Music
 from sprite import create_sprites
 from utils import is_game_over
 from weapon import Weapon, GunSound
-from menu import Menu, show_info
+from menu import Menu, show_info, show_game_over
 
 """
 Павлов Тимур 26.12.2021. Создан класс Game
@@ -42,6 +40,7 @@ class Game:
         self.render = Render(self.screen, self.player, self.screen_map, self.sprites)
         self.caption = caption
         self.menu = Menu(self.screen, self.clock)
+        self.game_over = False
 
     def run(self):
         self.menu.run()
@@ -69,6 +68,9 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
                     running = False
+                if self.game_over:
+                    if event.type in [pygame.MOUSEBUTTONDOWN, pygame.KEYDOWN]:
+                        running = False
                 if event.type == pygame.MOUSEBUTTONDOWN and not self.player.shot and event.button == 1:
                     self.sprites = self.player.do_shot(self.sprites)
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 4:
@@ -87,13 +89,14 @@ class Game:
                     self.player.current_gun_index += 1
                     self.player.current_gun_index %= len(self.player.weapons)
 
-            self.player.update()
-            self.render.render()
-            show_info(self.screen, self.player)
+            if not self.game_over:
+                self.player.update()
+                self.render.render()
+                show_info(self.screen, self.player)
 
             if is_game_over(self.player, self.sprites):
-                print('Game over')
-                running = False
+                show_game_over(self.screen)
+                self.game_over = True
 
             pygame.display.set_caption('FPS: ' + str(int(self.clock.get_fps())))
             pygame.display.flip()
