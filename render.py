@@ -76,6 +76,9 @@ class Render:
         sprite_hits = sprites_ray_casting(self.sprites, self._player.pos, self._player.direction)
         wall_hits = ray_casting(self._player.pos, self._player.direction)
         hits = list(sorted([*enumerate(sprite_hits), *enumerate(wall_hits)], key=lambda i: i[1].distance, reverse=True))
+        self.draw_hit(hits)
+
+    def draw_hit(self, hits):
         for hit_index, hit in hits:
             if isinstance(hit, RayCastHit):
                 offset = int(hit.offset) % TILE

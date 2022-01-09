@@ -80,7 +80,7 @@ class GunSound(SoundEffect):
         pygame.mixer.Channel(1).stop()
 
 
-class Sounds:
+class SpritesSound:
     @staticmethod
     def wall_hit(channel=2):
         SoundEffect(WALL_HIT_SOUND).play_sound(channel)

@@ -6,8 +6,8 @@ from config import *
 from load_image import load_image
 from point import Point
 from ray import Ray
-from sound import Sounds
-from utils import get_distance, world_pos2cell, angle_between_vectors, compare_deque
+from sound import SpritesSound
+from utils import get_distance, world_pos2cell, angle_between_vectors
 
 """
 Павлов Тимур 08.01.2022. Создан класс Sprite и функция create_sprites
@@ -56,14 +56,6 @@ sprite_textures = {
         'dead': load_image(TEXTURES_PATH, 'imp/dead.png'),
         'attack': collections.deque(
             [load_image(TEXTURES_PATH, f'imp/attack/{i}.png') for i in range(IMP_ATTACK_ANIMATION_FRAMES_COUNT)])
-    },
-    'a': {
-        'default': collections.deque(
-            [load_image(TEXTURES_PATH, f'soldier/{i}.png') for i in range(SOLDIER_ANIMATION_FRAMES_COUNT)]),
-        'dead': load_image(TEXTURES_PATH, f'soldier/dead.png'),
-        'attack': collections.deque(
-            [load_image(TEXTURES_PATH, f'soldier/attack/{i}.png') for i in range(SOLDIER_ATTACK_ANIMATION_FRAMES_COUNT)]
-        )
     }
 }
 
@@ -76,8 +68,8 @@ def sprites_update(sprites, player):
             sprites[sprite_index].move_to(player.x, player.y)
 
             if sprite.check_damage(player):
-                Sounds.damage()
-                Sounds.get_damage(3)
+                SpritesSound.damage()
+                SpritesSound.get_damage(3)
 
                 sprites[sprite_index].attack()
                 player.damage(sprite.damage)
@@ -88,8 +80,7 @@ def sprites_update(sprites, player):
 
 
 class StaticSprite:
-    def __init__(self, animation_list, dead_texture, pos, vertical_scale=1.0, vertical_shift=0.0, destroyed=False,
-                 animation_speed=SPRITE_ANIMATION_SPEED):
+    def __init__(self, animation_list, dead_texture, pos, vertical_scale=1.0, vertical_shift=0.0, destroyed=False):
         self.dead_texture = dead_texture
         self.pos = pos
         self.is_dead = False
@@ -97,14 +88,12 @@ class StaticSprite:
         self.vertical_shift = vertical_shift
         self.destroyed = destroyed
 
-        self.default_animation_list = animation_list.copy()
+        self._default_animation_list = animation_list.copy()
         self.animation_list = animation_list
         self.animation_count = 0
 
         self.texture = self.animation_list[0].copy()
         self.default_texture = self.texture.copy()
-
-        self.animation_speed = animation_speed
 
     def kill(self):
         self.is_dead = True
@@ -123,46 +112,35 @@ class StaticSprite:
 
     def update(self):
         self.animation_count += 1
-        if self.animation_count == self.animation_speed:
+        if self.animation_count == SPRITE_ANIMATION_SPEED:
             self.animation_list.rotate(-1)
             self.animation_count = 0
 
     def copy(self):
         return StaticSprite(self.animation_list, self.dead_texture, self.pos, self.vertical_scale, self.vertical_shift,
-                            self.destroyed, self.animation_speed)
+                            self.destroyed)
 
 
 class MovableSprite(StaticSprite):
     def __init__(self, animation_list, dead_texture, pos, speed, damage, hit_distance, vertical_scale=1.0,
-                 vertical_shift=0.0, attack_animation_list=None, animation_speed=SPRITE_ANIMATION_SPEED):
-        super(MovableSprite, self).__init__(animation_list, dead_texture, pos, vertical_scale, vertical_shift,
-                                            animation_speed)
+                 vertical_shift=0.0, attack_animation_list=None):
+        super(MovableSprite, self).__init__(animation_list, dead_texture, pos, vertical_scale, vertical_shift)
         self.damage = damage
 
         self._speed = speed
         self._hit_distance = hit_distance
         self._delay = 0
-        self._attack = False
+        self._attack = True
         self._attack_animation_list = None if attack_animation_list is None else attack_animation_list.copy()
 
     def attack(self):
         if self._attack_animation_list and not self._attack:
             self.animation_list = self._attack_animation_list.copy()
-            self.animation_list.rotate(-1)
-            self.animation_count = 0
 
         self._attack = True
 
     def stop_attack(self):
-        if self._attack_animation_list and self._attack:
-            if compare_deque(self.animation_list, self._attack_animation_list):
-                self.animation_list = self.default_animation_list.copy()
-                self.animation_count = 0
-                self._attack = False
-            else:
-                return
-        else:
-            self._attack = False
+        self._attack = False
 
     def full_update(self, player):
         self.move_to(player.x, player.y)
@@ -176,8 +154,7 @@ class MovableSprite(StaticSprite):
 
     def copy(self):
         return MovableSprite(self.animation_list, self.dead_texture, self.pos, self._speed, self.damage,
-                             self._hit_distance, self.vertical_scale, self.vertical_shift, self._attack_animation_list,
-                             self.animation_speed)
+                             self._hit_distance, self.vertical_scale, self.vertical_shift, self._attack_animation_list)
 
     def _get_angel_to_player(self, player):
         dx, dy = player.x - self.pos[0], player.y - self.pos[1]
@@ -222,9 +199,7 @@ movable_sprites_dict = {
     '8': MovableSprite(sprite_textures['8']['default'], sprite_textures['8']['dead'], None, speed=2, damage=5,
                        hit_distance=SPRITE_HIT_DISTANCE * 1.5, vertical_scale=2),
     '9': MovableSprite(sprite_textures['9']['default'], sprite_textures['9']['dead'], None, speed=2, damage=5,
-                       hit_distance=SPRITE_HIT_DISTANCE * 1.5, attack_animation_list=sprite_textures['9']['attack']),
-    'a': MovableSprite(sprite_textures['a']['default'], sprite_textures['a']['dead'], None, speed=1, damage=6,
-                       hit_distance=SPRITE_HIT_DISTANCE * 5, attack_animation_list=sprite_textures['a']['attack'])
+                       hit_distance=SPRITE_HIT_DISTANCE * 1.5, attack_animation_list=sprite_textures['9']['attack'])
 }
 
 static_sprites_dict = {
