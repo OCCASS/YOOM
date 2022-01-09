@@ -116,12 +116,18 @@ class Player:
 
         if pressed_keys[pygame.K_w]:
             if self._can_move(self.direction, PLAYER_SIZE * 4):
-                self._x += cos_a * PLAYER_SPEED
-                self._y += sin_a * PLAYER_SPEED
+                delta_angel = math.pi / 6
+                if self._can_move(self.direction - delta_angel, PLAYER_SIZE * 4) and self._can_move(
+                        self.direction + delta_angel, PLAYER_SIZE * 4):
+                    self._x += cos_a * PLAYER_SPEED
+                    self._y += sin_a * PLAYER_SPEED
         if pressed_keys[pygame.K_s]:
             if self._can_move(self.direction - math.pi, PLAYER_SIZE * 4):
-                self._x += -cos_a * PLAYER_SPEED
-                self._y += -sin_a * PLAYER_SPEED
+                delta_angel = math.pi / 6 - math.pi
+                if self._can_move(self.direction - delta_angel, PLAYER_SIZE * 4) and self._can_move(
+                        self.direction + delta_angel, PLAYER_SIZE * 4):
+                    self._x += -cos_a * PLAYER_SPEED
+                    self._y += -sin_a * PLAYER_SPEED
         if pressed_keys[pygame.K_a]:
             if self._can_move(self.direction - math.pi / 2, PLAYER_SIZE * 3):
                 self._x += sin_a * PLAYER_SPEED
