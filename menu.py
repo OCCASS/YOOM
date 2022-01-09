@@ -38,7 +38,7 @@ def button(screen, name, color, rect_pos, width, height, font):
 
 
 def show_info(screen, player):
-    health = 'Health   ' + str(player.health)
+    health = 'Health   ' + str(int(player.health))
     ammo = 'Ammo   ' + str(player.weapons[player.current_gun_index].ammo)
     button(screen, health, RED, (10, SCREEN_HEIGHT - 160), 140, 70, button_font)
     button(screen, ammo, BLUE, (10, SCREEN_HEIGHT - 90), 140, 70, button_font)

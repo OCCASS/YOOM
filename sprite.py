@@ -6,7 +6,7 @@ from config import *
 from load_image import load_image
 from point import Point
 from ray import Ray
-from sound import SoundEffect
+from sound import Sounds
 from utils import get_distance, world_pos2cell, angle_between_vectors
 
 """
@@ -37,21 +37,44 @@ sprite_textures = {
         'default': collections.deque(
             [load_image(TEXTURES_PATH, f'devil_yellow/{i}.png') for i in range(DEVIL_YELLOW_ANIMATION_FRAMES_COUNT)]),
         'dead': load_image(TEXTURES_PATH, 'devil_yellow/dead.png')
+    },
+    '7': {
+        'default': collections.deque(
+            [load_image(TEXTURES_PATH, f'aerial/{i}.png') for i in range(AERIAL_ANIMATION_FRAMES_COUNT)]
+        ),
+        'dead': load_image(TEXTURES_PATH, 'aerial/dead.png')
+    },
+    '8': {
+        'default': collections.deque(
+            [load_image(TEXTURES_PATH, f'skull/{i}.png') for i in range(SKULL_ANIMATION_FRAMES_COUNT)]
+        ),
+        'dead': load_image(TEXTURES_PATH, 'skull/dead.png')
+    },
+    '9': {
+        'default': collections.deque(
+            [load_image(TEXTURES_PATH, f'imp/{i}.png') for i in range(IMP_ANIMATION_FRAMES_COUNT)]),
+        'dead': load_image(TEXTURES_PATH, 'imp/dead.png'),
+        'attack': collections.deque(
+            [load_image(TEXTURES_PATH, f'imp/attack/{i}.png') for i in range(IMP_ATTACK_ANIMATION_FRAMES_COUNT)])
     }
 }
 
 
 def sprites_update(sprites, player):
-    for i in range(len(sprites)):
-        sprite = sprites[i]
+    for sprite_index in range(len(sprites)):
+        sprite = sprites[sprite_index]
         sprite.update()
         if isinstance(sprite, MovableSprite):
-            sprites[i].move_to(player.x, player.y)
+            sprites[sprite_index].move_to(player.x, player.y)
 
             if sprite.check_damage(player):
-                SoundEffect(DAMAGE_SOUND).play_sound()
-                SoundEffect(DO_DAMAGE_SOUND).play_sound(3)
+                Sounds.damage()
+                Sounds.get_damage(3)
+
+                sprites[sprite_index].attack()
                 player.damage(sprite.damage)
+            else:
+                sprites[sprite_index].stop_attack()
 
     return sprites
 
@@ -65,8 +88,9 @@ class StaticSprite:
         self.vertical_shift = vertical_shift
         self.destroyed = destroyed
 
+        self._default_animation_list = animation_list.copy()
         self.animation_list = animation_list
-        self._animation_count = 0
+        self.animation_count = 0
 
         self.texture = self.animation_list[0].copy()
         self.default_texture = self.texture.copy()
@@ -87,23 +111,36 @@ class StaticSprite:
                 return self.animation_list[0]
 
     def update(self):
-        self._animation_count += 1
-        if self._animation_count == ANIMATION_SPEED * 5:
+        self.animation_count += 1
+        if self.animation_count == SPRITE_ANIMATION_SPEED:
             self.animation_list.rotate(-1)
-            self._animation_count = 0
+            self.animation_count = 0
 
     def copy(self):
-        return StaticSprite(self.animation_list, self.dead_texture, self.pos, self.vertical_scale, self.vertical_shift)
+        return StaticSprite(self.animation_list, self.dead_texture, self.pos, self.vertical_scale, self.vertical_shift,
+                            self.destroyed)
 
 
 class MovableSprite(StaticSprite):
     def __init__(self, animation_list, dead_texture, pos, speed, damage, hit_distance, vertical_scale=1.0,
-                 vertical_shift=0.0):
+                 vertical_shift=0.0, attack_animation_list=None):
         super(MovableSprite, self).__init__(animation_list, dead_texture, pos, vertical_scale, vertical_shift)
-        self.speed = speed
         self.damage = damage
-        self.hit_distance = hit_distance
+
+        self._speed = speed
+        self._hit_distance = hit_distance
         self._delay = 0
+        self._attack = True
+        self._attack_animation_list = None if attack_animation_list is None else attack_animation_list.copy()
+
+    def attack(self):
+        if self._attack_animation_list and not self._attack:
+            self.animation_list = self._attack_animation_list.copy()
+
+        self._attack = True
+
+    def stop_attack(self):
+        self._attack = False
 
     def full_update(self, player):
         self.move_to(player.x, player.y)
@@ -116,8 +153,8 @@ class MovableSprite(StaticSprite):
             return self.animation_list[0]
 
     def copy(self):
-        return MovableSprite(self.animation_list, self.dead_texture, self.pos, self.speed, self.damage,
-                             self.hit_distance)
+        return MovableSprite(self.animation_list, self.dead_texture, self.pos, self._speed, self.damage,
+                             self._hit_distance, self.vertical_scale, self.vertical_shift, self._attack_animation_list)
 
     def _get_angel_to_player(self, player):
         dx, dy = player.x - self.pos[0], player.y - self.pos[1]
@@ -130,8 +167,8 @@ class MovableSprite(StaticSprite):
         if not self.is_dead:
             dx, dy = self.pos[0] - to_x, self.pos[1] - to_y
             move_coefficient_x, move_coefficient_y = 1 if dx < 0 else -1, 1 if dy < 0 else -1
-            next_x = self.pos[0] + move_coefficient_x * self.speed
-            next_y = self.pos[1] + move_coefficient_y * self.speed
+            next_x = self.pos[0] + move_coefficient_x * self._speed
+            next_y = self.pos[1] + move_coefficient_y * self._speed
             cell_x, cell_y = world_pos2cell(next_x, next_y)
             if (cell_x * TILE, cell_y * TILE) not in WORLD_MAP:
                 self.pos = [next_x, next_y]
@@ -142,7 +179,7 @@ class MovableSprite(StaticSprite):
         ray = Ray(Point(*self.pos), self._get_angel_to_player(player), MAX_VIEW_DISTANCE)
         ray_cast = ray.ray_cast()
         ray_cast_distance = ray_cast.distance
-        if distance_to_player <= self.hit_distance \
+        if distance_to_player <= self._hit_distance \
                 and distance_to_player <= ray_cast_distance \
                 and self._delay >= SPRITE_DAMAGE_DELAY and not self.is_dead:
             self._delay = 0
@@ -156,7 +193,13 @@ movable_sprites_dict = {
     '4': MovableSprite(sprite_textures['4']['default'], sprite_textures['4']['dead'], None, speed=1, damage=3,
                        hit_distance=SPRITE_HIT_DISTANCE * 4, vertical_scale=.5),
     '6': MovableSprite(sprite_textures['6']['default'], sprite_textures['6']['dead'], None, speed=1, damage=5,
-                       hit_distance=SPRITE_HIT_DISTANCE * 4)
+                       hit_distance=SPRITE_HIT_DISTANCE * 4),
+    '7': MovableSprite(sprite_textures['7']['default'], sprite_textures['7']['dead'], None, speed=1, damage=0.5,
+                       hit_distance=SPRITE_HIT_DISTANCE * 6),
+    '8': MovableSprite(sprite_textures['8']['default'], sprite_textures['8']['dead'], None, speed=2, damage=5,
+                       hit_distance=SPRITE_HIT_DISTANCE * 1.5, vertical_scale=2),
+    '9': MovableSprite(sprite_textures['9']['default'], sprite_textures['9']['dead'], None, speed=2, damage=5,
+                       hit_distance=SPRITE_HIT_DISTANCE * 1.5, attack_animation_list=sprite_textures['9']['attack'])
 }
 
 static_sprites_dict = {
