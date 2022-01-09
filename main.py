@@ -82,7 +82,6 @@ class Game:
                         self._running = False
                 if event.type == pygame.MOUSEBUTTONDOWN and not self._is_game_end:
                     self._player.on_mouse_down(event)
-
             self._is_game_end = is_game_over(self._player) or is_win(self._sprites)
             if self._is_game_end:
                 total_time = self._stats.total_time()
