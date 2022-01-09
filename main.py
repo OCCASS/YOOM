@@ -2,11 +2,12 @@ import pygame
 
 from config import *
 from map import create_map, create_minimap
-from menu import MainMenu, show_info, show_game_over, show_win
+from menu import MainMenu, show_info, show_game_over
 from player import Player
 from render import Render
 from sound import Music
-from sprite import create_sprites, sprites_update, is_win, MovableSprite
+from sprite import create_sprites, sprites_update, is_win
+from stats import Stats
 from utils import is_game_over
 from weapon import Weapon
 
@@ -47,7 +48,8 @@ class Game:
 
     def _init(self):
         self._sprites = create_sprites(self._menu.chosen_level)
-        self._player = Player(TILE * 2 - TILE // 2, TILE * 2 - TILE // 2, self._weapons, self._sprites)
+        self._stats = Stats()
+        self._player = Player(TILE * 2 - TILE // 2, TILE * 2 - TILE // 2, self._weapons, self._sprites, self._stats)
         self._render = Render(self._screen, self._player, self._minimap_screen, self._sprites)
 
         create_map(self._menu.chosen_level)
@@ -78,7 +80,10 @@ class Game:
                 if is_game_over(self._player):
                     show_game_over(self._screen)
                 elif is_win(self._sprites):
-                    show_win(self._screen)
+                    pass
+
+                print(self._stats.total_time())
+                print(self._stats.get_kills())
             else:
                 self._player.update()
                 self._render.render()
