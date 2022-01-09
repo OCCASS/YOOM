@@ -112,33 +112,55 @@ class Player:
     def y(self):
         return self._y
 
+    def _can_move_forward(self):
+        if self._can_move(self.direction, PLAYER_SIZE * 4):
+            delta_angel = math.pi / 6
+            if self._can_move(self.direction - delta_angel, PLAYER_SIZE * 4) and self._can_move(
+                    self.direction + delta_angel, PLAYER_SIZE * 4):
+                return True
+
+        return False
+
+    def _can_move_backward(self):
+        if self._can_move(self.direction - math.pi, PLAYER_SIZE * 4):
+            delta_angel = math.pi / 6 - math.pi
+            if self._can_move(self.direction - delta_angel, PLAYER_SIZE * 4) and self._can_move(
+                    self.direction + delta_angel, PLAYER_SIZE * 4):
+                return True
+
+        return False
+
+    def _move_forward(self, cos_a, sin_a):
+        self._x += cos_a * PLAYER_SPEED
+        self._y += sin_a * PLAYER_SPEED
+
+    def _move_backward(self, cos_a, sin_a):
+        self._x += -cos_a * PLAYER_SPEED
+        self._y += -sin_a * PLAYER_SPEED
+
+    def _move_right(self, cos_a, sin_a):
+        self._x += sin_a * PLAYER_SPEED
+        self._y += -cos_a * PLAYER_SPEED
+
+    def _move_left(self, cos_a, sin_a):
+        self._x += -sin_a * PLAYER_SPEED
+        self._y += cos_a * PLAYER_SPEED
+
     def _process_keyboard(self):
         pressed_keys = pygame.key.get_pressed()
-
         cos_a, sin_a = math.cos(self.direction), math.sin(self.direction)
-
         if pressed_keys[pygame.K_w]:
-            if self._can_move(self.direction, PLAYER_SIZE * 4):
-                delta_angel = math.pi / 6
-                if self._can_move(self.direction - delta_angel, PLAYER_SIZE * 4) and self._can_move(
-                        self.direction + delta_angel, PLAYER_SIZE * 4):
-                    self._x += cos_a * PLAYER_SPEED
-                    self._y += sin_a * PLAYER_SPEED
+            if self._can_move_forward():
+                self._move_forward(cos_a, sin_a)
         if pressed_keys[pygame.K_s]:
-            if self._can_move(self.direction - math.pi, PLAYER_SIZE * 4):
-                delta_angel = math.pi / 6 - math.pi
-                if self._can_move(self.direction - delta_angel, PLAYER_SIZE * 4) and self._can_move(
-                        self.direction + delta_angel, PLAYER_SIZE * 4):
-                    self._x += -cos_a * PLAYER_SPEED
-                    self._y += -sin_a * PLAYER_SPEED
+            if self._can_move_backward():
+                self._move_backward(cos_a, sin_a)
         if pressed_keys[pygame.K_a]:
             if self._can_move(self.direction - math.pi / 2, PLAYER_SIZE * 3):
-                self._x += sin_a * PLAYER_SPEED
-                self._y += -cos_a * PLAYER_SPEED
+                self._move_right(cos_a, sin_a)
         if pressed_keys[pygame.K_d]:
             if self._can_move(self.direction + math.pi / 2, PLAYER_SIZE * 3):
-                self._x += -sin_a * PLAYER_SPEED
-                self._y += cos_a * PLAYER_SPEED
+                self._move_left(cos_a, sin_a)
 
     def _process_mouse(self):
         if pygame.mouse.get_focused():
