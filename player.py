@@ -99,7 +99,6 @@ class Player:
                     Sounds.sprite_hit(3)
                     if isinstance(self._sprites[sprite_hit.sprite_index], MovableSprite):
                         self._stats.update_kills()
-
                     break
             else:
                 Sounds.wall_hit(4)

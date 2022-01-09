@@ -7,7 +7,7 @@ from load_image import load_image
 from point import Point
 from ray import Ray
 from sound import Sounds
-from utils import get_distance, world_pos2cell, angle_between_vectors
+from utils import get_distance, world_pos2cell, angle_between_vectors, compare_deque
 
 """
 Павлов Тимур 08.01.2022. Создан класс Sprite и функция create_sprites
@@ -80,7 +80,8 @@ def sprites_update(sprites, player):
 
 
 class StaticSprite:
-    def __init__(self, animation_list, dead_texture, pos, vertical_scale=1.0, vertical_shift=0.0, destroyed=False):
+    def __init__(self, animation_list, dead_texture, pos, vertical_scale=1.0, vertical_shift=0.0, destroyed=False,
+                 animation_speed=SPRITE_ANIMATION_SPEED):
         self.dead_texture = dead_texture
         self.pos = pos
         self.is_dead = False
@@ -88,12 +89,14 @@ class StaticSprite:
         self.vertical_shift = vertical_shift
         self.destroyed = destroyed
 
-        self._default_animation_list = animation_list.copy()
+        self.default_animation_list = animation_list.copy()
         self.animation_list = animation_list
         self.animation_count = 0
 
         self.texture = self.animation_list[0].copy()
         self.default_texture = self.texture.copy()
+
+        self.animation_speed = animation_speed
 
     def kill(self):
         self.is_dead = True
@@ -112,35 +115,46 @@ class StaticSprite:
 
     def update(self):
         self.animation_count += 1
-        if self.animation_count == SPRITE_ANIMATION_SPEED:
+        if self.animation_count == self.animation_speed:
             self.animation_list.rotate(-1)
             self.animation_count = 0
 
     def copy(self):
         return StaticSprite(self.animation_list, self.dead_texture, self.pos, self.vertical_scale, self.vertical_shift,
-                            self.destroyed)
+                            self.destroyed, self.animation_speed)
 
 
 class MovableSprite(StaticSprite):
     def __init__(self, animation_list, dead_texture, pos, speed, damage, hit_distance, vertical_scale=1.0,
-                 vertical_shift=0.0, attack_animation_list=None):
-        super(MovableSprite, self).__init__(animation_list, dead_texture, pos, vertical_scale, vertical_shift)
+                 vertical_shift=0.0, attack_animation_list=None, animation_speed=SPRITE_ANIMATION_SPEED):
+        super(MovableSprite, self).__init__(animation_list, dead_texture, pos, vertical_scale, vertical_shift,
+                                            animation_speed)
         self.damage = damage
 
         self._speed = speed
         self._hit_distance = hit_distance
         self._delay = 0
-        self._attack = True
+        self._attack = False
         self._attack_animation_list = None if attack_animation_list is None else attack_animation_list.copy()
 
     def attack(self):
         if self._attack_animation_list and not self._attack:
             self.animation_list = self._attack_animation_list.copy()
+            self.animation_list.rotate(-1)
+            self.animation_count = 0
 
         self._attack = True
 
     def stop_attack(self):
-        self._attack = False
+        if self._attack_animation_list and self._attack:
+            if compare_deque(self.animation_list, self._attack_animation_list):
+                self.animation_list = self.default_animation_list.copy()
+                self.animation_count = 0
+                self._attack = False
+            else:
+                return
+        else:
+            self._attack = False
 
     def full_update(self, player):
         self.move_to(player.x, player.y)
@@ -154,7 +168,8 @@ class MovableSprite(StaticSprite):
 
     def copy(self):
         return MovableSprite(self.animation_list, self.dead_texture, self.pos, self._speed, self.damage,
-                             self._hit_distance, self.vertical_scale, self.vertical_shift, self._attack_animation_list)
+                             self._hit_distance, self.vertical_scale, self.vertical_shift, self._attack_animation_list,
+                             self.animation_speed)
 
     def _get_angel_to_player(self, player):
         dx, dy = player.x - self.pos[0], player.y - self.pos[1]

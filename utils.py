@@ -27,6 +27,17 @@ def world_pos2tile(x, y):
     return cx * TILE, cy * TILE
 
 
+def compare_deque(d1, d2):
+    if len(d1) != len(d2):
+        return False
+
+    for i, j in zip(d1, d2):
+        if i != j:
+            return False
+
+    return True
+
+
 def is_game_over(player):
     if player.health <= 0:
         return True
