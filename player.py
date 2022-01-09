@@ -74,8 +74,10 @@ class Player:
             self.set_shot(True)
             self.weapons[self.current_gun_index].shot()
             all_casted_sprites = sprites_ray_casting(self._sprites, self.pos, self.direction)
+            ray = Ray(self.pos, self.direction, MAX_VIEW_DISTANCE)
+            ray_cast_distance = ray.ray_cast().distance
             for sprite_hit in all_casted_sprites:
-                if -1 <= int(math.degrees(sprite_hit.angel)) <= 1:
+                if -1 <= int(math.degrees(sprite_hit.angel)) <= 1 and sprite_hit.distance < ray_cast_distance:
                     self._sprites[sprite_hit.sprite_index].is_dead = True
                     SoundEffect(SPRITE_HIT_SOUND).play_sound()
                     if isinstance(self._sprites[sprite_hit.sprite_index], MovableSprite):
