@@ -16,6 +16,7 @@ from utils import world_pos2cell
 
 Батталов Арслан:
 06.01.2022 Изменена обработка текстур стены
+08.01.2022 Добавлены новые текстуры
 
 Палов Тимур:
 08.01.2022. Создана поддержка отрисовки спрайтов
@@ -24,11 +25,24 @@ from utils import world_pos2cell
 
 sky_texture = load_image(TEXTURES_PATH, SKY_TEXTURE)
 wall_textures = {
-    '.': load_image(TEXTURES_PATH, WALL_TEXTURE_1, color_key=None),
-    '1': load_image(TEXTURES_PATH, WALL_TEXTURE_1, color_key=None),
-    '2': load_image(TEXTURES_PATH, WALL_TEXTURE_2, color_key=None)
+    '.': load_image(TEXTURES_PATH, STONE_WALL, color_key=None),
+    'A': load_image(TEXTURES_PATH, BASIC_WALL, color_key=None),
+    'B': load_image(TEXTURES_PATH, COMPUTER_1, color_key=None),
+    'C': load_image(TEXTURES_PATH, COMPUTER_2, color_key=None),
+    'D': load_image(TEXTURES_PATH, FACE_WALL_1, color_key=None),
+    'E': load_image(TEXTURES_PATH, FACE_WALL_2, color_key=None),
+    'F': load_image(TEXTURES_PATH, FACE_WALL_3, color_key=None),
+    'G': load_image(TEXTURES_PATH, MARBLE_WALL_1, color_key=None),
+    'H': load_image(TEXTURES_PATH, MARBLE_WALL_2, color_key=None),
+    'J': load_image(TEXTURES_PATH, MARBLE_WALL_BLOOD, color_key=None),
+    'K': load_image(TEXTURES_PATH, METAL_WALL, color_key=None),
+    'L': load_image(TEXTURES_PATH, DUDE_WALL_1, color_key=None),
+    'M': load_image(TEXTURES_PATH, DUDE_WALL_2, color_key=None),
+    'N': load_image(TEXTURES_PATH, BASIC_WALL_2, color_key=None),
+    'O': load_image(TEXTURES_PATH, BASIC_WALL_3, color_key=None),
+    'P': load_image(TEXTURES_PATH, BASIC_WALL_4, color_key=None),
+    'Q': load_image(TEXTURES_PATH, BASIC_WALL_5, color_key=None),
 }
-wall_texture = load_image(TEXTURES_PATH, WALL_TEXTURE_1, color_key=None)
 
 
 class Render:

@@ -29,6 +29,7 @@ import numpy
 08.01.2022 Изменены константы максимальной прорисовки
 08.01.2022 Добавлены константы настроек музыки
 08.01.2022 Настройки музыки уровней
+08.01.2022 Добавлены новые текстуры
 """
 
 # Настройки экрана
@@ -45,7 +46,7 @@ PLAYER_SIZE = 20
 PLAYER_HEALTH = 100
 
 # Карта и настройки карты
-WALL_CHARS = ('1', '2')
+WALL_CHARS = ('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q')
 STATIC_SPRITES = ('3', '4')
 MOVABLE_SPRITES = ('5', '6')
 SPRITE_CHARS = (*STATIC_SPRITES, *MOVABLE_SPRITES)
@@ -91,8 +92,23 @@ MIINIMAP_OFFSET = 10
 # Настройки текстур
 TEXTURES_PATH = 'TextureSprite'
 SKY_TEXTURE = 'sky.png'
-WALL_TEXTURE_1 = 'wall1.jpg'
-WALL_TEXTURE_2 = 'SP_DUDE1.png'
+STONE_WALL = 'STONE2.png'
+BASIC_WALL = 'wall1.jpg'
+COMPUTER_1 = 'computer1.png'
+COMPUTER_2 = 'computer2.png'
+FACE_WALL_1 = 'face1.png'
+FACE_WALL_2 = 'face2.png'
+FACE_WALL_3 = 'face3.png'
+MARBLE_WALL_1 = 'marble_wall1.png'
+MARBLE_WALL_2 = 'marble_wall2.png'
+MARBLE_WALL_BLOOD = 'marble_wall_blood.png'
+METAL_WALL = 'metal_wall_2.png'
+DUDE_WALL_1 = 'SP_DUDE1.png'
+DUDE_WALL_2 = 'SP_DUDE2.png'
+BASIC_WALL_2 = 'STARBR2.png'
+BASIC_WALL_3 = 'STARG2.png'
+BASIC_WALL_4 = 'STARG3.png'
+BASIC_WALL_5 = 'STARTAN2.png'
 FLOOR_TEXTURE = 'floor.png'
 TEXTURE_WIDTH, TEXTURE_HEIGHT = 128, 128
 TEXTURE_SCALE = TEXTURE_WIDTH // TILE
