@@ -75,6 +75,7 @@ class Player:
                 if -1 <= int(math.degrees(sprite_hit.angel)) <= 1:
                     self._sprites[sprite_hit.sprite_index].is_dead = True
                     SoundEffect(SPRITE_HIT_SOUND).play_sound()
+                    break
         else:
             Weapon.empty_fire_sound()
 

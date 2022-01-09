@@ -6,7 +6,7 @@ from menu import MainMenu, show_info, show_game_over, show_win
 from player import Player
 from render import Render
 from sound import Music
-from sprite import create_sprites, sprites_update, is_win
+from sprite import create_sprites, sprites_update, is_win, MovableSprite
 from utils import is_game_over
 from weapon import Weapon
 

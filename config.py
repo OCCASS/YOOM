@@ -158,4 +158,7 @@ LEVEL_5 = 'level5.txt'
 # Настройки спрайтов
 SPRITE_SPEED = 4
 SPRITE_HIT_DISTANCE = 120
-SPRITE_DAMAGE_DELAY = 30
+SPRITE_DAMAGE_DELAY = 100
+
+# Настройки векторов
+RIGHT_VECTOR = (1, 0, 0)
