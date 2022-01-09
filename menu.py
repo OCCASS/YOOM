@@ -84,7 +84,6 @@ class MainMenu(Menu):
     def __init__(self, screen, clock):
         super().__init__(screen, clock)
         self.levels_class = Levels(self.screen, self.clock)
-        self.settings_class = Settings(self.screen, self.clock)
 
     def _create_buttons(self):
         self.btn_levels, self.levels = button(self.screen, LEVELS_NAME, BLACK, (HALF_SCREEN_WIDTH - 140, 200),
