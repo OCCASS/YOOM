@@ -4,7 +4,7 @@ from config import *
 from point import Point
 from ray import Ray
 from ray_casting import sprites_ray_casting
-from sound import SoundEffect, GunSound
+from sound import GunSound, Sounds
 from sprite import MovableSprite
 from weapon import Weapon
 
@@ -20,6 +20,7 @@ from weapon import Weapon
 Вайман Ангелина 06.01.2022. Добавлены функции _shot
 
 Павлов Тимур 09.01.2022. Добавлена функция do_shot
+Павлов Тимур 09.01.2022. Изменен вызов звуков
 """
 
 
@@ -31,7 +32,6 @@ class Player:
         self.weapons: list[Weapon] = weapons
         self.health = PLAYER_HEALTH
         self.direction = 0
-        self.footstep_sound = SoundEffect(FOOTSTEP)
         self._sprites = sprites
         self._stats = stats
 
@@ -57,7 +57,7 @@ class Player:
 
     def dead(self):
         self.health = 0
-        SoundEffect(DEAD_SOUND).play_sound(3)
+        Sounds.dead(3)
 
     def draw(self):
         self._shot()
@@ -96,13 +96,21 @@ class Player:
                 if self._is_can_kill_the_sprite(sprite_hit.angel, sprite_hit.distance,
                                                 ray_cast_distance) and not sprite.is_dead:
                     self._sprites[sprite_hit.sprite_index].kill()
-                    SoundEffect(SPRITE_HIT_SOUND).play_sound(3)
+                    Sounds.sprite_hit(3)
                     if isinstance(self._sprites[sprite_hit.sprite_index], MovableSprite):
                         self._stats.update_kills()
+
                     break
+            else:
+                Sounds.wall_hit(4)
+
         current_weapon = self.weapons[self.current_gun_index]
         if current_weapon.ammo <= 0:
-            Weapon.empty_fire_sound()
+            Sounds.no_ammo(3)
+
+    @staticmethod
+    def _is_hit_to_wall(sprite_hit_distance, distance_to_wall):
+        return distance_to_wall <= sprite_hit_distance
 
     @staticmethod
     def _is_hooked_to_sprite(angel):
@@ -200,4 +208,4 @@ class Player:
 
         if (pressed_keys[pygame.K_w] or pressed_keys[pygame.K_s]
                 or pressed_keys[pygame.K_a] or pressed_keys[pygame.K_d]):
-            self.footstep_sound.play_sound()
+            Sounds.footstep(1)
