@@ -3,6 +3,7 @@ import pygame
 from config import *
 from map import create_map, create_minimap
 from menu import MainMenu, show_info
+from mode import Modes
 from player import Player
 from render import Render
 from result_window import Win, Losing
@@ -22,6 +23,7 @@ from weapon import Weapon
 Батталов Арслан 08.01.2022 Исправлена проблема двойного проигрывания звуков
 Павлов Тимур 09.01.2022. Добавлена проверка окончания игры
 Павлов Тимур 09.01.2022. Добавлен способ выхода после проигрыша или выигрыша
+Павлов Тимур 09.01.2022. Добавлена поддержка режим Arcade
 """
 
 
@@ -31,8 +33,10 @@ class Game:
         self._minimap_screen = pygame.Surface((MAP_SIZE[0] * MAP_TILE, MAP_SIZE[1] * MAP_TILE))
         self._clock = pygame.time.Clock()
         self._caption = WINDOW_NAME
+        self._sprites = list()
 
     def _pre_init(self):
+        pygame.display.set_caption('YOOM')
         self._menu = MainMenu(self._screen, self._clock)
         self._losing = Losing(self._screen, self._clock)
         self._win = Win(self._screen, self._clock)
@@ -66,6 +70,14 @@ class Game:
         pygame.display.set_caption(self._caption)
         pygame.mouse.set_visible(False)
 
+    def _respawn_arcade_sprites(self):
+        self._menu.arcade_class.spawn(SPRITES_COUNT_TO_SPAWN_IN_ARCADE)
+        new_map = self._menu.arcade_class.get_map()
+        sprites = create_sprites(new_map)
+        self._render.sprites = sprites
+        self._player.sprites = sprites
+        self._sprites = sprites
+
     def _update(self):
         while self._running:
             self._screen.fill(SKYBLUE)
@@ -82,6 +94,10 @@ class Game:
                         self._running = False
                 if event.type == pygame.MOUSEBUTTONDOWN and not self._is_game_end:
                     self._player.on_mouse_down(event)
+
+            if self._menu.mode == Modes.ARCADE and is_win(self._sprites):
+                self._respawn_arcade_sprites()
+
             self._is_game_end = is_game_over(self._player) or is_win(self._sprites)
             if self._is_game_end:
                 total_time = self._stats.total_time()

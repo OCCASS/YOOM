@@ -1,19 +1,26 @@
 import os
 import random
+from copy import deepcopy
 
 from config import *
 from utils import world_pos2cell
+
+"""
+Павлов Тимур 09.01.2022. Создан класс Arcade
+"""
 
 
 class Arcade:
     def __init__(self, arcade_map_file_name):
         self.level_path = os.path.join(LEVELS_PATH, arcade_map_file_name)
-        self.map = self.load_map()
+        self.clean_map = self.load_map()
+        self.map = deepcopy(self.clean_map)
         self.spawns = self.get_spawns()
 
     def load_map(self):
         with open(self.level_path, 'r') as file:
             lines = list(map(str.strip, file.readlines()))
+            lines = list(map(list, lines))
             file.close()
 
         return lines
@@ -34,13 +41,19 @@ class Arcade:
         return random.choice(MOVABLE_SPRITES)
 
     def spawn(self, count):
-        self.map = self.load_map()
+        self.map = deepcopy(self.clean_map)
 
-        spawns = random.choices(self.spawns, k=count)
-
+        spawns = [random.choice(self.spawns) for _ in range(count)]
         for spawn in spawns:
             cell_x, cell_y = world_pos2cell(*spawn)
             self.map[cell_y][cell_x] = self.get_random_sprite()
 
+    def formated_map(self):
+        new_map = []
+        for row in self.map:
+            new_map.append(''.join(row))
+
+        return new_map
+
     def get_map(self):
-        return self.map
+        return self.formated_map()

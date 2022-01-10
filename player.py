@@ -32,7 +32,7 @@ class Player:
         self.weapons: list[Weapon] = weapons
         self.health = PLAYER_HEALTH
         self.direction = 0
-        self._sprites = sprites
+        self.sprites = sprites
         self._stats = stats
 
     @property
@@ -88,16 +88,16 @@ class Player:
     def do_shot(self):
         if self._can_shot():
             self.shot_with_effects()
-            all_casted_sprites = sprites_ray_casting(self._sprites, self.pos, self.direction)
+            all_casted_sprites = sprites_ray_casting(self.sprites, self.pos, self.direction)
             ray_cast = Ray(self.pos, self.direction, MAX_VIEW_DISTANCE).ray_cast()
             ray_cast_distance = ray_cast.distance
             for sprite_hit in all_casted_sprites:
-                sprite = self._sprites[sprite_hit.sprite_index]
+                sprite = self.sprites[sprite_hit.sprite_index]
                 if self._is_can_kill_the_sprite(sprite_hit.angel, sprite_hit.distance,
                                                 ray_cast_distance) and not sprite.is_dead:
-                    self._sprites[sprite_hit.sprite_index].kill()
+                    self.sprites[sprite_hit.sprite_index].kill()
                     SpritesSound.sprite_hit(3)
-                    if isinstance(self._sprites[sprite_hit.sprite_index], MovableSprite):
+                    if isinstance(self.sprites[sprite_hit.sprite_index], MovableSprite):
                         self._stats.update_kills()
                     break
             else:
