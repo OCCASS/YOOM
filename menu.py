@@ -59,9 +59,10 @@ class Menu:
         self.chosen_level = None
         self.delta_x = 0
         self.theme = MenuMusic(MENU_THEME)
-        self.play_theme()
 
     def run(self, delta_x=0):
+        self.theme = MenuMusic(MENU_THEME)
+        self.play_theme()
         self.delta_x = delta_x
         pygame.time.delay(self.delay)
         pygame.mouse.set_visible(True)
