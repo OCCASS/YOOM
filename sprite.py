@@ -81,6 +81,10 @@ sprite_textures = {
              range(GUITAR_DOOM_GUY_ANIMATION_FRAMES_COUNT)]
         )
     },
+    'c': {
+        'default': collections.deque(
+            [load_image(TEXTURES_PATH, f'torch/{i}.png') for i in range(TORCH_ANIMATION_FRAMES_COUNT)])
+    }
 }
 
 
@@ -263,6 +267,7 @@ static_sprites_dict = {
     '5': StaticSprite(sprite_textures['5']['default'], sprite_textures['5']['dead'], None, 0.7, 20),
     'b': StaticSprite(sprite_textures['b']['default'], None, None),
     'd': StaticSprite(sprite_textures['d']['default'], None, None, animation_speed=SPRITE_ANIMATION_SPEED / 2),
+    'c': StaticSprite(sprite_textures['c']['default'], None, None, animation_speed=SPRITE_ANIMATION_SPEED / 2)
 }
 
 
