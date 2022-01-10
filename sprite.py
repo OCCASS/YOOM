@@ -322,8 +322,8 @@ movable_sprites_dict = {
     '9': MovableSprite(sprite_textures['9']['default'], sprite_textures['9']['dead'][-1], None, speed=2, damage=5,
                        hit_distance=SPRITE_HIT_DISTANCE * 1.5, attack_animation_list=sprite_textures['9']['attack'],
                        death_animation_list=sprite_textures['9']['dead'], health=5),
-    'a': MovableSprite(sprite_textures['a']['default'], sprite_textures['a']['dead'][-1], None, speed=1, damage=7,
-                       hit_distance=SPRITE_HIT_DISTANCE * 6, attack_animation_list=sprite_textures['a']['attack'],
+    'a': MovableSprite(sprite_textures['a']['default'], sprite_textures['a']['dead'][-1], None, speed=1, damage=3,
+                       hit_distance=SPRITE_HIT_DISTANCE * 5, attack_animation_list=sprite_textures['a']['attack'],
                        death_animation_list=sprite_textures['a']['dead'], health=5),
     'e': MovableSprite(sprite_textures['e']['default'], sprite_textures['e']['dead'][-1], None, speed=3, damage=10,
                        death_animation_list=sprite_textures['e']['dead'],
@@ -332,7 +332,7 @@ movable_sprites_dict = {
 }
 
 static_sprites_dict = {
-    '5': StaticSprite(sprite_textures['5']['default'], sprite_textures['5']['dead'], None, 0.7, 20),
+    '5': StaticSprite(sprite_textures['5']['default'], sprite_textures['5']['dead'], None, 0.7),
     'b': StaticSprite(sprite_textures['b']['default'], None, None),
     'd': StaticSprite(sprite_textures['d']['default'], None, None, animation_speed=SPRITE_ANIMATION_SPEED / 2),
     'c': StaticSprite(sprite_textures['c']['default'], None, None, animation_speed=SPRITE_ANIMATION_SPEED / 2)
