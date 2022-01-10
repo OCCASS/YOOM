@@ -21,10 +21,10 @@ from sound import GunSound
 
 
 class Weapon:
-    def __init__(self, screen, name, size, animation_frame_counts, sound, ammo, damage, depth):
+    def __init__(self, screen, name, size, animation_frame_counts, sound, ammo, damage, max_hit_distance):
         self.ammo = ammo
         self.damage = damage
-        self.depth = depth
+        self.max_hit_distance = max_hit_distance
         self._name = name
         self._size = size
         self._animation_frame_counts = animation_frame_counts

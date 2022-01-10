@@ -104,7 +104,7 @@ class Player:
                 sprite = self.sprites[sprite_hit.sprite_index]
                 current_weapon = self.current_weapon()
                 if self._is_can_kill_the_sprite(sprite_hit.angel, sprite_hit.distance,
-                                                ray_cast_distance, current_weapon.depth) and not sprite.is_dead:
+                                                ray_cast_distance, current_weapon.max_hit_distance) and not sprite.is_dead:
                     SpritesSound.sprite_hit(3)
                     if isinstance(self.sprites[sprite_hit.sprite_index], MovableSprite):
                         self.sprites[sprite_hit.sprite_index].get_damage(current_weapon.damage)
