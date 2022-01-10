@@ -21,12 +21,13 @@ from sound import GunSound
 
 
 class Weapon:
-    def __init__(self, screen, name, size, sprites_amount, sound, ammo, damage):
+    def __init__(self, screen, name, size, animation_frame_counts, sound, ammo, damage, depth):
         self.ammo = ammo
         self.damage = damage
+        self.depth = depth
         self._name = name
         self._size = size
-        self._sprites_amount = sprites_amount
+        self._animation_frame_counts = animation_frame_counts
         self._weapon_animation_list_path = os.path.join(WEAPON_FILE, name)
         self._shot_animation_count = 0
         self._animation_list = self._load_weapon()
@@ -67,6 +68,6 @@ class Weapon:
 
     def _load_weapon(self):
         animation_list = [pygame.transform.scale(load_image(self._weapon_animation_list_path, f'{i}.gif'), self._size)
-                          for i in range(self._sprites_amount)]
+                          for i in range(self._animation_frame_counts)]
 
         return collections.deque(animation_list)
