@@ -34,7 +34,7 @@ class EndMenu:
         self.animation_list = collections.deque()
         self.end_message = str()
 
-    def run(self, stats):
+    def run(self, total_time, kills):
         pygame.mouse.set_visible(True)
         while self.running:
             for event in pygame.event.get():
@@ -44,7 +44,7 @@ class EndMenu:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     pass
             self.screen.fill(BLACK)
-            self._draw(stats.total_time(), stats.get_kills())
+            self._draw(total_time, kills)
             self.back_to_menu()
 
             pygame.display.flip()
