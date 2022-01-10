@@ -76,8 +76,8 @@ class Game:
 
     def _respawn_arcade_sprites(self):
         self._menu.arcade_class.spawn(SPRITES_COUNT_TO_SPAWN_IN_ARCADE)
-        new_map = self._menu.arcade_class.get_map()
-        sprites = create_sprites(new_map)
+        sprites = create_sprites(self._menu.arcade_class.get_map())
+
         self._render.sprites = sprites
         self._player.sprites = sprites
         self._sprites = sprites
@@ -92,28 +92,25 @@ class Game:
                     self._running = False
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
-                        self.reset()
+                        self.run()
                 if self._is_game_end:
                     if event.type in [pygame.MOUSEBUTTONDOWN, pygame.KEYDOWN]:
                         self._running = False
                 if event.type == pygame.MOUSEBUTTONDOWN and not self._is_game_end:
                     self._player.on_mouse_down(event)
 
-            if self._menu.mode == Modes.ARCADE and is_win(self._sprites):
+            if self._is_all_arcade_sprites_killed():
                 self._respawn_arcade_sprites()
 
-            self._is_game_end = is_game_over(self._player) or is_win(self._sprites)
+            self._is_game_end = self.is_game_end()
             if self._is_game_end:
-                total_time = self._stats.total_time()
-                kills_count = self._stats.get_kills()
-
                 if is_game_over(self._player):
                     self._player.dead()
-                    self._losing.run(total_time, kills_count)
-                    self.reset()
+                    self._losing.run(self._stats)
+                    self.run()
                 elif is_win(self._sprites):
-                    self._win.run(total_time, kills_count)
-                    self.reset()
+                    self._win.run(self._stats)
+                    self.run()
             else:
                 self._player.update()
                 self._render.render()
@@ -123,8 +120,11 @@ class Game:
             pygame.display.set_caption('FPS: ' + str(int(self._clock.get_fps())))
             pygame.display.flip()
 
-    def reset(self):
-        self.run()
+    def _is_all_arcade_sprites_killed(self):
+        return self._menu.mode == Modes.ARCADE and is_win(self._sprites)
+
+    def is_game_end(self):
+        return is_game_over(self._player) or is_win(self._sprites)
 
     @staticmethod
     def _finish():

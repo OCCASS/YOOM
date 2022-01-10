@@ -22,7 +22,7 @@ from utils import get_distance
 """
 
 
-def ray_casting(player_pos: Point, player_angle: float) -> (list[RayCastHit], str):
+def ray_casting(player_pos: Point, player_angle: float) -> list[RayCastHit]:
     current_angle: float = player_angle - HALF_FOV
     ray_cast_hits: list[RayCastHit] = []
     for _ in range(RAYS_AMOUNT):

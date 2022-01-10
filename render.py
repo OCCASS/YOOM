@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 import pygame
 
 from config import *
@@ -102,10 +104,10 @@ class Render:
 
     def draw_sprite(self, texture, distance, current_ray, vertical_scale, vertical_shift):
         distance = max(distance, MIN_DISTANCE)
-        projection_height = min(PROJECTION_COEFFICIENT / distance, SCREEN_HEIGHT) * vertical_scale
-        projection_width = projection_height
+        projection_height = min(PROJECTION_COEFFICIENT / distance, SCREEN_HEIGHT)
+        projection_width = deepcopy(projection_height)
         sprite_x = current_ray * SCALE - projection_width // 2
-        sprite_y = HALF_SCREEN_HEIGHT - projection_height // 2
+        sprite_y = HALF_SCREEN_HEIGHT - (projection_height * vertical_scale) // 2
 
         if texture:
             texture = pygame.transform.scale(texture, (projection_width, projection_height))
