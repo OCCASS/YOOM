@@ -49,7 +49,9 @@ PLAYER_HEALTH = 100
 SHOOTING_SPREAD = 2
 
 # Карта и настройки карты
-WALL_CHARS = ('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q')
+WALL_CHARS = (
+'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
+'Y', 'Z')
 STATIC_SPRITES = ('5', 'b', 'd', 'c')
 MOVABLE_SPRITES = ('3', '4', '6', '7', '8', '9', 'a')
 ARCADE_SPAWN_CHAR = '@'
@@ -113,6 +115,15 @@ BASIC_WALL_2 = 'STARBR2.png'
 BASIC_WALL_3 = 'STARG2.png'
 BASIC_WALL_4 = 'STARG3.png'
 BASIC_WALL_5 = 'STARTAN2.png'
+NEW_WALL_1 = 'alphalabs_wall12.gif'
+NEW_WALL_2 = 'caves_bricks01.gif'
+NEW_WALL_3 = 'hell_bricks03.gif'
+NEW_WALL_4 = 'mcity_wall04.gif'
+NEW_WALL_5 = 'rock_wall03.gif'
+NEW_WALL_6 = 'hell_stone01.gif'
+NEW_WALL_7 = 'hell_metal01.gif'
+NEW_WALL_8 = 'outside_wall05.gif'
+NEW_WALL_9 = 'rock_wall01.gif'
 FLOOR_TEXTURE = 'floor.png'
 TEXTURE_WIDTH, TEXTURE_HEIGHT = 128, 128
 TEXTURE_SCALE = TEXTURE_WIDTH // TILE
