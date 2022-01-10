@@ -115,8 +115,9 @@ def sprites_update(sprites, player):
                 SpritesSound.damage()
                 SpritesSound.get_damage(3)
 
-                sprites[sprite_index].attack()
-                player.damage(sprite.damage)
+                if not sprites[sprite_index].is_dead:
+                    sprites[sprite_index].attack()
+                    player.damage(sprite.damage)
             else:
                 sprites[sprite_index].stop_attack()
         elif isinstance(sprite, PickableSprite):
