@@ -43,6 +43,15 @@ wall_textures = {
     'O': load_image(TEXTURES_PATH, BASIC_WALL_3, color_key=None),
     'P': load_image(TEXTURES_PATH, BASIC_WALL_4, color_key=None),
     'Q': load_image(TEXTURES_PATH, BASIC_WALL_5, color_key=None),
+    'R': load_image(TEXTURES_PATH, NEW_WALL_1, color_key=None),
+    'S': load_image(TEXTURES_PATH, NEW_WALL_2, color_key=None),
+    'T': load_image(TEXTURES_PATH, NEW_WALL_3, color_key=None),
+    'U': load_image(TEXTURES_PATH, NEW_WALL_4, color_key=None),
+    'V': load_image(TEXTURES_PATH, NEW_WALL_5, color_key=None),
+    'W': load_image(TEXTURES_PATH, NEW_WALL_6, color_key=None),
+    'X': load_image(TEXTURES_PATH, NEW_WALL_7, color_key=None),
+    'Y': load_image(TEXTURES_PATH, NEW_WALL_8, color_key=None),
+    'Z': load_image(TEXTURES_PATH, NEW_WALL_9, color_key=None),
 }
 
 
