@@ -84,6 +84,14 @@ sprite_textures = {
     'c': {
         'default': collections.deque(
             [load_image(TEXTURES_PATH, f'torch/{i}.png') for i in range(TORCH_ANIMATION_FRAMES_COUNT)])
+    },
+    'e': {
+        'default': collections.deque(
+            [load_image(TEXTURES_PATH, f'boss/{i}.png') for i in range(BOSS_ANIMATION_FRAMES_COUNT)]),
+        'dead': collections.deque(
+            [load_image(TEXTURES_PATH, f'boss/dead/{i}.png') for i in range(BOSS_DEATH_ANIMATION_FRAMES_COUNT)]),
+        'attack': collections.deque(
+            [load_image(TEXTURES_PATH, f'boss/attack/{i}.png') for i in range(BOSS_ATTACK_ANIMATION_FRAMES_COUNT)])
     }
 }
 
@@ -268,7 +276,11 @@ movable_sprites_dict = {
                        death_animation_list=sprite_textures['9']['dead'], health=5),
     'a': MovableSprite(sprite_textures['a']['default'], sprite_textures['a']['dead'][-1], None, speed=1, damage=7,
                        hit_distance=SPRITE_HIT_DISTANCE * 6, attack_animation_list=sprite_textures['a']['attack'],
-                       death_animation_list=sprite_textures['a']['dead'], health=5)
+                       death_animation_list=sprite_textures['a']['dead'], health=5),
+    'e': MovableSprite(sprite_textures['e']['default'], sprite_textures['e']['dead'][-1], None, speed=3, damage=10,
+                       death_animation_list=sprite_textures['e']['dead'],
+                       attack_animation_list=sprite_textures['e']['attack'], health=30,
+                       hit_distance=SPRITE_HIT_DISTANCE * 2)
 }
 
 static_sprites_dict = {
