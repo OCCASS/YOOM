@@ -1,3 +1,5 @@
+from typing import Any
+
 from config import *
 from hit import RayCastHit
 from point import Point
@@ -46,17 +48,15 @@ class Ray:
         cos_a = 10 ** -10 if cos_a == 0 else cos_a
         sin_a = 10 ** -10 if sin_a == 0 else sin_a
 
-        x_ver, y_ver, vert_dist, ver_offset = self.vertical_collision(square_x, player_x, player_y, sin_a,
-                                                                      cos_a)
-        x_hor, y_hor, hor_dist, hor_offset = self.horizontal_collision(square_y, player_x, player_y, sin_a,
-                                                                       cos_a)
+        x_ver, y_ver, vert_dist, ver_offset = self.vertical_collision(square_x, player_x, player_y, sin_a, cos_a)
+        x_hor, y_hor, hor_dist, hor_offset = self.horizontal_collision(square_y, player_x, player_y, sin_a, cos_a)
 
         if hor_dist > vert_dist:
             return RayCastHit(vert_dist, (x_ver, y_ver), self.direction, ver_offset)
         return RayCastHit(hor_dist, (x_hor, y_hor), self.direction, hor_offset)
 
     @staticmethod
-    def vertical_collision(square_x, player_x, player_y, sin_a, cos_a):
+    def vertical_collision(square_x, player_x, player_y, sin_a, cos_a) -> tuple[Any, Any, Any, Any]:
         y_ver, vert_dist = 0, 0
         x_ver, sign_x = (square_x + TILE, 1) if cos_a >= 0 else (square_x, -1)
         point, distance = None, None
@@ -75,7 +75,7 @@ class Ray:
         return *point, distance, offset
 
     @staticmethod
-    def horizontal_collision(square_y, player_x, player_y, sin_a, cos_a):
+    def horizontal_collision(square_y, player_x, player_y, sin_a, cos_a) -> tuple[Any, Any, Any, Any]:
         x_hor, hor_dist = 0, 0
         y_hor, sign_y = (square_y + TILE, 1) if sin_a >= 0 else (square_y, -1)
         point, distance = None, None

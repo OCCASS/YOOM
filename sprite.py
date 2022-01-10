@@ -7,7 +7,7 @@ from load_image import load_image
 from point import Point
 from ray import Ray
 from sound import SpritesSound
-from utils import get_distance, world_pos2cell, angle_between_vectors, compare_deque, world_pos2tile
+from utils import get_distance, world_pos2cell, compare_deque, world_pos2tile, get_angel_between_points
 
 """
 Павлов Тимур 08.01.2022. Создан класс Sprite и функция create_sprites
@@ -240,13 +240,6 @@ class MovableSprite(StaticSprite):
                              self._hit_distance, self.vertical_scale, self.vertical_shift, self._attack_animation_list,
                              self._death_animation_list, self.animation_speed, self._health)
 
-    def _get_angel_to_player(self, player):
-        dx, dy = player.x - self.pos[0], player.y - self.pos[1]
-        direction = angle_between_vectors(RIGHT_VECTOR, (dx, dy, 0))
-        if player.y < self.pos[1]:
-            direction = 2 * math.pi - direction
-        return -direction
-
     def move_to(self, to_x, to_y):
         if not self.is_dead:
             dx, dy = self.pos[0] - to_x, self.pos[1] - to_y
@@ -260,7 +253,7 @@ class MovableSprite(StaticSprite):
     def check_damage(self, player):
         self._delay += pygame.time.get_ticks() / 1000
         distance_to_player = get_distance(*self.pos, player.x, player.y)
-        ray = Ray(Point(*self.pos), self._get_angel_to_player(player), MAX_VIEW_DISTANCE)
+        ray = Ray(Point(*self.pos), get_angel_between_points(*self.pos, player.x, player.y), MAX_VIEW_DISTANCE)
         ray_cast = ray.ray_cast()
         ray_cast_distance = ray_cast.distance
         if distance_to_player <= self._hit_distance \
