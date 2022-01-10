@@ -107,8 +107,9 @@ class Render:
         sprite_x = current_ray * SCALE - projection_width // 2
         sprite_y = HALF_SCREEN_HEIGHT - projection_height // 2
 
-        texture = pygame.transform.scale(texture, (projection_width, projection_height))
-        self.screen.blit(texture, (sprite_x, sprite_y + vertical_shift))
+        if texture:
+            texture = pygame.transform.scale(texture, (projection_width, projection_height))
+            self.screen.blit(texture, (sprite_x, sprite_y + vertical_shift))
 
     def _draw_wall(self, distance, offset, hit_index, point):
         cell = world_pos2cell(*point)

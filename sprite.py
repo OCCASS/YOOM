@@ -7,7 +7,7 @@ from load_image import load_image
 from point import Point
 from ray import Ray
 from sound import SpritesSound
-from utils import get_distance, world_pos2cell, angle_between_vectors, compare_deque
+from utils import get_distance, world_pos2cell, angle_between_vectors, compare_deque, world_pos2tile
 
 """
 Павлов Тимур 08.01.2022. Создан класс Sprite и функция create_sprites
@@ -15,6 +15,7 @@ from utils import get_distance, world_pos2cell, angle_between_vectors, compare_d
     пути и дамага игрока
 Павлов Тимур 09.01.2022. Добавлена анимация спрайтов
 Павлов Тимур 09.01.2022. Добавлена анимация статичным спрайтам
+Павлов Тимур 10.01.2022. Создан класс PickableSprite
 """
 
 sprite_textures = {
@@ -93,6 +94,12 @@ sprite_textures = {
             [load_image(TEXTURES_PATH, f'boss/dead/{i}.png') for i in range(BOSS_DEATH_ANIMATION_FRAMES_COUNT)]),
         'attack': collections.deque(
             [load_image(TEXTURES_PATH, f'boss/attack/{i}.png') for i in range(BOSS_ATTACK_ANIMATION_FRAMES_COUNT)])
+    },
+    '#': {
+        'default': collections.deque([load_image(TEXTURES_PATH, 'medkit.png')])
+    },
+    '$': {
+        'default': collections.deque([load_image(TEXTURES_PATH, 'ammo.png')])
     }
 }
 
@@ -112,6 +119,10 @@ def sprites_update(sprites, player):
                 player.damage(sprite.damage)
             else:
                 sprites[sprite_index].stop_attack()
+        elif isinstance(sprite, PickableSprite):
+            if sprite.can_pickle(player.pos):
+                sprite.pickle()
+                player.pickle(sprite.type)
 
     return sprites
 
@@ -259,6 +270,40 @@ class MovableSprite(StaticSprite):
         return False
 
 
+class PickableSpritesTypes:
+    MED_KIT = 'MED_KIT'
+    AMMO = 'AMMO'
+
+
+class PickableSprite(StaticSprite):
+    def __init__(self, sprite_type, animation_list, dead_texture, pos, pickled=False):
+        super(PickableSprite, self).__init__(animation_list, dead_texture, pos)
+        self.pickled = pickled
+        self.type = sprite_type
+
+    def can_pickle(self, pos):
+        if self.pickled:
+            return False
+
+        from_x, from_y = world_pos2tile(*pos)
+        x, y = world_pos2tile(*self.pos)
+
+        return (from_x == x and from_y == y) or (from_x + TILE == x and from_y + TILE == y) or (
+                from_x - TILE == x and from_y - TILE == y)
+
+    def pickle(self):
+        self.pickled = True
+
+    def get_texture(self):
+        if not self.pickled:
+            return self.animation_list[0]
+        else:
+            return
+
+    def copy(self):
+        return PickableSprite(self.type, self.animation_list, self.dead_texture, self.pos, self.pickled)
+
+
 movable_sprites_dict = {
     '3': MovableSprite(sprite_textures['3']['default'], sprite_textures['3']['dead'][-1], None, speed=2, damage=5,
                        hit_distance=SPRITE_HIT_DISTANCE * 2, death_animation_list=sprite_textures['3']['dead'],
@@ -292,6 +337,11 @@ static_sprites_dict = {
     'c': StaticSprite(sprite_textures['c']['default'], None, None, animation_speed=SPRITE_ANIMATION_SPEED / 2)
 }
 
+pickable_sprites_dict = {
+    '#': PickableSprite(PickableSpritesTypes.MED_KIT, sprite_textures['#']['default'], None, None),
+    '$': PickableSprite(PickableSpritesTypes.AMMO, sprite_textures['$']['default'], None, None)
+}
+
 
 def create_sprites(world_map) -> list[StaticSprite]:
     sprites = []
@@ -303,6 +353,8 @@ def create_sprites(world_map) -> list[StaticSprite]:
                     sprite = static_sprites_dict[el].copy()
                 elif el in MOVABLE_SPRITES:
                     sprite = movable_sprites_dict[el].copy()
+                elif el in PICKABLE_SPRITES:
+                    sprite = pickable_sprites_dict[el].copy()
 
                 if el in SPRITE_CHARS:
                     sprite.pos = (x, y)
