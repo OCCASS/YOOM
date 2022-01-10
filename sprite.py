@@ -317,7 +317,7 @@ movable_sprites_dict = {
     '7': MovableSprite(sprite_textures['7']['default'], sprite_textures['7']['dead'], None, speed=1, damage=0.5,
                        hit_distance=SPRITE_HIT_DISTANCE * 6, health=1),
     '8': MovableSprite(sprite_textures['8']['default'], sprite_textures['8']['dead'][-1], None, speed=2, damage=5,
-                       hit_distance=SPRITE_HIT_DISTANCE * 1.5, vertical_scale=2, health=3,
+                       hit_distance=SPRITE_HIT_DISTANCE * 1.5, health=3,
                        death_animation_list=sprite_textures['8']['dead']),
     '9': MovableSprite(sprite_textures['9']['default'], sprite_textures['9']['dead'][-1], None, speed=2, damage=5,
                        hit_distance=SPRITE_HIT_DISTANCE * 1.5, attack_animation_list=sprite_textures['9']['attack'],
