@@ -128,6 +128,9 @@ FLOOR_TEXTURE = 'floor.png'
 TEXTURE_WIDTH, TEXTURE_HEIGHT = 128, 128
 TEXTURE_SCALE = TEXTURE_WIDTH // TILE
 
+# Настройки видео
+VIDEO_PATH = 'video/story.mp4'
+
 # Настройки музыки
 THEME_MUSIC = 'music/theme.mp3'
 FOOTSTEP_SOUND = 'sound/playerstep.mp3'
@@ -152,6 +155,7 @@ WEAPON_SIZE = (400, 260)
 ANIMATION_SPEED = 6
 
 # Настройки меню
+MENU_FPS = 20
 MENU_BTN_SIZE = (360, 75)
 LEVEL_BTN_SIZE = (340, 50)
 MENU_BACKGROUND = 'StartWindow.jpg'

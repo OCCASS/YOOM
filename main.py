@@ -33,6 +33,7 @@ class Game:
         self._caption = WINDOW_NAME
 
     def _pre_init(self):
+        pygame.display.set_caption('YOOM')
         self._menu = MainMenu(self._screen, self._clock)
         self._losing = Losing(self._screen, self._clock)
         self._win = Win(self._screen, self._clock)

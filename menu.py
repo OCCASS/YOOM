@@ -7,6 +7,7 @@ from config import *
 from load_image import load_image
 from load_level import load_level
 from sound import MenuMusic, SoundEffect
+from story import Video
 
 """
 Вайман Ангелина:
@@ -19,6 +20,7 @@ from sound import MenuMusic, SoundEffect
 08.01.2022. Добавлена поддержка плейлистов
 08.01.2022. Добавлено выключение и включение звуков
 09.01.2022. Рефактор класса Settings
+09.01.2022. Добавлено видео
 
 Павлов Тимур:
 09.01.2022. Добавлена функция show_info
@@ -71,7 +73,7 @@ class Menu:
             if self.chosen_level is not None:
                 return self.chosen_level
             pygame.display.flip()
-            self.clock.tick(20)
+            self.clock.tick(MENU_FPS)
 
     def operations(self):
         self._draw_background()
@@ -141,7 +143,8 @@ class MainMenu(Menu):
             button(self.screen, BTN_STORY_NAME, WHITE, BTN_STORY_POS, BTN_EXIT_BACK_SIZE[0], BTN_EXIT_BACK_SIZE[1],
                    button_font)
             if mouse_click[0]:
-                pass
+                self.video = Video(self)
+                self.video.play_video()
 
     def _btn_levels_check(self, mouse_pos, mouse_click):
         if self.btn_levels.collidepoint(mouse_pos):
