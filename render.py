@@ -5,8 +5,6 @@ import pygame
 from config import *
 from hit import RayCastHit, SpriteHit
 from load_image import load_image
-from point import Point
-from ray import Ray
 from ray_casting import ray_casting, sprites_ray_casting
 from sprite import MovableSprite
 from utils import world_pos2cell
@@ -101,9 +99,6 @@ class Render:
                 sprite = self.sprites[hit.sprite_index]
                 if isinstance(sprite, MovableSprite):
                     self.sprites[hit.sprite_index].full_update(self._player)
-                ray = Ray(Point(*sprite.pos), hit.angel, MAX_VIEW_DISTANCE)
-                ray_cast_distance = ray.ray_cast().distance
-
                 self.draw_sprite(sprite.get_texture(), hit.distance, hit.casted_ray_index, sprite.vertical_scale,
                                  sprite.vertical_shift)
 
