@@ -21,7 +21,8 @@ sprite_textures = {
     '3': {
         'default': collections.deque(
             [load_image(TEXTURES_PATH, f'devil/{i}.png') for i in range(DEVIL_ANIMATION_FRAMES_COUNT)]),
-        'dead': load_image(TEXTURES_PATH, 'devil/dead.png')
+        'dead': collections.deque(
+            [load_image(TEXTURES_PATH, f'devil/dead/{i}.png') for i in range(DEVIL_DEATH_ANIMATION_FRAMES_COUNT)])
     },
     '4': {
         'default': collections.deque(
@@ -36,7 +37,9 @@ sprite_textures = {
     '6': {
         'default': collections.deque(
             [load_image(TEXTURES_PATH, f'devil_yellow/{i}.png') for i in range(DEVIL_YELLOW_ANIMATION_FRAMES_COUNT)]),
-        'dead': load_image(TEXTURES_PATH, 'devil_yellow/dead.png')
+        'dead': collections.deque(
+            [load_image(TEXTURES_PATH, f'devil_yellow/dead/{i}.png') for i in
+             range(DEVIL_YELLOW_DEATH_ANIMATION_FRAMES_COUNT)])
     },
     '7': {
         'default': collections.deque(
@@ -238,12 +241,12 @@ class MovableSprite(StaticSprite):
 
 
 movable_sprites_dict = {
-    '3': MovableSprite(sprite_textures['3']['default'], sprite_textures['3']['dead'], None, speed=2, damage=5,
-                       hit_distance=SPRITE_HIT_DISTANCE * 2),
+    '3': MovableSprite(sprite_textures['3']['default'], sprite_textures['3']['dead'][-1], None, speed=2, damage=5,
+                       hit_distance=SPRITE_HIT_DISTANCE * 2, death_animation_list=sprite_textures['3']['dead']),
     '4': MovableSprite(sprite_textures['4']['default'], sprite_textures['4']['dead'], None, speed=1, damage=3,
                        hit_distance=SPRITE_HIT_DISTANCE * 4, vertical_scale=.5),
-    '6': MovableSprite(sprite_textures['6']['default'], sprite_textures['6']['dead'], None, speed=1, damage=5,
-                       hit_distance=SPRITE_HIT_DISTANCE * 4),
+    '6': MovableSprite(sprite_textures['6']['default'], sprite_textures['6']['dead'][-1], None, speed=1, damage=5,
+                       hit_distance=SPRITE_HIT_DISTANCE * 4, death_animation_list=sprite_textures['6']['dead']),
     '7': MovableSprite(sprite_textures['7']['default'], sprite_textures['7']['dead'], None, speed=1, damage=0.5,
                        hit_distance=SPRITE_HIT_DISTANCE * 6),
     '8': MovableSprite(sprite_textures['8']['default'], sprite_textures['8']['dead'], None, speed=2, damage=5,
