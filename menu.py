@@ -3,9 +3,11 @@ import sys
 
 import pygame
 
+from arcade import Arcade
 from config import *
 from load_image import load_image
 from load_level import load_level
+from mode import Modes
 from sound import MenuMusic, SoundEffect
 
 """
@@ -114,6 +116,8 @@ class MainMenu(Menu):
         super().__init__(screen, clock)
         self.levels_class = Levels(self.screen, self.clock)
         self.settings_class = Settings(self.screen, self.clock)
+        self.mode = None
+        self.arcade_class = Arcade(ARCADE_MAP_FILE_NAME)
 
     def _create_buttons(self):
         self.btn_story, self.story = button(self.screen, BTN_STORY_NAME, BLACK, BTN_STORY_POS, BTN_EXIT_BACK_SIZE[0],
@@ -150,12 +154,15 @@ class MainMenu(Menu):
                 self.chosen_level = self.levels_class.run(delta_x=self.delta_x)
                 if self.chosen_level:
                     self.menu_run = False
+                    self.mode = Modes.LEVEL
 
     def _btn_arcade_check(self, mouse_pos, mouse_click):
         if self.btn_arcade.collidepoint(mouse_pos):
             button(self.screen, ARCADE_NAME, WHITE, BTN_ARCADE_POS, MENU_BTN_SIZE[0], MENU_BTN_SIZE[1], button_font)
             if mouse_click[0]:
-                pass
+                self.arcade_class.spawn(SPRITES_COUNT_TO_SPAWN_IN_ARCADE)
+                self.chosen_level = self.arcade_class.get_map()
+                self.mode = Modes.ARCADE
 
     def _btn_settings_check(self, mouse_pos, mouse_click):
         if self.btn_settings.collidepoint(mouse_pos):

@@ -15,6 +15,7 @@ import numpy
 09.01.2022. Добавлены новые звуки
 09.01.2022. Добавлены настройки анимации спрайтов
 09.01.2022. Добавлены новые звуки
+09.01.2022. Добавлены настройки режима Arcade
 
 Вайман Ангелина:
 28.12.2021. Внесены поправки
@@ -236,3 +237,7 @@ SEC = 'S'
 BACK_TO_MENU = 'back to menu'
 BACK_TO_MENU_POS = (10, 1)
 BACK_TO_MENU_SIZE = (190, 50)
+
+# Настройки аркады
+ARCADE_MAP_FILE_NAME = 'arcade_map.txt'
+SPRITES_COUNT_TO_SPAWN_IN_ARCADE = 15
