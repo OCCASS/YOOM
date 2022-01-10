@@ -21,8 +21,9 @@ from sound import GunSound
 
 
 class Weapon:
-    def __init__(self, screen, name, size, sprites_amount, sound, ammo):
+    def __init__(self, screen, name, size, sprites_amount, sound, ammo, damage):
         self.ammo = ammo
+        self.damage = damage
         self._name = name
         self._size = size
         self._sprites_amount = sprites_amount

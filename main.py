@@ -51,9 +51,9 @@ class Game:
         self._finish()
 
     def _init(self):
-        self._weapons = [Weapon(self._screen, 'Gun1', (500, 450), 12, SHOTGUN, 15),
-                         Weapon(self._screen, 'Gun2', (400, 400), 2, PISTOL, 50),
-                         Weapon(self._screen, 'Gun3', (350, 300), 10, RIFLE, 30)]
+        self._weapons = [Weapon(self._screen, 'Gun1', (500, 450), 12, SHOTGUN, 15, 1),
+                         Weapon(self._screen, 'Gun2', (400, 400), 2, PISTOL, 50, 1),
+                         Weapon(self._screen, 'Gun3', (350, 300), 10, RIFLE, 30, 2)]
 
         self._sprites = create_sprites(self._menu.chosen_level)
         self._stats = Stats()

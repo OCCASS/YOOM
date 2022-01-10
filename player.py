@@ -62,6 +62,9 @@ class Player:
     def draw(self):
         self._shot()
 
+    def current_weapon(self):
+        return self.weapons[self.current_gun_index]
+
     def set_weapon(self, delta):
         self._set_shot(False)
         self.weapons[self.current_gun_index].reset()
@@ -95,7 +98,7 @@ class Player:
                 sprite = self.sprites[sprite_hit.sprite_index]
                 if self._is_can_kill_the_sprite(sprite_hit.angel, sprite_hit.distance,
                                                 ray_cast_distance) and not sprite.is_dead:
-                    self.sprites[sprite_hit.sprite_index].kill()
+                    self.sprites[sprite_hit.sprite_index].get_damage(self.current_weapon().damage)
                     SpritesSound.sprite_hit(3)
                     if isinstance(self.sprites[sprite_hit.sprite_index], MovableSprite):
                         self._stats.update_kills()

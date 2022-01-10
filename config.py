@@ -51,8 +51,8 @@ SHOOTING_SPREAD = 2
 
 # Карта и настройки карты
 WALL_CHARS = (
-'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
-'Y', 'Z')
+    'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W',
+    'X', 'Y', 'Z')
 STATIC_SPRITES = ('5', 'b', 'd', 'c')
 MOVABLE_SPRITES = ('3', '4', '6', '7', '8', '9', 'a')
 ARCADE_SPAWN_CHAR = '@'
