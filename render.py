@@ -28,7 +28,7 @@ from utils import world_pos2cell
 
 sky_texture = load_image(TEXTURES_PATH, SKY_TEXTURE)
 wall_textures = {
-    '.': load_image(TEXTURES_PATH, STONE_WALL, color_key=None),
+    '.': load_image(TEXTURES_PATH, RANGE_TEXTURE, color_key=None),
     'A': load_image(TEXTURES_PATH, STONE2, color_key=None),
     'B': load_image(TEXTURES_PATH, COMPUTER_1, color_key=None),
     'C': load_image(TEXTURES_PATH, COMPUTER_2, color_key=None),
@@ -104,7 +104,7 @@ class Render:
 
     def draw_sprite(self, texture, distance, current_ray, vertical_scale, vertical_shift):
         distance = max(distance, MIN_DISTANCE) * math.cos(HALF_FOV - current_ray * DELTA_ANGLE)
-        projection_height = min(PROJECTION_COEFFICIENT / distance, SCREEN_HEIGHT)
+        projection_height = min(PROJECTION_COEFFICIENT / distance, SCREEN_HEIGHT * 2)
         projection_width = deepcopy(projection_height)
         sprite_x = current_ray * SCALE - projection_width // 2
         sprite_y = HALF_SCREEN_HEIGHT - (projection_height * vertical_scale) // 2

@@ -5,7 +5,7 @@ from map import create_map, create_minimap
 from menu import MainMenu, show_info
 from mode import Modes
 from player import Player
-from render import Render
+from render import Render, wall_textures
 from result_window import Win, Losing
 from sound import Music
 from sprite import create_sprites, sprites_update, is_win

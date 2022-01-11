@@ -41,7 +41,7 @@ class Weapon:
         shot_sprite = self._animation_list[0]
         self._screen.blit(shot_sprite, self._weapon_pos)
         self._shot_animation_count += 1
-        if self._shot_animation_count == ANIMATION_SPEED:
+        if self._shot_animation_count == WEAPON_ANIMATION_SPEED:
             self._animation_list.rotate(-1)
             self._shot_animation_count = 0
             self._lost_frames_count += 1

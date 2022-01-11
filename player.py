@@ -217,12 +217,6 @@ class Player:
         if ray.ray_cast().distance <= collision_distance:
             return False
 
-        casted_sprites = sprites_ray_casting(self.sprites, self.pos, self.direction)
-        for sprite_hit in casted_sprites:
-            if sprite_hit.distance <= collision_distance and math.degrees(sprite_hit.angel) == math.degrees(
-                    direction):
-                return False
-
         return True
 
     @staticmethod

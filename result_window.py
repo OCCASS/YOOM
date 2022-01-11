@@ -54,7 +54,7 @@ class EndMenu:
         shot_sprite = self.animation_list[0]
         self.screen.blit(shot_sprite, PICTURE_POS)
         self.animation_count += 1
-        if self.animation_count == ANIMATION_SPEED:
+        if self.animation_count == WEAPON_ANIMATION_SPEED:
             self.animation_list.rotate(-1)
             self.animation_count = 0
             self.lost_frames_count += 1

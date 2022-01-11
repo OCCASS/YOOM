@@ -22,8 +22,7 @@ class Music:
         self.init_track()
 
     def init_track(self):
-        random.shuffle(self.path)
-        self.theme.load(self.path.pop(0))
+        self.theme.load(random.choice(self.path))
         for file in self.path:
             self.theme.queue(file)
 

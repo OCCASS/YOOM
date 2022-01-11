@@ -60,7 +60,7 @@ class Ray:
         y_ver, vert_dist = 0, 0
         x_ver, sign_x = (square_x + TILE, 1) if cos_a >= 0 else (square_x, -1)
         point, distance = None, None
-        for i in range(0, MAX_VERTICAL_RAY_DISTANCE, TILE):
+        for i in range(0, min(MAX_VERTICAL_RAY_DISTANCE, MAX_RENDER_DISTANCE), TILE):
             vert_dist = (x_ver - player_x) / cos_a
             y_ver = player_y + vert_dist * sin_a
             tile_pos = world_pos2tile(x_ver + sign_x, y_ver)
@@ -79,7 +79,7 @@ class Ray:
         x_hor, hor_dist = 0, 0
         y_hor, sign_y = (square_y + TILE, 1) if sin_a >= 0 else (square_y, -1)
         point, distance = None, None
-        for i in range(0, MAX_HORIZONTAL_RAY_DISTANCE, TILE):
+        for i in range(0, min(MAX_HORIZONTAL_RAY_DISTANCE, MAX_RENDER_DISTANCE), TILE):
             hor_dist = (y_hor - player_y) / sin_a
             x_hor = player_x + hor_dist * cos_a
             tile_pos = world_pos2tile(x_hor, y_hor + sign_y)
