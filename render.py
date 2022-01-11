@@ -103,7 +103,7 @@ class Render:
                                  sprite.vertical_shift)
 
     def draw_sprite(self, texture, distance, current_ray, vertical_scale, vertical_shift):
-        distance = max(distance, MIN_DISTANCE)
+        distance = max(distance, MIN_DISTANCE) * math.cos(HALF_FOV - current_ray * DELTA_ANGLE)
         projection_height = min(PROJECTION_COEFFICIENT / distance, SCREEN_HEIGHT)
         projection_width = deepcopy(projection_height)
         sprite_x = current_ray * SCALE - projection_width // 2
