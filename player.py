@@ -54,9 +54,9 @@ class Player:
 
     def pick(self, obj_type):
         if obj_type == PickableSpriteTypes.MED_KIT:
-            self.health += 10
+            self.health += MED_KIT_BOOST
         elif obj_type == PickableSpriteTypes.AMMO:
-            self.weapons[self.current_gun_index].ammo += 10
+            self.weapons[self.current_gun_index].ammo += AMMO_BOOST
 
     def damage(self, val=1):
         self.health -= val

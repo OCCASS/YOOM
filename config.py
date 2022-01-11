@@ -278,3 +278,7 @@ BACK_TO_MENU_SIZE = (190, 50)
 # Настройки аркады
 ARCADE_MAP_FILE_NAME = 'arcade_map.txt'
 SPRITES_COUNT_TO_SPAWN_IN_ARCADE = 15
+
+# Настройки бустов
+MED_KIT_BOOST = 30
+AMMO_BOOST = 10
