@@ -52,7 +52,7 @@ class Player:
         self._process_keyboard()
         self._play_sound()
 
-    def pickle(self, obj_type):
+    def pick(self, obj_type):
         if obj_type == PickableSpriteTypes.MED_KIT:
             self.health += 10
         elif obj_type == PickableSpriteTypes.AMMO:
@@ -104,7 +104,8 @@ class Player:
                 sprite = self.sprites[sprite_hit.sprite_index]
                 current_weapon = self.current_weapon()
                 if self._is_can_kill_the_sprite(sprite_hit.angel, sprite_hit.distance,
-                                                ray_cast_distance, current_weapon.max_hit_distance) and not sprite.is_dead:
+                                                ray_cast_distance,
+                                                current_weapon.max_hit_distance) and not sprite.is_dead:
                     SpritesSound.sprite_hit(3)
                     if isinstance(self.sprites[sprite_hit.sprite_index], MovableSprite):
                         self.sprites[sprite_hit.sprite_index].get_damage(current_weapon.damage)
@@ -216,9 +217,16 @@ class Player:
         if ray.ray_cast().distance <= collision_distance:
             return False
 
+        casted_sprites = sprites_ray_casting(self.sprites, self.pos, self.direction)
+        for sprite_hit in casted_sprites:
+            if sprite_hit.distance <= collision_distance and math.degrees(sprite_hit.angel) == math.degrees(
+                    direction):
+                return False
+
         return True
 
-    def _play_sound(self):
+    @staticmethod
+    def _play_sound():
         pressed_keys = pygame.key.get_pressed()
 
         if (pressed_keys[pygame.K_w] or pressed_keys[pygame.K_s]
