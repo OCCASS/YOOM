@@ -5,7 +5,7 @@ from point import Point
 from ray import Ray
 from ray_casting import sprites_ray_casting
 from sound import GunSound, SpritesSound
-from sprite import MovableSprite, PickableSpritesTypes
+from sprite import MovableSprite, PickableSpriteTypes
 from weapon import Weapon
 
 """
@@ -53,9 +53,9 @@ class Player:
         self._play_sound()
 
     def pickle(self, obj_type):
-        if obj_type == PickableSpritesTypes.MED_KIT:
+        if obj_type == PickableSpriteTypes.MED_KIT:
             self.health += 10
-        elif obj_type == PickableSpritesTypes.AMMO:
+        elif obj_type == PickableSpriteTypes.AMMO:
             self.weapons[self.current_gun_index].ammo += 10
 
     def damage(self, val=1):

@@ -109,21 +109,21 @@ def sprites_update(sprites, player):
         sprite = sprites[sprite_index]
         sprite.update()
         if isinstance(sprite, MovableSprite):
-            sprites[sprite_index].move_to(player.x, player.y)
+            sprite.full_update(player)
 
-            if sprite.check_damage(player):
+            if sprite.can_attack(player):
                 SpritesSound.damage()
                 SpritesSound.get_damage(3)
 
-                if not sprites[sprite_index].is_dead:
-                    sprites[sprite_index].attack()
+                if not sprite.is_dead:
+                    sprite.attack()
                     player.damage(sprite.damage)
             else:
-                sprites[sprite_index].stop_attack()
+                sprite.stop_attack()
         elif isinstance(sprite, PickableSprite):
-            if sprite.can_pickle(player.pos):
-                sprite.pickle()
-                player.pickle(sprite.type)
+            if sprite.can_pick(player.pos):
+                sprite.pick()
+                player.pick(sprite.type)
 
     return sprites
 
@@ -182,91 +182,112 @@ class MovableSprite(StaticSprite):
 
         self._speed = speed
         self._hit_distance = hit_distance
-        self._delay = 0
+        self._attack_delay = 0
         self._attack = False
         self._attack_animation_list = None if attack_animation_list is None else attack_animation_list.copy()
         self._death_animation_list = None if death_animation_list is None else death_animation_list.copy()
-        self._is_death_animation = False
+        self._is_death_animation_playing = False
         self._health = health
 
-    def get_damage(self, val):
-        self._health -= val
-
-    def death(self):
-        self.is_dead = True
-
-        if self._death_animation_list is not None:
-            if not self._is_death_animation:
-                self.animation_list = self._death_animation_list.copy()
-                self.animation_list.rotate(-1)
-                self._is_death_animation = True
-        else:
-            self._is_death_animation = False
-            self.animation_list = collections.deque([self.dead_texture.copy()])
-
-    def attack(self):
-        if self._attack_animation_list and not self._attack:
-            self.animation_list = self._attack_animation_list.copy()
-            self.animation_list.rotate(-1)
-
-        self._attack = True
-
-    def stop_attack(self):
-        if self._attack_animation_list is not None and self._attack:
-            if self._attack and compare_deque(self.animation_list, self._attack_animation_list):
-                self._attack = False
-                self.animation_list = self.default_animation_list.copy()
-        else:
-            self._attack = False
-
     def full_update(self, player):
-        self.move_to(player.x, player.y)
+        self._move_to(player.x, player.y)
+        self._attack_delay += pygame.time.get_ticks() / 1000
         if self._health <= 0:
             self.death()
         super(MovableSprite, self).update()
-
-    def get_texture(self):
-        if self._is_death_animation and self._death_animation_list is not None:
-            if compare_deque(self.animation_list, self._death_animation_list):
-                self.animation_list = collections.deque([self.dead_texture.copy()])
-
-        if self.is_dead and self._death_animation_list is None:
-            return self.dead_texture
-        else:
-            return self.animation_list[0]
 
     def copy(self):
         return MovableSprite(self.animation_list, self.dead_texture, self.pos, self._speed, self.damage,
                              self._hit_distance, self.vertical_scale, self.vertical_shift, self._attack_animation_list,
                              self._death_animation_list, self.animation_speed, self._health)
 
-    def move_to(self, to_x, to_y):
+    def get_damage(self, val):
+        self._health -= val
+
+    def death(self):
+        super(MovableSprite, self).death()
+        self._start_death_animation()
+
+    def attack(self):
+        self._start_attack_animation()
+        self._attack = True
+
+    def stop_attack(self):
+        if self._attack_animation_list is not None and self._attack:
+            self._stop_attack_animation()
+        else:
+            self._attack = False
+
+    def get_texture(self):
+        if self._is_death_animation_playing and self._death_animation_list is not None:
+            if self._is_death_animation_finished():
+                self.animation_list = collections.deque([self.dead_texture.copy()])
+
+        # Return default dead texture if death animation not passed else return current animation frame
+        if self.is_dead and self._death_animation_list is None:
+            return self.dead_texture
+        else:
+            return self.animation_list[0]
+
+    def can_attack(self, target):
+        if self._can_attack(target):
+            self._attack_delay = 0
+            return True
+
+        return False
+
+    def _move_to(self, to_x, to_y):
         tile_x, tile_y = world_pos2tile(*self.pos)
         to_tile_x, to_tile_y = world_pos2tile(to_x, to_y)
+        # If not is dead and next pos if not a finish point
         if not self.is_dead and (tile_x, tile_y) != (to_tile_x, to_tile_y):
             dx, dy = self.pos[0] - to_x, self.pos[1] - to_y
             move_coefficient_x, move_coefficient_y = 1 if dx < 0 else -1, 1 if dy < 0 else -1
             next_x = self.pos[0] + move_coefficient_x * self._speed
             next_y = self.pos[1] + move_coefficient_y * self._speed
             cell_x, cell_y = world_pos2cell(next_x, next_y)
+            # If next pos is not a wall
             if (cell_x * TILE, cell_y * TILE) not in WORLD_MAP:
                 self.pos = [next_x, next_y]
 
-    def check_damage(self, player):
-        self._delay += pygame.time.get_ticks() / 1000
-        distance_to_player = get_distance(*self.pos, player.x, player.y)
-        ray = Ray(Point(*self.pos), get_angel_between_points(*self.pos, player.x, player.y), MAX_VIEW_DISTANCE)
-        ray_cast = ray.ray_cast()
-        ray_cast_distance = ray_cast.distance
-        if distance_to_player <= self._hit_distance \
-                and distance_to_player <= ray_cast_distance \
-                and self._delay >= SPRITE_DAMAGE_DELAY and not self.is_dead:
-            self._delay = 0
-            return True
-        return False
+    def _start_death_animation(self):
+        if self._death_animation_list is not None:
+            if not self._is_death_animation_playing:
+                self.animation_list = self._death_animation_list.copy()
+                self.animation_list.rotate(-1)
+                self._is_death_animation_playing = True
+        else:
+            self._is_death_animation_playing = False
+            self.animation_list = collections.deque([self.dead_texture.copy()])
+
+    def _start_attack_animation(self):
+        if self._attack_animation_list and not self._attack:
+            self.animation_list = self._attack_animation_list.copy()
+            self.animation_list.rotate(-1)
+
+    def _stop_attack_animation(self):
+        if self._attack and compare_deque(self.animation_list, self._attack_animation_list):
+            self._attack = False
+            self.animation_list = self.default_animation_list.copy()
+
+    def _is_death_animation_finished(self):
+        return compare_deque(self.animation_list, self._death_animation_list)
+
+    def _can_attack(self, target):
+        distance_to_target = get_distance(*self.pos, target.x, target.y)
+        return not self.is_dead and self._attack_delay >= SPRITE_ATTACK_DELAY and \
+               self._can_hit(distance_to_target) and self._is_target_behind_the_wall(target.pos, distance_to_target)
+
+    def _can_hit(self, distance_to_target):
+        return distance_to_target <= self._hit_distance
+
+    def _is_target_behind_the_wall(self, target_pos, distance_to_target):
+        ray = Ray(Point(*self.pos), get_angel_between_points(*self.pos, *target_pos), MAX_VIEW_DISTANCE)
+        distance_to_nearset_wall = ray.ray_cast().distance
+        return distance_to_target <= distance_to_nearset_wall
 
 
-class PickableSpritesTypes:
+class PickableSpriteTypes:
     MED_KIT = 'MED_KIT'
     AMMO = 'AMMO'
 
@@ -277,7 +298,7 @@ class PickableSprite(StaticSprite):
         self.pickled = pickled
         self.type = sprite_type
 
-    def can_pickle(self, pos):
+    def can_pick(self, pos):
         if self.pickled:
             return False
 
@@ -287,7 +308,7 @@ class PickableSprite(StaticSprite):
         return (from_x == x and from_y == y) or (from_x + TILE == x and from_y + TILE == y) or (
                 from_x - TILE == x and from_y - TILE == y)
 
-    def pickle(self):
+    def pick(self):
         self.pickled = True
 
     def get_texture(self):
@@ -334,8 +355,8 @@ static_sprites_dict = {
 }
 
 pickable_sprites_dict = {
-    '#': PickableSprite(PickableSpritesTypes.MED_KIT, sprite_textures['#']['default'], None, None),
-    '$': PickableSprite(PickableSpritesTypes.AMMO, sprite_textures['$']['default'], None, None)
+    '#': PickableSprite(PickableSpriteTypes.MED_KIT, sprite_textures['#']['default'], None, None),
+    '$': PickableSprite(PickableSpriteTypes.AMMO, sprite_textures['$']['default'], None, None)
 }
 
 
@@ -344,7 +365,8 @@ def create_sprites(world_map) -> list[StaticSprite]:
     for row_index, row in enumerate(world_map):
         for col_index, el in enumerate(row):
             if el in SPRITE_CHARS:
-                x, y = col_index * TILE + TILE // 2, row_index * TILE + TILE // 2
+                sprite_pos = col_index * TILE + TILE // 2, row_index * TILE + TILE // 2
+                sprite = None
                 if el in STATIC_SPRITES:
                     sprite = static_sprites_dict[el].copy()
                 elif el in MOVABLE_SPRITES:
@@ -352,8 +374,8 @@ def create_sprites(world_map) -> list[StaticSprite]:
                 elif el in PICKABLE_SPRITES:
                     sprite = pickable_sprites_dict[el].copy()
 
-                if el in SPRITE_CHARS:
-                    sprite.pos = (x, y)
+                if el in SPRITE_CHARS and sprite is not None:
+                    sprite.pos = sprite_pos
                     sprite.reset()
                     sprites.append(sprite)
 
