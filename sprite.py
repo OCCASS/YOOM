@@ -241,7 +241,9 @@ class MovableSprite(StaticSprite):
                              self._death_animation_list, self.animation_speed, self._health)
 
     def move_to(self, to_x, to_y):
-        if not self.is_dead:
+        tile_x, tile_y = world_pos2tile(*self.pos)
+        to_tile_x, to_tile_y = world_pos2tile(to_x, to_y)
+        if not self.is_dead and (tile_x, tile_y) != (to_tile_x, to_tile_y):
             dx, dy = self.pos[0] - to_x, self.pos[1] - to_y
             move_coefficient_x, move_coefficient_y = 1 if dx < 0 else -1, 1 if dy < 0 else -1
             next_x = self.pos[0] + move_coefficient_x * self._speed
