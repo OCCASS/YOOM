@@ -7,7 +7,7 @@ from load_image import load_image
 from point import Point
 from ray import Ray
 from sound import SpritesSound
-from utils import get_distance, world_pos2cell, compare_deque, world_pos2tile, get_angel_between_points
+from utils import get_distance, world_pos2cell, compare_deque, world_pos2tile, angle_between_vectors
 
 """
 Павлов Тимур 08.01.2022. Создан класс Sprite и функция create_sprites
@@ -105,8 +105,7 @@ sprite_textures = {
 
 
 def sprites_update(sprites, player):
-    for sprite_index in range(len(sprites)):
-        sprite = sprites[sprite_index]
+    for sprite in sprites:
         sprite.update()
         if isinstance(sprite, MovableSprite):
             sprite.full_update(player)
@@ -282,9 +281,10 @@ class MovableSprite(StaticSprite):
         return distance_to_target <= self._hit_distance
 
     def _is_target_behind_the_wall(self, target_pos, distance_to_target):
-        ray = Ray(Point(*self.pos), get_angel_between_points(*self.pos, *target_pos), MAX_VIEW_DISTANCE)
-        distance_to_nearset_wall = ray.ray_cast().distance
-        return distance_to_target <= distance_to_nearset_wall
+        dx, dy = target_pos[0] - self.pos[0], target_pos[1] - self.pos[1]
+        ray_cast_distance = Ray(Point(*self.pos), angle_between_vectors(RIGHT_VECTOR, (dx, dy, 0)),
+                                MAX_VIEW_DISTANCE).ray_cast().distance
+        return distance_to_target < ray_cast_distance
 
 
 class PickableSpriteTypes:

@@ -3,7 +3,7 @@ import math
 import numba
 import numpy
 
-from config import TILE, RIGHT_VECTOR
+from config import TILE
 
 """
 Павлов Тимур 08.01.2022. Создана функция get_distance, world_pos2cell
@@ -51,11 +51,3 @@ def angle_between_vectors(v1, v2):
     v1_u = unit_vector(v1)
     v2_u = unit_vector(v2)
     return numpy.arccos(numpy.clip(numpy.dot(v1_u, v2_u), -1.0, 1.0))
-
-
-def get_angel_between_points(x0, y0, x1, y1):
-    dx, dy = x0 - x1, y0 - y1
-    direction = angle_between_vectors(RIGHT_VECTOR, (dx, dy, 0))
-    if y0 < y1:
-        direction = 2 * math.pi - direction
-    return -direction

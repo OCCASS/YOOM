@@ -98,14 +98,15 @@ class Player:
         if self._can_shot():
             self.shot_with_effects()
             all_casted_sprites = sprites_ray_casting(self.sprites, self.pos, self.direction)
+            all_casted_sprites.sort(key=lambda i: i.distance)
             ray_cast = Ray(self.pos, self.direction, MAX_VIEW_DISTANCE).ray_cast()
             ray_cast_distance = ray_cast.distance
             for sprite_hit in all_casted_sprites:
                 sprite = self.sprites[sprite_hit.sprite_index]
                 current_weapon = self.current_weapon()
-                if self._is_can_kill_the_sprite(sprite_hit.angel, sprite_hit.distance,
-                                                ray_cast_distance,
-                                                current_weapon.max_hit_distance) and not sprite.is_dead:
+                if not sprite.is_dead and self._is_can_kill_the_sprite(sprite_hit.angel, sprite_hit.distance,
+                                                                       ray_cast_distance,
+                                                                       current_weapon.max_hit_distance):
                     SpritesSound.sprite_hit(3)
                     if isinstance(self.sprites[sprite_hit.sprite_index], MovableSprite):
                         self.sprites[sprite_hit.sprite_index].get_damage(current_weapon.damage)
