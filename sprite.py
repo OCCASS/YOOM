@@ -248,6 +248,10 @@ class MovableSprite(StaticSprite):
             # If next pos is not a wall
             if (cell_x * TILE, cell_y * TILE) not in WORLD_MAP:
                 self.pos = [next_x, next_y]
+            elif (cell_x * TILE, tile_y) not in WORLD_MAP:
+                self.pos = [next_x, tile_y]
+            elif (tile_x, cell_y * TILE) not in WORLD_MAP:
+                self.pos = [tile_x, next_y]
 
     def _start_death_animation(self):
         if self._death_animation_list is not None:
