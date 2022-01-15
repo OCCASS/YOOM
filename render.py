@@ -6,7 +6,7 @@ from config import *
 from hit import RayCastHit, SpriteHit
 from load_image import load_image
 from ray_casting import ray_casting, sprites_ray_casting
-from sprite import MovableSprite
+from sprite import InteractiveSprite
 from utils import world_pos2cell
 
 """
@@ -97,7 +97,7 @@ class Render:
                 self._draw_wall(distance, offset, hit_index, hit.point)
             elif isinstance(hit, SpriteHit):
                 sprite = self.sprites[hit.sprite_index]
-                if isinstance(sprite, MovableSprite):
+                if isinstance(sprite, InteractiveSprite):
                     self.sprites[hit.sprite_index].full_update(self._player)
                 self.draw_sprite(sprite.get_texture(), hit.distance, hit.casted_ray_index, sprite.vertical_scale,
                                  sprite.vertical_shift)

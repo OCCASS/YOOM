@@ -107,7 +107,7 @@ sprite_textures = {
 def sprites_update(sprites, player):
     for sprite in sprites:
         sprite.update()
-        if isinstance(sprite, MovableSprite):
+        if isinstance(sprite, InteractiveSprite):
             sprite.full_update(player)
 
             if sprite.can_attack(player):
@@ -171,12 +171,12 @@ class StaticSprite:
                             self.destroyed, animation_speed=self.animation_speed)
 
 
-class MovableSprite(StaticSprite):
+class InteractiveSprite(StaticSprite):
     def __init__(self, animation_list, dead_texture, pos, speed, damage, hit_distance, vertical_scale=1.0,
                  vertical_shift=0.0, attack_animation_list=None, death_animation_list=None,
                  animation_speed=SPRITE_ANIMATION_SPEED, health=1):
-        super(MovableSprite, self).__init__(animation_list, dead_texture, pos, vertical_scale, vertical_shift,
-                                            animation_speed)
+        super(InteractiveSprite, self).__init__(animation_list, dead_texture, pos, vertical_scale, vertical_shift,
+                                                animation_speed)
         self.damage = damage
 
         self._speed = speed
@@ -187,24 +187,26 @@ class MovableSprite(StaticSprite):
         self._death_animation_list = None if death_animation_list is None else death_animation_list.copy()
         self._is_death_animation_playing = False
         self._health = health
+        self._moving = False
 
     def full_update(self, player):
         self._move_to(player.x, player.y)
         self._attack_delay += pygame.time.get_ticks() / 1000
         if self._health <= 0:
             self.death()
-        super(MovableSprite, self).update()
+        super(InteractiveSprite, self).update()
 
     def copy(self):
-        return MovableSprite(self.animation_list, self.dead_texture, self.pos, self._speed, self.damage,
-                             self._hit_distance, self.vertical_scale, self.vertical_shift, self._attack_animation_list,
-                             self._death_animation_list, self.animation_speed, self._health)
+        return InteractiveSprite(self.animation_list, self.dead_texture, self.pos, self._speed, self.damage,
+                                 self._hit_distance, self.vertical_scale, self.vertical_shift,
+                                 self._attack_animation_list,
+                                 self._death_animation_list, self.animation_speed, self._health)
 
     def get_damage(self, val):
         self._health -= val
 
     def death(self):
-        super(MovableSprite, self).death()
+        super(InteractiveSprite, self).death()
         self._start_death_animation()
 
     def attack(self):
@@ -224,9 +226,11 @@ class MovableSprite(StaticSprite):
 
         # Return default dead texture if death animation not passed else return current animation frame
         if self.is_dead and self._death_animation_list is None:
-            return self.dead_texture
+            return self.dead_texture.copy()
+        elif not self._moving and not self.is_dead:
+            return self.default_animation_list[0].copy()
         else:
-            return self.animation_list[0]
+            return self.animation_list[0].copy()
 
     def can_attack(self, target):
         if self._can_attack(target):
@@ -239,6 +243,7 @@ class MovableSprite(StaticSprite):
         distance_to_target = get_distance(*self.pos, to_x, to_y)
 
         if distance_to_target >= SPRITE_VISIBILITY_AREA:
+            self._moving = False
             return
 
         tile_x, tile_y = world_pos2tile(*self.pos)
@@ -254,10 +259,17 @@ class MovableSprite(StaticSprite):
              else move right (left) if wall not right (left)"""
             if (cell_x * TILE, cell_y * TILE) not in WORLD_MAP:
                 self.pos = [next_x, next_y]
+                self._moving = True
             elif (cell_x * TILE, tile_y) not in WORLD_MAP:
                 self.pos = [next_x, tile_y]
+                self._moving = True
             elif (tile_x, cell_y * TILE) not in WORLD_MAP:
                 self.pos = [tile_x, next_y]
+                self._moving = True
+            else:
+                self._moving = False
+        else:
+            self._moving = False
 
     def _start_death_animation(self):
         if self._death_animation_list is not None:
@@ -332,29 +344,29 @@ class PickableSprite(StaticSprite):
 
 
 movable_sprites_dict = {
-    '3': MovableSprite(sprite_textures['3']['default'], sprite_textures['3']['dead'][-1], None, speed=2, damage=5,
-                       hit_distance=SPRITE_HIT_DISTANCE * 2, death_animation_list=sprite_textures['3']['dead'],
-                       health=3),
-    '4': MovableSprite(sprite_textures['4']['default'], sprite_textures['4']['dead'], None, speed=1, damage=3,
-                       hit_distance=SPRITE_HIT_DISTANCE * 4, health=3),
-    '6': MovableSprite(sprite_textures['6']['default'], sprite_textures['6']['dead'][-1], None, speed=1, damage=5,
-                       hit_distance=SPRITE_HIT_DISTANCE * 4, death_animation_list=sprite_textures['6']['dead'],
-                       health=4),
-    '7': MovableSprite(sprite_textures['7']['default'], sprite_textures['7']['dead'], None, speed=1, damage=0.5,
-                       hit_distance=SPRITE_HIT_DISTANCE * 6, health=1),
-    '8': MovableSprite(sprite_textures['8']['default'], sprite_textures['8']['dead'][-1], None, speed=2, damage=3,
-                       hit_distance=SPRITE_HIT_DISTANCE * 1.5, health=3,
-                       death_animation_list=sprite_textures['8']['dead']),
-    '9': MovableSprite(sprite_textures['9']['default'], sprite_textures['9']['dead'][-1], None, speed=2, damage=5,
-                       hit_distance=SPRITE_HIT_DISTANCE * 1.5, attack_animation_list=sprite_textures['9']['attack'],
-                       death_animation_list=sprite_textures['9']['dead'], health=5),
-    'a': MovableSprite(sprite_textures['a']['default'], sprite_textures['a']['dead'][-1], None, speed=1, damage=3,
-                       hit_distance=SPRITE_HIT_DISTANCE * 5, attack_animation_list=sprite_textures['a']['attack'],
-                       death_animation_list=sprite_textures['a']['dead'], health=5),
-    'e': MovableSprite(sprite_textures['e']['default'], sprite_textures['e']['dead'][-1], None, speed=3, damage=10,
-                       death_animation_list=sprite_textures['e']['dead'],
-                       attack_animation_list=sprite_textures['e']['attack'], health=30,
-                       hit_distance=SPRITE_HIT_DISTANCE * 2)
+    '3': InteractiveSprite(sprite_textures['3']['default'], sprite_textures['3']['dead'][-1], None, speed=2, damage=5,
+                           hit_distance=SPRITE_HIT_DISTANCE * 2, death_animation_list=sprite_textures['3']['dead'],
+                           health=3),
+    '4': InteractiveSprite(sprite_textures['4']['default'], sprite_textures['4']['dead'], None, speed=1, damage=3,
+                           hit_distance=SPRITE_HIT_DISTANCE * 4, health=3),
+    '6': InteractiveSprite(sprite_textures['6']['default'], sprite_textures['6']['dead'][-1], None, speed=1, damage=5,
+                           hit_distance=SPRITE_HIT_DISTANCE * 4, death_animation_list=sprite_textures['6']['dead'],
+                           health=4),
+    '7': InteractiveSprite(sprite_textures['7']['default'], sprite_textures['7']['dead'], None, speed=1, damage=0.5,
+                           hit_distance=SPRITE_HIT_DISTANCE * 6, health=1),
+    '8': InteractiveSprite(sprite_textures['8']['default'], sprite_textures['8']['dead'][-1], None, speed=2, damage=3,
+                           hit_distance=SPRITE_HIT_DISTANCE * 1.5, health=3,
+                           death_animation_list=sprite_textures['8']['dead']),
+    '9': InteractiveSprite(sprite_textures['9']['default'], sprite_textures['9']['dead'][-1], None, speed=2, damage=5,
+                           hit_distance=SPRITE_HIT_DISTANCE * 1.5, attack_animation_list=sprite_textures['9']['attack'],
+                           death_animation_list=sprite_textures['9']['dead'], health=5),
+    'a': InteractiveSprite(sprite_textures['a']['default'], sprite_textures['a']['dead'][-1], None, speed=1, damage=3,
+                           hit_distance=SPRITE_HIT_DISTANCE * 5, attack_animation_list=sprite_textures['a']['attack'],
+                           death_animation_list=sprite_textures['a']['dead'], health=5),
+    'e': InteractiveSprite(sprite_textures['e']['default'], sprite_textures['e']['dead'][-1], None, speed=3, damage=10,
+                           death_animation_list=sprite_textures['e']['dead'],
+                           attack_animation_list=sprite_textures['e']['attack'], health=30,
+                           hit_distance=SPRITE_HIT_DISTANCE * 2)
 }
 
 static_sprites_dict = {
@@ -393,7 +405,7 @@ def create_sprites(world_map) -> list[StaticSprite]:
 
 
 def is_win(sprites):
-    sprites = list(filter(lambda i: isinstance(i, MovableSprite), sprites))
+    sprites = list(filter(lambda i: isinstance(i, InteractiveSprite), sprites))
     for sprite in sprites:
         if not sprite.is_dead:
             return False

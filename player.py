@@ -5,7 +5,7 @@ from point import Point
 from ray import Ray
 from ray_casting import sprites_ray_casting
 from sound import GunSound, SpritesSound
-from sprite import MovableSprite, PickableSpriteTypes
+from sprite import InteractiveSprite, PickableSpriteTypes
 from weapon import Weapon
 
 """
@@ -108,7 +108,7 @@ class Player:
                                                                        ray_cast_distance,
                                                                        current_weapon.max_hit_distance):
                     SpritesSound.sprite_hit(3)
-                    if isinstance(self.sprites[sprite_hit.sprite_index], MovableSprite):
+                    if isinstance(self.sprites[sprite_hit.sprite_index], InteractiveSprite):
                         self.sprites[sprite_hit.sprite_index].get_damage(current_weapon.damage)
                         self._stats.update_kills()
                     break
