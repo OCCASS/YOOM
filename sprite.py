@@ -236,6 +236,11 @@ class MovableSprite(StaticSprite):
         return False
 
     def _move_to(self, to_x, to_y):
+        distance_to_target = get_distance(*self.pos, to_x, to_y)
+
+        if distance_to_target >= SPRITE_VISIBILITY_AREA:
+            return
+
         tile_x, tile_y = world_pos2tile(*self.pos)
         to_tile_x, to_tile_y = world_pos2tile(to_x, to_y)
         # If not is dead and next pos if not a finish point
@@ -245,7 +250,8 @@ class MovableSprite(StaticSprite):
             next_x = self.pos[0] + move_coefficient_x * self._speed
             next_y = self.pos[1] + move_coefficient_y * self._speed
             cell_x, cell_y = world_pos2cell(next_x, next_y)
-            # If next pos is not a wall
+            """If next pos is not a wall, else move forward (backward) if wall not forward (backward), 
+             else move right (left) if wall not right (left)"""
             if (cell_x * TILE, cell_y * TILE) not in WORLD_MAP:
                 self.pos = [next_x, next_y]
             elif (cell_x * TILE, tile_y) not in WORLD_MAP:
